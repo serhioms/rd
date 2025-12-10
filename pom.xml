@@ -20,8 +20,6 @@
 		<module>RdUtil</module>
 		<module>RdJob</module>
 		
-<!--		<module>RdFlowEngine</module>-->
-		
 		<module>HomeUtils</module>
 		
 		<module>RdWorkflow</module>
