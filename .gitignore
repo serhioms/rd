@@ -6,5 +6,6 @@
 /**/*.jar
 /**/*.zip
 /RdFlowEngine/test-output/
-
+/RdTraderConsole/test-output/
+/RdTraderServer/test-output/
 
