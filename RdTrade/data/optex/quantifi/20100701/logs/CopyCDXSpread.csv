@@ -1,0 +1,24 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS5V5-5Y (CIBC).Mid,1E-12
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-10Y.Mid,0.0144
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-3Y.Mid,0.021
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-5Y.Mid,0.0138
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-7Y.Mid,0.0142
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V5-10Y.Mid,0.0147
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-10Y.Mid,0.0147
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-3Y.Mid,0.0211
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-5Y.Mid,0.0133
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-7Y.Mid,0.0141
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-10Y.Mid,0.0153
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-3Y.Mid,0.0211
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-5Y.Mid,0.0141
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-7Y.Mid,0.0148
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,Dow Jones CDX.NA.IG.7-V5,0.0147
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-10Y.Mid,0.0106
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-3Y.Mid,0.0055
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-5Y.Mid,0.0085
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-7Y.Mid,0.01
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-10Y.Mid,0.0138
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-3Y.Mid,0.008
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-5Y.Mid,0.0125
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-7Y.Mid,0.0137

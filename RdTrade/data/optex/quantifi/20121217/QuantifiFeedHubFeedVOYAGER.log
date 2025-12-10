@@ -1,0 +1,74 @@
+
+ Value date: 12/17/2012 12:00:00 AM
+
+
+--------------------------------------------------------------------------
+Log date: 17 Dec 2012 21:30:15 | Valuation date: 17 Dec 2012 | v1.2.24.0
+--------------------------------------------------------------------------
+
+
+Root Folder is: c:\quantifi\nightlybatch\20121217
+
+
+Need to send Voyager files, processing...
+
+Voyager CorrExposure file exist. Transmitting...
+****** Output from sftp2 ******
+
+sftp2.exe arguments:  -N 1 -B "C:\Quantifi\FeedHubFeed\VOYAGER\SentFileVOYAGER.ftp" Wm_Quant_voy@st.ca.cibcwm.com
+Starting sftp2.exe process...
+sftp2.exe completed succesfully.
+quantvoy1/
+quantvoy2/
+CorrExposure.txt                    |  2.3kB |  21.0kB/s | TOC: 00:00:00 | 100%
+sftp> ls
+sftp> ascii
+sftp> cd quantvoy1/outbox
+/quantvoy1/outbox
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrExposure.txt
+CorrExposure.txt.ok                 |     0B |      0B/s | TOC: 00:00:00 | 100%
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrExposure.txt.ok
+CorrExposure.txt
+CorrExposure.txt.ok
+sftp> ls *
+sftp> quit
+
+*****************************
+
+Voyager Trade files (trading, tradingbasket, greeks) exist. Transmitting...
+****** Output from sftp2 ******
+
+sftp2.exe arguments:  -N 1 -B "C:\Quantifi\FeedHubFeed\VOYAGER\SentFileVOYAGER.ftp" Wm_Quant_voy@st.ca.cibcwm.com
+Starting sftp2.exe process...
+sftp2.exe completed succesfully.
+quantvoy1/
+quantvoy2/
+CorrTrading.txt                     |  825kB |   3.0MB/s | TOC: 00:00:00 | 100%
+sftp> ls
+sftp> ascii
+sftp> cd quantvoy2/outbox
+/quantvoy2/outbox
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrTrading.txt
+CorrTrading.txt.ok                  |     0B |      0B/s | TOC: 00:00:00 | 100%
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrTrading.txt.ok
+CorrTradingBasket.txt               |  1.6kB |  14.3kB/s | TOC: 00:00:00 | 100%
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrTradingBasket.txt
+CorrTradingBasket.txt.ok            |     0B |      0B/s | TOC: 00:00:00 | 100%
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrTradingBasket.txt.ok
+CorrTradingGreeks.txt               |  1.1MB |   3.6MB/s | TOC: 00:00:00 | 100%
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrTradingGreeks.txt
+CorrTradingGreeks.txt.ok            |     0B |      0B/s | TOC: 00:00:00 | 100%
+sftp> put c:\quantifi\nightlybatch\20121217\reports\CorrTradingGreeks.txt.ok
+CorrTrading.txt
+CorrTrading.txt.ok
+CorrTradingBasket.txt
+CorrTradingBasket.txt.ok
+CorrTradingGreeks.txt
+CorrTradingGreeks.txt.ok
+sftp> ls *
+sftp> quit
+
+*****************************
+
+
+Transmission of all Voyager files completed successfully

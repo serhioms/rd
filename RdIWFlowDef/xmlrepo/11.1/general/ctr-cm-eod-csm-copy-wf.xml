@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-cm-eod-csm-copy-wf.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.19.1 -->
+	
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-cm-eod-csm-copy-wf</name> 
+  	<externalWorkflowCode>ctr-cm-eod-csm-copy-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-cm-eod-csm-copy-wf ($LastChangedRevision: 3690 $)</description>
+	
+	<properties>
+		<inputProperties>
+			<property name="CORRELATION-ID">SUPPLY-MATCHID-HERE</property>
+		</inputProperties>
+		<generalProperties>
+			<property name="ROOT-WF-ID">ctr-cm-eod-csm-wf</property>
+			
+			<!-- Source Directories -->
+			<property name="FTP-SOURCE-DIR">csm/inbox</property>
+
+		</generalProperties>
+	</properties>	
+
+	<sequential name="CTR-CAPITAL-MARKETS" id="CTR-CAPITAL-MARKETS">
+		<stage name="COPY-CSM-FILES" id="COPY-CSM-FILES">
+			<description>Copy files from CSM SFTP outbox to local inbox</description>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${CSM_RESPONSE_URI}</uri>
+							<searchPattern>CSM_.*${CORRELATION-ID}.*</searchPattern>
+							<matchedUriOutputProperty>csmFiles</matchedUriOutputProperty>
+						</sourceResource>
+						<targetResource>
+							<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>transferCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+	</sequential>
+</workflow>

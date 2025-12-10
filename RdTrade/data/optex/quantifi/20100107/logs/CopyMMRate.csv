@@ -1,0 +1,3 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+06-Jan-2010,07-Jan-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.2 Days.Mid,0.0082597
+06-Jan-2010,07-Jan-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.1 Weeks.Mid,0.000376

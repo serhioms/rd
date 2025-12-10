@@ -1,0 +1,14 @@
+
+******************** qpsSettlementDiary START (6/11/2013 11:07:30 AM - ) ********************
+
+6/11/2013 11:12:19 AM - ERROR in calculating Cashflows for TradeId CDO0000653. Base Correlations Surface contains too many NaN values
+6/11/2013 11:12:19 AM - ERROR in calculating Cashflows for TradeId CDO0000654. Base Correlations Surface contains too many NaN values
+6/11/2013 11:12:20 AM - ERROR in calculating Cashflows for TradeId CDO0000655. Base Correlations Surface contains too many NaN values
+6/11/2013 11:12:20 AM - ERROR in calculating Cashflows for TradeId CDO0000656. Base Correlations Surface contains too many NaN values
+6/11/2013 11:12:20 AM - ERROR in calculating Cashflows for TradeId CDO0000657. Unable to fit discount curve, data is likely missing.
+6/11/2013 11:12:20 AM - ERROR in calculating Cashflows for TradeId CDO0000658. Unable to fit discount curve, data is likely missing.
+6/11/2013 11:12:20 AM - ERROR in calculating Cashflows for TradeId CDO0000671. Base Correlations Surface contains too many NaN values
+6/11/2013 11:12:21 AM - ERROR in calculating Cashflows for TradeId CDO0000672. Base Correlations Surface contains too many NaN values
+6/11/2013 11:12:21 AM - ERROR in calculating Cashflows for TradeId CDO0000673. Base Correlations Surface contains too many NaN values
+6/11/2013 11:12:21 AM - ERROR in calculating Cashflows for TradeId CDO0000674. Base Correlations Surface contains too many NaN values
+******************** qpsSettlementDiary END (6/11/2013 11:12:53 AM - ) ********************

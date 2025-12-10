@@ -1,0 +1,533 @@
+Source,Type,Name,Value
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.1.corr,0.286705426797754
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.1.strike,0.684239067439789
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.2.corr,0.352487749870859
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.2.strike,1.59655782402617
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.3.corr,0.395385266609205
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.3.strike,2.28079689146596
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.4.corr,0.478979416591304
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.4.strike,3.42119533719894
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.5.corr,0.673000513010767
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.5.strike,6.84239067439789
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.1.corr,0.280009219531792
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.1.strike,0.352763677290257
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.2.corr,0.354741724543554
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.2.strike,0.823115247010601
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.3.corr,0.373371535203226
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.3.strike,1.17587892430086
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.4.corr,0.456275035907223
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.4.strike,1.76381838645129
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.5.corr,0.663124936943559
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.5.strike,3.52763677290257
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.0.corr,0.286483744303512
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.0.strike,1.25566194830408
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.1.corr,0.330953589018981
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.1.strike,2.92987787937619
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.2.corr,0.359932467736561
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.2.strike,4.18553982768027
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.3.corr,0.442818585365837
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.3.strike,6.2783097415204
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.4.corr,0.63292460669464
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.4.strike,12.5566194830408
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.1.corr,0.315100789062254
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.1.strike,18.5683300952038
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.2.corr,0.404902425874157
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.2.strike,37.1366601904076
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.3.corr,0.461360849611264
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.3.strike,55.7049902856114
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.4.corr,0.479404110101491
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.4.strike,74.2733203808152
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.5.corr,0.503312687599854
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.5.strike,136.167754031495
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.1.corr,0.326513119011277
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.1.strike,1.60968620153054
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.2.corr,0.375835227950899
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.2.strike,3.21937240306108
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.3.corr,0.449823367854768
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.3.strike,4.82905860459162
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.4.corr,0.494334407533452
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.4.strike,6.43874480612215
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.5.corr,0.610127082387348
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.5.strike,11.8043654778906
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.1.corr,0.353049034529433
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.1.strike,0.646687718831021
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.2.corr,0.400701343165866
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.2.strike,1.29337543766204
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.3.corr,0.438271679479346
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.3.strike,1.94006315649306
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.4.corr,0.480394611521671
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.4.strike,2.58675087532409
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.5.corr,0.601678295276842
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.5.strike,4.74237660476082
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.1.corr,0.344600607544912
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.1.strike,0.351862633635395
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.2.corr,0.385544060132311
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.2.strike,0.70372526727079
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.3.corr,0.418496763647225
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.3.strike,1.05558790090619
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.4.corr,0.455400903625023
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.4.strike,1.40745053454158
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.5.corr,0.588897409447058
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.5.strike,2.5803259799929
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.1.corr,0.235083325395971
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.1.strike,0.361423707030013
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.2.corr,0.332122812443508
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.2.strike,0.84332198307003
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.3.corr,0.366616966120014
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.3.strike,1.20474569010004
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.4.corr,0.465943411263558
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.4.strike,1.80711853515006
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.5.corr,0.697178086812479
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.5.strike,3.61423707030013
+Model,FX Rate,JPY.Mid,0.010909
+Model,FX Rate,CAD.Mid,1.02
+Model,FX Rate,GBP.Mid,1.57
+Model,FX Rate,EUR.Mid,1.31
+ERROR,CDS Spread,ABTJ.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,ABTJ.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,ABTJ.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,ABTJ.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,ABTJ.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,ABTJ.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,ABTJ.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,ACE-INAHldgs.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,ACE-INAHldgs.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,ACE-INAHldgs.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,ACE-INAHldgs.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,ACE-INAHldgs.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,ACE-INAHldgs.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,ACE-INAHldgs.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,AES-Trust3.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,AES-Trust3.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,AES-Trust3.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,AES-Trust3.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,AES-Trust3.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,AES-Trust3.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,AES-Trust3.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,ARIP.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,ARIP.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,ARIP.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,ARIP.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,ARIP.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,ARIP.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,ARIP.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,AWHLLC.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,AWHLLC.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,AWHLLC.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,AWHLLC.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,AWHLLC.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,AWHLLC.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,AWHLLC.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,BAXIH.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,BAXIH.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,BAXIH.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,BAXIH.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,BAXIH.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,BAXIH.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,BAXIH.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,BK-ALCN.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,BK-ALCN.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,BK-ALCN.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,BK-ALCN.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,BK-ALCN.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,BK-ALCN.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,BK-ALCN.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CACTML.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CACTML.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CACTML.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CACTML.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CACTML.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CACTML.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CACTML.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CAIA.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CAIA.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CAIA.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CAIA.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CAIA.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CAIA.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CAIA.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCWCL.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCWCL.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCWCL.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCWCL.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCWCL.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCWCL.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CCWCL.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CD-AvisBdgt.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CD-AvisBdgt.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CD-AvisBdgt.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CD-AvisBdgt.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CD-AvisBdgt.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CD-AvisBdgt.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CD-AvisBdgt.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CL.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CL.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CL.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CL.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CL.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CL.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CL.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CMS.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CMS.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CMS.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CMS.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CMS.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CMS.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CMS.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,CTRYMC.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,CTRYMC.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,CTRYMC.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,CTRYMC.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,CTRYMC.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,CTRYMC.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,CTRYMC.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,DDR.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,DDR.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,DDR.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,DDR.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,DDR.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,DDR.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,DDR.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,DUKECRP.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,DUKECRP.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,DUKECRP.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,DUKECRP.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,DUKECRP.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,DUKECRP.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,DUKECRP.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,EHIPRE.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,EHIPRE.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,EHIPRE.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,EHIPRE.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,EHIPRE.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,EHIPRE.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,EHIPRE.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,F-CredCan.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,F-CredCan.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,F-CredCan.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,F-CredCan.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,F-CredCan.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,F-CredCan.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,F-CredCan.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,FCSEMI.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,FCSEMI.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,FCSEMI.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,FCSEMI.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,FCSEMI.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,FCSEMI.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,FCSEMI.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,G.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,G.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,G.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,G.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,G.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,G.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,G.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,GRAC.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,GRAC.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,GRAC.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,GRAC.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,GRAC.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,GRAC.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,GRAC.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,HARHAN.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,HARHAN.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,HARHAN.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,HARHAN.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,HARHAN.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,HARHAN.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,HARHAN.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,HD.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,HD.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,HD.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,HD.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,HD.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,HD.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,HD.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,HET-OpCo.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,HET-OpCo.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,HET-OpCo.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,HET-OpCo.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,HET-OpCo.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,HET-OpCo.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,HET-OpCo.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,HLTWID.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,HLTWID.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,HLTWID.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,HLTWID.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,HLTWID.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,HLTWID.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,HLTWID.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,HON-Inc.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,HON-Inc.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,HON-Inc.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,HON-Inc.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,HON-Inc.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,HON-Inc.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,HON-Inc.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,IR-Ghold.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,IR-Ghold.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,IR-Ghold.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,IR-Ghold.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,IR-Ghold.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,IR-Ghold.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,IR-Ghold.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,ITMN.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,ITMN.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,ITMN.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,ITMN.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,ITMN.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,ITMN.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,ITMN.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,JNJ.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,JNJ.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,JNJ.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,JNJ.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,JNJ.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,JNJ.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,JNJ.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKD.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKD.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKD.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKD.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKD.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKD.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKD.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKR-BRHold.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKR-BRHold.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKR-BRHold.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKR-BRHold.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKR-BRHold.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKR-BRHold.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,KKR-BRHold.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMB.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMB.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMB.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMB.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMB.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMB.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMB.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMG-Nv.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMG-Nv.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMG-Nv.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMG-Nv.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMG-Nv.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMG-Nv.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,KMG-Nv.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,KRB.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,KRB.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,KRB.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,KRB.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,KRB.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,KRB.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,KRB.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,LLY.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,LLY.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,LLY.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,LLY.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,LLY.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,LLY.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,LLY.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMHC.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMHC.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMHC.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMHC.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMHC.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMHC.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMHC.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMLLC.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMLLC.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMLLC.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMLLC.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMLLC.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMLLC.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,LMLLC.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,MARR.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,MARR.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,MARR.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,MARR.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,MARR.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,MARR.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,MARR.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,MBI-Global.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,MBI-Global.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,MBI-Global.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,MBI-Global.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,MBI-Global.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,MBI-Global.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,MBI-Global.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,MMM.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,MMM.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,MMM.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,MMM.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,MMM.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,MMM.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,MMM.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,M-RHI.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,M-RHI.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,M-RHI.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,M-RHI.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,M-RHI.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,M-RHI.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,M-RHI.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,PCDI.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,PCDI.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,PCDI.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,PCDI.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,PCDI.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,PCDI.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,PCDI.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,PFE.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,PFE.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,PFE.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,PFE.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,PFE.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,PFE.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,PFE.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,PPG.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,PPG.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,PPG.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,PPG.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,PPG.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,PPG.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,PPG.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,PSD-SEN.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,PSD-SEN.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,PSD-SEN.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,PSD-SEN.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,PSD-SEN.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,PSD-SEN.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,PSD-SEN.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,SEMINO.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,SEMINO.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,SEMINO.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,SEMINO.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,SEMINO.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,SEMINO.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,SEMINO.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,SOTR.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,SOTR.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,SOTR.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,SOTR.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,SOTR.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,SOTR.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,SOTR.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,STZ.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,STZ.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,STZ.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,STZ.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,STZ.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,STZ.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,STZ.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,SVU-NEWAB.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,SVU-NEWAB.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,SVU-NEWAB.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,SVU-NEWAB.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,SVU-NEWAB.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,SVU-NEWAB.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,SVU-NEWAB.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,TX.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,TX.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,TX.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,TX.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,TX.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,TX.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,TX.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,UNIFIN.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,UNIFIN.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,UNIFIN.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,UNIFIN.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,UNIFIN.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,UNIFIN.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,UNIFIN.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,WAG.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,WAG.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,WAG.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,WAG.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,WAG.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,WAG.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,WAG.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,WWISER.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,WWISER.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,WWISER.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,WWISER.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,WWISER.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,WWISER.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,WWISER.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,XL-FinAss.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,XL-FinAss.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,XL-FinAss.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,XL-FinAss.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,XL-FinAss.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,XL-FinAss.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,XL-FinAss.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,CDS Spread,XOM.USD.SeniorUnsecured.Modified.10y.Mid,Quote could not be found.
+ERROR,CDS Spread,XOM.USD.SeniorUnsecured.Modified.1y.Mid,Quote could not be found.
+ERROR,CDS Spread,XOM.USD.SeniorUnsecured.Modified.2y.Mid,Quote could not be found.
+ERROR,CDS Spread,XOM.USD.SeniorUnsecured.Modified.3y.Mid,Quote could not be found.
+ERROR,CDS Spread,XOM.USD.SeniorUnsecured.Modified.4y.Mid,Quote could not be found.
+ERROR,CDS Spread,XOM.USD.SeniorUnsecured.Modified.5y.Mid,Quote could not be found.
+ERROR,CDS Spread,XOM.USD.SeniorUnsecured.Modified.7y.Mid,Quote could not be found.
+ERROR,Recovery Rate,ABTJ.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,ACE-INAHldgs.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,AES-Trust3.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,ARIP.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,AWHLLC.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,BAXIH.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,BK-ALCN.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CACTML.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CAIA.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CCBP-NatexBqPop.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CCWCL.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CD-AvisBdgt.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CL.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CMS.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,CTRYMC.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,DDR.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,DUKECRP.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,EHIPRE.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,F-CredCan.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,FCSEMI.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,G.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,GRAC.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,HARHAN.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,HD.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,HET-OpCo.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,HLTWID.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,HON-Inc.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,IR-Ghold.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,ITMN.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,JNJ.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,KKD.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,KKR-BRHold.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,KMB.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,KMG-Nv.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,KRB.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,LLY.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,LMHC.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,LMLLC.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,MARR.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,MBI-Global.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,MMM.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,M-RHI.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,PCDI.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,PFE.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,PPG.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,PSD-SEN.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,SEMINO.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,SOTR.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,STZ.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,SVU-NEWAB.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,TX.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,UNIFIN.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,WAG.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,WWISER.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,XL-FinAss.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.
+ERROR,Recovery Rate,XOM.USD.SeniorUnsecured.Modified.Recovery,Quote could not be found.

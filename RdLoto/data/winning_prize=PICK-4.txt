@@ -1,0 +1,6 @@
+Match	WinTickets	Prize
+Straight	2	$5,000.00
+4-Way Box	0	$1,250.00
+6-Way Box	0	$800.00
+12-Way Box	49	$400.00
+24-Way Box	0	$200.00

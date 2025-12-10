@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: CM-ETL-WF.xml 4189 2016-06-24 15:45:21Z jxavier $
+	 Maestro version: 1.16.0 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>CM-ETL-WF</name> 
+  	<externalWorkflowCode>CM-ETL-WF</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>CM-ETL-WF ($LastChangedRevision: 4189 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="SOURCE-SYSTEM" />
+			<property name="SOURCE-SYSTEM-LC" />
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="EOD-EOM-IND" />
+		</inputProperties>
+	</properties>
+
+	<sequential id="CM-ETL" name="CM-ETL">
+	
+		<stage name="GET-SOURCE-SYSTEM-PROC-CONFIG" id="GET-SOURCE-SYSTEM-PROC-CONFIG">
+			<description>Get the procedure skip list for current source system</description>
+			<stageFailure>
+				<failureCondition><![CDATA['${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}' == '']]></failureCondition>
+				<failureMessage>No ETL configuration is found in table: etl_system_proc_config_o for source system : ${SOURCE-SYSTEM}</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.RUN_PKG.get_source_system_proc_sp">
+					<in>
+						<param name="p_source_system_cd_i" type="STRING">${SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="p_proc_list1_o" type="STRING"></param>
+						<param name="p_proc_list2_o" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+	
+		<stage name="TRUNCATE-STAGING" id="TRUNCATE-STAGING">
+			<description>Truncate staging tables for a source system</description>
+			<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[legal_entity_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[legal_entity_tp.pub_move_land_2_target]') )</skipCondition>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_truncate_staging</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+						<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+						<param name="P_TASK_ID_I" type="STRING">${SOURCE-SYSTEM}-TRUNCATE-STAGING</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+		<parallel name="CM-ETL-PAR" id="CM-ETL-PAR">
+			<sequential name="CM-ETL-SEQ" id="CM-ETL-SEQ">
+		
+				<!-- Load Party (legal entity) -->
+				
+				<stage name="PRELAND-TO-LAND-PARTY-LEGALENTIY" id="PA-LEGALENTITY-P2L">
+					<description>Loads legal entity from pre-landing to landing</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[legal_entity_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[legal_entity_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">legal_entity_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_pre_landing</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+								<param name="P_TASK_ID_I" type="STRING">PA-LEGALENTITY-P2L</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				
+				<stage name="LAND-TO-STAGE-PARTY" id="L2S-PARTY">
+					<description>Loads party records from party_l to party_organization_s</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[legal_entity_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[legal_entity_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+								<param name="P_TASK_ID_I" type="STRING">PA-L2S</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="STAGE-TO-TARGET-PARTY" id="S2T-PARTY">
+					<description>Loads Party records from party_organization_s to party_organization_d</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[legal_entity_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[legal_entity_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">PA-S2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				
+				<stage name="LAND-TO-TARGET-LEGALENTIY" id="LE-L2T">
+					<description>Loads legal entity from pre-landing to landing</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[legal_entity_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[legal_entity_tp.pub_move_land_2_target]') )</skipCondition>
+					
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">legal_entity_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">LE-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-PORTFOLIO" id="HL-PORTFOLIO-L2T">
+					<description>PORTFOLIO loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[portfolio_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[portfolio_tp.pub_move_land_2_target]'))</skipCondition>
+					
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">portfolio_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-PORTFOLIO-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<!-- Load Basket -->
+				<stage name="LAND-TO-TARGET-BASKET" id="IN-BASKET-L2T">
+					<description>BASKET loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[basket_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[basket_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">basket_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">IN-BASKET-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				
+				<stage name="LAND-TO-TARGET-SBLEXPOSURE" id="CM-SBLEXPOSURE-L2T">
+					<description>SBL exposure loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[sbl_exposure_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[sbl_exposure_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">sbl_exposure_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-SBLEXPOSURE-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				
+				
+				
+				<!-- Load holding -->
+				<stage name="LAND-TO-TARGET-HOLDING" id="IN-HOLDING-L2T">
+					<description>HOLDING loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[holding_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[holding_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">holding_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">IN-HOLDING-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+
+				<!-- Load NON-MMI cash holding -->
+				<!-- Disabling for R11 -->				
+				<!--												
+				<stage name="LAND-TO-TARGET-CASH-HOLDING" id="IN-CASH-HOLDING-PREL2LT">
+					<description>NON-MMI CASH HOLDING loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[cash_holding_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[cash_holding_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">cash_holding_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">IN-CASH-HOLDING-PREL2LT</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>	
+				-->				
+
+				<!-- Load MMI cash holding -->
+				<stage name="LAND-TO-TARGET-MMI-CASH-HOLDING" id="IN-MMI-CASH-HOLDING-PREL2LT">
+					<description>MMI CASH HOLDING loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[mmi_cash_holding_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[mmi_cash_holding_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">mmi_cash_holding_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">IN-MMI-CASH-HOLDING-PREL2LT</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+
+				<!-- Load MMI portfolio holding -->
+				<stage name="LAND-TO-TARGET-MMI-PORTFOLIO" id="IN-MMI-PORTFOLIO-PREL2LT">
+					<description>MMI PORTFOLIO loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[mmi_portfolio_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[mmi_portfolio_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">mmi_portfolio_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">IN-MMI-PORTFOLIO-PREL2LT</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				
+				<!-- Load Measures -->
+				
+				<stage name="LAND-TO-TARGET-REPO" id="CM-REPO-L2T">
+					<description>Repo loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[repo_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[repo_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">repo_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-REPO-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+
+				<!-- Load Sentry Collateral -->
+		
+			<stage name="LAND-TO-TARGET-COLLATERAL" id="CO-COLLATERAL-L2T">
+				<description>Sentry collateral loading from landing to target</description>
+  				    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[collateral_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[collateral_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CO-COLLATERAL-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+				<!-- Load SBL Collateral -->
+		
+			<stage name="LAND-TO-TARGET-SBLCOLLATERAL" id="CO-SBLCOLLATERAL-L2T">
+				<description>SBL collateral loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[sbl_collateral_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[sbl_collateral_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">sbl_collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CO-SBLCOLLATERAL-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load LancelotDeal -->
+		
+			<stage name="LAND-TO-TARGET-LANCELOTDEAL" id="IN-LANCELOTDEAL-L2T">
+				<description>Lancelotdeal loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[lancelotdeal_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[lancelotdeal_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">lancelotdeal_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-LANCELOTDEAL-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load LancelotLoan -->
+		
+			<stage name="LAND-TO-TARGET-LANCELOTLOAN" id="IN-LANCELOTLOAN-L2T">
+				<description>Lancelotloan loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[lancelotloan_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[lancelotloan_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">lancelotloan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-LANCELOTLOAN-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load BondOption -->
+		
+			<stage name="LAND-TO-TARGET-BONDOPTION" id="IN-BONDOPTION-L2T">
+				<description>Bondoption loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[bond_option_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[bond_option_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">bond_option_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-BONDOPTION-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			
+			<!-- Load Forex -->
+		
+			<stage name="LAND-TO-TARGET-FOREX" id="IN-FOREX-L2T">
+				<description>Forex loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[forex_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[forex_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">forex_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-FOREX-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+
+			<!-- Load PM Loan -->
+			<stage name="LAND-TO-TARGET-PMLOAN" id="IN-PMLOAN-L2T">
+				<description>PM Loan loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[pm_loan_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[pm_loan_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">pm_loan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-PMLOAN-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+
+			<!-- Load SWAP -->
+			<stage name="LAND-TO-TARGET-SWAP" id="CM-SWAP-L2T">
+				<description>Swap loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[swap_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[swap_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">swap_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CM-SWAP-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load TRS -->
+			<stage name="LAND-TO-TARGET-TRS" id="CM-TRS-L2T">
+				<description>TRS loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[trs_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[trs_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">trs_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CM-TRS-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load FXOPTIONOTC -->
+			<stage name="LAND-TO-TARGET-FXOPTIONOTC" id="CM-FXOPTIONOTC-L2T">
+				<description>FXOPTIONOTC loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[fx_option_otc_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[fx_option_otc_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">fx_option_otc_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CM-FXOPTIONOTC-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load BarrierFXOption -->
+			<stage name="LAND-TO-TARGET-BARRIERFXOPTION" id="CM-BARRIERFXOPTION-L2T">
+				<description>BARRIERFXOPTION loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[brr_fx_option_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[brr_fx_option_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">brr_fx_option_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CM-BARRIERFXOPTION-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>			
+			
+			<!-- Load BONDFORWARD -->
+			<stage name="LAND-TO-TARGET-BONDFORWARD" id="CM-BONDFORWARD-L2T">
+				<description>BONDFORWARD loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[bond_forward_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[bond_forward_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">bond_forward_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CM-BONDFORWARD-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<stage name="LAND-TO-TARGET-Equity" id="IN-Equity-L2T">
+				<description>equity loading from landing to target</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[equity_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[equity_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">equity_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-EQUITY-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load Bond -->
+		
+			<stage name="LAND-TO-TARGET-Bond" id="IN-Bond-L2T">
+				<description>bond loading from landing to target</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[bond_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[bond_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">bond_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-BOND-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<!-- Load TBill -->
+		
+			<stage name="LAND-TO-TARGET-TBill" id="IN-TBill-L2T">
+				<description>TBill loading from landing to target</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[t_bill_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[t_bill_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">t_bill_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TBILL-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LAND-TO-TARGET-BrazilFX" id="CM-BrazilFX-L2T">
+				<description>BrazilFX loading from landing to target</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[fx_future_br_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[fx_future_br_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">fx_future_br_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CM_BrazilFX-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+
+			<stage name="LAND-TO-TARGET-BrazilIR" id="CM-BrazilIR-L2T">
+				<description>CSM BrazilIR loading from landing to target</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[brazil_ir_future_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[brazil_ir_future_tp.pub_move_land_2_target]'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">brazil_ir_future_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CM_BrazilIR-L2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+				<!-- Load Measures -->
+				<stage name="LAND-TO-TARGET-MEASURES" id="CM-MEASURES-L2T">
+					<description>Measures loading from landing to target</description>
+  			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[measures_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[measures_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">measures_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-MEASURES-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+
+				<!-- Reference data -->
+				
+				<stage name="LAND-TO-TARGET-ACCOUNTING" id="CM-ACCOUNTING-L2T">
+					<description>ACCOUNTING loading from landing to target</description>
+			    <skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('[accounting_tp.pub_move_land_2_target]') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('[accounting_tp.pub_move_land_2_target]'))</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">accounting_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-ACCOUNTING-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+			</sequential>
+		</parallel>
+		
+	</sequential>
+
+</workflow>
+	

@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow
+    xsi:noNamespaceSchemaLocation="workflowDefinition.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <name>ctr-cm-eod-mminy-wf</name>
+    <externalWorkflowCode>ctr-cm-eod-mminy-wf</externalWorkflowCode>
+    <finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError>
+    <description>ctr-cm-eod-mminy-wf ($LastChangedRevision: 4168 $)</description>
+    
+    <properties>
+    	<inputProperties>
+			<property name="WF-EOD-EOM-INDICATOR">D</property>
+			<property name="RUN-INSTANCE">1</property>
+			
+		</inputProperties>
+        <generalProperties>
+           <property name="SOURCE-SYSTEM">MMINY</property>
+           <property name="SOURCE-SYSTEM-LC">mminy</property>
+        	<property name="ROOT-WF-ID">ctr-cm-eod-mmi-wf</property>
+        	<property name="WORKFLOW_RUN_ID">0</property>
+        	<!-- Source Directories -->
+            <property name="FTP-SOURCE-DIR">${SOURCE-SYSTEM-LC}/inbox</property>
+            <property name="HOLDING-DIR">${CTR_DATA_ROOT_PATH}/manual/${SOURCE-SYSTEM-LC}</property>
+            <property name="HOLDING-MATCH-PATTERN">.+_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}_.+</property>
+            
+            <property name="SQLLDR-CONTROL-DIRECTORY">sqlldr</property>
+            <property name="SQLLDR-DISCARD-DIR">data_in/discard</property>
+            <property name="SQLLDR-LOG-DIRECTORY">data_in/ldrlog</property>
+            <property name="SQLLDR-PROCESSING-SOURCE-DIR">data_in/infiles</property>
+            <property name="SQLLDR-REJECT-DIRECTORY">data_in/reject</property>
+            
+            <property name="REPLICATE-SRC-IF-MONTH-END">T</property>
+            <property name="DATA-CATEGORY-TYPE">CM</property>
+            
+            <!-- Source file naming pattern -->
+            <property name="SRC-FILE-SUFFIX-PATTERN-1">${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</property>
+        </generalProperties>
+    </properties>
+    <sequential id="CTR-CAPITAL-MARKETS" name="CTR-CAPITAL-MARKETS">
+        <externalWorkflowReference id="INITIALIZE-RUN" name="INITIALIZE-RUN">
+            <externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+            <inputProperties>
+                <property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+                <property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+                <property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+                <property name="TARGET-SYSTEM"/>
+                <property name="RUN-TYPE" />
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+                <property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+            </inputProperties>
+            <outputPropertyMapping>
+                <mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+                <mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+                <mapping source="RUN-ID" target="P_RUN_ID_O"/>
+                <mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+            </outputPropertyMapping>
+        </externalWorkflowReference>
+        <externalWorkflowReference id="PREPARE-SOURCE-FILES" name="PREPARE-SOURCE-FILES">
+            <externalWorkflowCode>PREPARE-SOURCE-FILES</externalWorkflowCode>
+            <inputProperties>
+                <property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+                <property name="HOLDING-SOURCE-DIR">${HOLDING-DIR}</property>
+                <property name="HOLDING-MATCH-PATTERN">${HOLDING-MATCH-PATTERN}</property>
+                <property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+                <property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+            </inputProperties>
+        </externalWorkflowReference>
+        <stage id="INIT-COMPLETE-CHECK" name="INIT-COMPLETE-CHECK">
+            <description>Verify if the common workflow steps completed</description>
+            <stageFailure>
+                <failureCondition>${INITIALIZE-RUN.P_RUN_ID_O} &lt;= 0 || "${CTR_APP_ROOT_PATH}" == '' || "${CTR_ROOT_PATH}" == ''|| "${CTR_FTP_ROOT_PATH}" == ''|| "${CTR_DATA_ROOT_PATH}" == ''|| "${CTR_CONFIG_ROOT_PATH}" == ''</failureCondition>
+                <failureMessage>Common workflow initialization failed</failureMessage>
+            </stageFailure>
+            <execDefinition>
+                <noOpExecDefinition>
+                    <input>CHECK-IF-INIT-COMPLETE</input>
+                    <numberOfTasks>1</numberOfTasks>
+                    <numberOfInterimStatusResponses>1</numberOfInterimStatusResponses>
+                    <durationBetweenEventsInMs>250</durationBetweenEventsInMs>
+                    <outputPropertyName>output</outputPropertyName>
+                </noOpExecDefinition>
+            </execDefinition>
+        </stage>
+        <stage id="SET-SRC-FILE-SUB-DIRECTORY-NONPRD" name="SET-SRC-FILE-SUB-DIRECTORY-NONPRD">
+            <description>Set the sub directory path for non PROD runs</description>
+			<skipCondition>'${MAESTRO_RUN_ENV}' == 'PROD'</skipCondition>
+            <execDefinition>
+                <noOpExecDefinition>
+                    <input>/inbox</input>
+                    <numberOfTasks>1</numberOfTasks>
+                    <numberOfInterimStatusResponses>1</numberOfInterimStatusResponses>
+                    <durationBetweenEventsInMs>250</durationBetweenEventsInMs>
+                    <outputPropertyName>#SRC-FILE-SUB-DIRECTORY</outputPropertyName>
+                </noOpExecDefinition>
+            </execDefinition>
+        </stage>
+         <stage id="SET-SRC-FILE-SUB-DIRECTORY-PRD" name="SET-SRC-FILE-SUB-DIRECTORY-PRD">
+            <description>Set the sub directory path for PROD runs</description>
+			<skipCondition>'${MAESTRO_RUN_ENV}' != 'PROD'</skipCondition>
+            <execDefinition>
+                <noOpExecDefinition>
+                    <input>/${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</input>
+                    <numberOfTasks>1</numberOfTasks>
+                    <numberOfInterimStatusResponses>1</numberOfInterimStatusResponses>
+                    <durationBetweenEventsInMs>250</durationBetweenEventsInMs>
+                    <outputPropertyName>#SRC-FILE-SUB-DIRECTORY</outputPropertyName>
+                </noOpExecDefinition>
+            </execDefinition>
+        </stage>
+        <parallel id="MMINY-WORKFLOWS" name="MMINY-WORKFLOWS">
+            <sequential id="MMINY" name="MMINY">
+                <stage id="FILEWATCH-WF" name="FILEWATCH-WF">
+                	<skipCondition>'${WF-EOD-EOM-INDICATOR}' == 'M'</skipCondition>
+                    <autoRetryConfiguration>
+                        <delayBetweenAttemptsInMs>60000</delayBetweenAttemptsInMs>
+                        <maximumNumberOfRetryAttempts>720</maximumNumberOfRetryAttempts>
+                        <maximumRetryDurationInMs>43200000</maximumRetryDurationInMs>
+                    </autoRetryConfiguration>
+                    <execDefinition>
+                        <pollingFileWatcher>
+                            <watchedFiles>
+                            
+                               <!--  closing price -->
+                                <resource>
+                                    <uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}</uri>
+                                    <searchPattern>closing_price_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+                                    <matchedUriOutputProperty>#closing-price-FILE</matchedUriOutputProperty>
+                                </resource>
+	
+								<!--  position -->
+                                <resource>
+                                    <uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}</uri>
+                                    <searchPattern>position_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+                                    <matchedUriOutputProperty>#position-FILE</matchedUriOutputProperty>
+                                </resource>
+                                
+								<!--  security -->
+                                <resource>
+                                    <uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}</uri>
+                                    <searchPattern>security_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+                                    <matchedUriOutputProperty>#security-FILE</matchedUriOutputProperty>
+                                </resource>
+                                                                
+								<!--  book -->
+                                <resource>
+                                    <uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}</uri>
+                                    <searchPattern>book_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+                                    <matchedUriOutputProperty>#book-FILE</matchedUriOutputProperty>
+                                </resource>
+
+                               <!--  IMPACT-ESDFILEP -->
+                                <resource>
+                                    <uri>${IMPACTNY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}</uri>
+                                    <searchPattern>ESDFILEP</searchPattern>
+                                    <matchedUriOutputProperty>#IMPACT-ESDFILEP-FILE</matchedUriOutputProperty>
+                                </resource>
+                                
+                               <!--  IMPACT-JINFILEP - file not ready disabled temporarily -->
+<!--                                 <resource>
+                                    <uri>${IMPACTNY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}</uri>
+                                    <searchPattern>JINFILEP.csv</searchPattern>
+                                    <matchedUriOutputProperty>#IMPACT-JINFILEP-FILE</matchedUriOutputProperty>
+                                </resource> -->
+                                                              
+                               <!--  IMPACT-GLAFILEP -->
+                                <resource>
+                                    <uri>${IMPACTNY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}</uri>
+                                    <searchPattern>GLAFILEP.csv</searchPattern>
+                                    <matchedUriOutputProperty>#IMPACT-GLAFILEP-FILE</matchedUriOutputProperty>
+                                </resource>
+                            </watchedFiles>
+                            <matchedCountProperty>#matchedCount</matchedCountProperty>
+                            <allowFileNotFound>false</allowFileNotFound>
+                        </pollingFileWatcher>
+                    </execDefinition>
+                </stage>
+                
+                <stage name="TRANSFER-FTP-FILES-TO-LOCAL" id="TRANSFER-FTP-FILES-TO-LOCAL">
+					<description>Transfer files from SFTP directory to ftp directory</description>
+					<skipCondition>'${WF-EOD-EOM-INDICATOR}' == 'M'</skipCondition>
+					<execDefinition>
+						<fileTransfer>
+							<transfer>
+								<sourceResource>
+									<uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}/closing_price_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</uri>
+									<matchedUriOutputProperty>#remote_closing-price-FILE</matchedUriOutputProperty>
+								</sourceResource>
+								<targetResource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/${SOURCE-SYSTEM}_closing_price_ny_D_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</uri>
+									<matchedUriOutputProperty>#local_closing-price-FILE</matchedUriOutputProperty>
+								</targetResource>
+							</transfer>
+							<transfer>
+								<sourceResource>
+									<uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}/position_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</uri>
+									<matchedUriOutputProperty>#remote_position-FILE</matchedUriOutputProperty>
+								</sourceResource>
+								<targetResource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/${SOURCE-SYSTEM}_position_ny_D_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</uri>
+									<matchedUriOutputProperty>#local_position-FILE</matchedUriOutputProperty>
+								</targetResource>
+							</transfer>
+							<transfer>
+								<sourceResource>
+									<uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}/security_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</uri>
+									<matchedUriOutputProperty>#remote_security-FILE</matchedUriOutputProperty>
+								</sourceResource>
+								<targetResource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/${SOURCE-SYSTEM}_security_ny_D_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</uri>
+									<matchedUriOutputProperty>#local_security-FILE</matchedUriOutputProperty>
+								</targetResource>
+							</transfer>
+							<transfer>
+								<sourceResource>
+									<uri>${MMINY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}/book_ny_${SRC-FILE-SUFFIX-PATTERN-1}.csv</uri>
+									<matchedUriOutputProperty>#remote_book-FILE</matchedUriOutputProperty>
+								</sourceResource>
+								<targetResource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/${SOURCE-SYSTEM}_book_ny_D_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</uri>
+									<matchedUriOutputProperty>#local_book-FILE</matchedUriOutputProperty>
+								</targetResource>
+							</transfer>
+							<transfer>
+								<sourceResource>
+									<uri>${IMPACTNY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}/ESDFILEP</uri>
+									<matchedUriOutputProperty>#remote_IMPACT-ESDFILEP-FILE</matchedUriOutputProperty>
+								</sourceResource>
+								<targetResource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/${SOURCE-SYSTEM}_ESDFILEP_D_${SRC-FILE-SUFFIX-PATTERN-1}_01.txt</uri>
+									<matchedUriOutputProperty>#local_IMPACT-ESDFILEP-FILE</matchedUriOutputProperty>
+								</targetResource>
+							</transfer>
+<!-- 							<transfer>
+								<sourceResource>
+									<uri>${IMPACTNY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}/JINFILEP.csv</uri>
+									<matchedUriOutputProperty>#remote_IMPACT-JINFILEP-FILE</matchedUriOutputProperty>
+								</sourceResource>
+								<targetResource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/${SOURCE-SYSTEM}_JINFILEP_D_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</uri>
+									<matchedUriOutputProperty>#local_IMPACT-JINFILEP-FILE</matchedUriOutputProperty>
+								</targetResource>
+							</transfer> -->
+							<transfer>
+								<sourceResource>
+									<uri>${IMPACTNY_DESTINATION_URI}${#SRC-FILE-SUB-DIRECTORY}/GLAFILEP.csv</uri>
+									<matchedUriOutputProperty>#remote_IMPACT-GLAFILEP-FILE</matchedUriOutputProperty>
+								</sourceResource>
+								<targetResource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/${SOURCE-SYSTEM}_GLAFILEP_D_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</uri>
+									<matchedUriOutputProperty>#local_IMPACT-GLAFILEP-FILE</matchedUriOutputProperty>
+								</targetResource>
+							</transfer>
+							<transferCountProperty>matchedCountTransfer</transferCountProperty>
+						</fileTransfer>
+					</execDefinition>
+				</stage>
+				
+				<stage id="FILEWATCH-WF-MONTHLY" name="FILEWATCH-WF-MONTHLY">
+					<skipCondition>'${WF-EOD-EOM-INDICATOR}' == 'D'</skipCondition>
+                    <autoRetryConfiguration>
+                        <delayBetweenAttemptsInMs>60000</delayBetweenAttemptsInMs>
+                        <maximumNumberOfRetryAttempts>720</maximumNumberOfRetryAttempts>
+                        <maximumRetryDurationInMs>43200000</maximumRetryDurationInMs>
+                    </autoRetryConfiguration>
+                    <execDefinition>
+                        <pollingFileWatcher>
+                            <watchedFiles>
+                            
+                               <!--  closing price -->
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>${SOURCE-SYSTEM}_closing_price_ny_M_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</searchPattern>
+                                    <matchedUriOutputProperty>#local_closing-price-FILE</matchedUriOutputProperty>
+                                </resource>
+	
+								<!--  position -->
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>${SOURCE-SYSTEM}_position_ny_M_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</searchPattern>
+                                    <matchedUriOutputProperty>#local_position-FILE</matchedUriOutputProperty>
+                                </resource>
+                                
+								<!--  security -->
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>${SOURCE-SYSTEM}_security_ny_M_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</searchPattern>
+                                    <matchedUriOutputProperty>#local_security-FILE</matchedUriOutputProperty>
+                                </resource>
+                                
+								<!--  book -->
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>${SOURCE-SYSTEM}_book_ny_M_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</searchPattern>
+                                    <matchedUriOutputProperty>#local_book-FILE</matchedUriOutputProperty>
+                                </resource>
+
+                               <!--  IMPACT-ESDFILEP -->
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>${SOURCE-SYSTEM}_ESDFILEP_M_${SRC-FILE-SUFFIX-PATTERN-1}_01.txt</searchPattern>
+                                    <matchedUriOutputProperty>#local_IMPACT-ESDFILEP-FILE</matchedUriOutputProperty>
+                                </resource>
+
+                               <!--  IMPACT-JINFILEP -->
+<!--                                 <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>${SOURCE-SYSTEM}_JINFILEP_M_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</searchPattern>
+                                    <matchedUriOutputProperty>#local_IMPACT-JINFILEP-FILE</matchedUriOutputProperty>
+                                </resource> -->
+                                
+                               <!--  IMPACT-GLAFILEP -->
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>${SOURCE-SYSTEM}_GLAFILEP_M_${SRC-FILE-SUFFIX-PATTERN-1}_01.csv</searchPattern>
+                                    <matchedUriOutputProperty>#local_IMPACT-GLAFILEP-FILE</matchedUriOutputProperty>
+                                </resource>
+
+                            </watchedFiles>
+                            <matchedCountProperty>#matchedCount</matchedCountProperty>
+                            <allowFileNotFound>false</allowFileNotFound>
+                        </pollingFileWatcher>
+                    </execDefinition>
+                </stage>
+                
+				<externalWorkflowReference id="PREPARE-LOAD-WF" name="PREPARE-LOAD-WF">
+                    <skipCondition>'${#matchedCount}' == '0'</skipCondition>
+                    <externalWorkflowCode>PREPARE-CM-LOAD-WF</externalWorkflowCode>
+                    <inputProperties>
+                        <property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+                        <property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+						<property name="CTR-SOURCE-SYSTEM-CODE">${SOURCE-SYSTEM}</property>
+                        <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                        <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                        <property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+                        <property name="PROCESSING-DIR">${CTR_DATA_INBOUND_PATH}</property>
+                        <property name="HOLDING-SOURCE-DIR">${HOLDING-DIR}</property>
+                        <property name="REPLICATE-IF-MONTH-END">${REPLICATE-SRC-IF-MONTH-END}</property>
+                        <property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+                        <property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+                    </inputProperties>
+                </externalWorkflowReference>
+                <parallel id="LOAD" name="LOAD-SOURCE-FILES">
+                    <skipCondition>'${#matchedCount}' == '0'</skipCondition>
+                    <externalWorkflowReference id="LOAD-CLOSING-PRICE" name="LOAD-CLOSING-PRICE">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${#local_closing-price-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">,</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+                    <externalWorkflowReference id="LOAD-POSITION" name="LOAD-POSITION">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${#local_position-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">,</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+                    <externalWorkflowReference id="LOAD-SECUIRTY" name="LOAD-SECUIRTY">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${#local_security-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">,</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+
+                    <externalWorkflowReference id="LOAD-BOOK" name="LOAD-BOOK">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${#local_book-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">,</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+                    
+                    <!-- LOAD-IMPACT-ESDFILEP -->
+					<externalWorkflowReference id="LOAD-IMPACT-ESDFILEP" name="LOAD-IMPACT-ESDFILEP">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${#local_IMPACT-ESDFILEP-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">|</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+
+                    <!-- LOAD-IMPACT-JINFILEP -->
+					<externalWorkflowReference id="LOAD-IMPACT-JINFILEP" name="LOAD-IMPACT-JINFILEP" enabled="false">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${#local_IMPACT-JINFILEP-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">,</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+                    
+                    <!-- LOAD-IMPACT-GLAFILEP -->
+					<externalWorkflowReference id="LOAD-IMPACT-GLAFILEP" name="LOAD-IMPACT-GLAFILEP">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${#local_IMPACT-GLAFILEP-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">,</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+
+ 
+                </parallel>
+                <externalWorkflowReference id="CM-ETL-WF" name="CM-ETL-WF">
+                    <skipCondition>'${#matchedCount}' == '0'</skipCondition>
+                    <externalWorkflowCode>CM-ETL-WF</externalWorkflowCode>
+                    <inputProperties>
+                        <property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+                        <property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+                        <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                        <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                        <property name="EOD-EOM-IND">${WF-EOD-EOM-INDICATOR}</property>
+                    </inputProperties>
+                </externalWorkflowReference>
+                <externalWorkflowReference name="CM-CSM-ENRICHMENT-WF" id="CM-CSM-ENRICHMENT-WF">
+					<skipCondition>'${#matchedCount}' == '0'</skipCondition>
+					<externalWorkflowCode>CM-CSM-ENRICHMENT-WF</externalWorkflowCode>
+					<inputProperties>
+						<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+                        <property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+						<property name="WF-EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+						<property name="RUN-ID" >${INITIALIZE-RUN.P_RUN_ID_O}</property>
+						<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+						<property name="BUSINESS-DATE-FORMATTED">${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</property>
+						<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+					</inputProperties>
+				</externalWorkflowReference>
+            </sequential>
+        </parallel>
+				
+			<stage name="CLEAN-UP-FTP-DIR" id="CLEAN-UP-FTP-DIR">
+			<description>Clean up files in FTP directory</description>
+			<skipCondition>'${#matchedCount}' == '0'</skipCondition>
+			<execDefinition>
+				<deleteResource failOnError="false">
+					<resource>
+						<uri>${#local_closing-price-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${#local_position-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${#local_security-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${#local_book-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${#local_IMPACT-ESDFILEP-FILE}</uri>
+					</resource>
+<!-- 					<resource>
+						<uri>${#local_IMPACT-JINFILEP-FILE}</uri>
+					</resource> -->
+					<resource>
+						<uri>${#local_IMPACT-GLAFILEP-FILE}</uri>
+					</resource>
+					<deleteCountProperty>matchedCount</deleteCountProperty>
+				</deleteResource>
+			</execDefinition>
+		</stage>
+				
+				
+        <externalWorkflowReference id="COMPLETE-RUN" name="FINALIZE-RUN">
+            <description>Finalize the run and mark complete</description>
+            <externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+            <inputProperties>
+                <property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+                <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                <property name="SRC-FILE-SUFFIX-PATTERN">NONE</property>
+                <property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+            </inputProperties>
+        </externalWorkflowReference>
+    </sequential>
+</workflow>

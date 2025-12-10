@@ -1,0 +1,18 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,JPYLIBOR.18M.Mid,0.0048164
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.10 Years.Mid,0.033883
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.12 Years.Mid,0.035794
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.15 Years.Mid,0.037762
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.2 Years.Mid,0.012437
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.20 Years.Mid,0.039292
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.25 Years.Mid,0.040022
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.3 Years.Mid,0.016698
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.30 Years.Mid,0.040426
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.4 Years.Mid,0.020775
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.40 Years.Mid,0.040426
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.5 Years.Mid,0.024302
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.50 Years.Mid,0.040426
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.6 Years.Mid,0.027213
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.7 Years.Mid,0.029499
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.8 Years.Mid,0.031269
+28-May-2010,31-May-2010,Insert,True,Closing,Swap Rate,Optex,USDLIBOR.9 Years.Mid,0.032688

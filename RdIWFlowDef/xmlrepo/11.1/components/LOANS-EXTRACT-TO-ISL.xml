@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: LOANS-EXTRACT-TO-ISL.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>LOANS-EXTRACT-TO-ISL</name> 
+  	<externalWorkflowCode>LOANS-EXTRACT-TO-ISL</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>LOANS-EXTRACT-TO-ISL ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="SOURCE-SYSTEM" />
+			<property name="SOURCE-SYSTEM-LC" />
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="EOD-EOM-IND" />
+		</inputProperties>
+	</properties>
+
+	<!-- DELIVERY PHASE -->
+
+	<sequential name="LOANS-EXTRACT-TO-ISL" id="LOANS-EXTRACT-TO-ISL">
+
+		<stage name="EXTRACT-MAP-SRC-SYSTEM" id="EXTRACT-MAP-SRC-SYSTEM">
+			<description>Map the CTR source system name to ISL name</description>
+			<execDefinition>
+				<dbFunction name="CTRMSO.EXPORT_LOOKUP_PKG.GET_SOURCE_SYSTEM_CD_FN">
+					<in>
+						<param name="P_TARGET_SOURCE_SYSTEM_CD_I" type="STRING">ENTERPRISE_ISL</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+					</in>
+					<result name="result" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+
+		<parallel id="GENERATE-ISL-FILES" name="GENERATE-ISL-FILES">
+			<stage name="GENERATE-PARTY-FILE" id="E2D-PARTY-ISL">
+				<description>Generate Party file</description>
+				<stageFailure>
+					<failureCondition><![CDATA[${E2D-PARTY-ISL.exitCode} != 0]]></failureCondition>
+					<failureMessage>FSM-(${E2D-PARTY-ISL.exitCode}) : Error while generating Party file. See FSM log for details.</failureMessage>
+				</stageFailure>
+				<execDefinition>
+					<callExternalProcess>
+						<commandLine>${CTR_APP_ROOT_PATH}/script/extractEATbl.${SHELL_SCRIPT_EXTENSION} ${CTR_DB_SCHEMA} PA ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_InvolvedParty_${BUSINESS-DATE}.dat ${SHELL_COMMA_DELIM_PARAM} ${RUN-ID} ${EXTRACT-MAP-SRC-SYSTEM.result} ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_InvolvedParty_${BUSINESS-DATE}.chk</commandLine>
+						<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+						<exitCodeProperty>exitCode</exitCodeProperty>
+					</callExternalProcess>
+				</execDefinition>
+			</stage>
+			<stage name="GENERATE-FACILITY-FILE" id="E2D-FACILITY-ISL">
+				<description>Generate Facility file</description>
+				<stageFailure>
+					<failureCondition><![CDATA[${E2D-FACILITY-ISL.exitCode} != 0]]></failureCondition>
+					<failureMessage>FSM-(${E2D-FACILITY-ISL.exitCode}) : Error while generating Facility file. See FSM log for details.</failureMessage>
+				</stageFailure>
+				<execDefinition>
+					<callExternalProcess>
+						<commandLine>${CTR_APP_ROOT_PATH}/script/extractEATbl.${SHELL_SCRIPT_EXTENSION} ${CTR_DB_SCHEMA} FA ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_Facility_${BUSINESS-DATE}.dat ${SHELL_COMMA_DELIM_PARAM} ${RUN-ID} ${EXTRACT-MAP-SRC-SYSTEM.result} ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_Facility_${BUSINESS-DATE}.chk</commandLine>
+						<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+						<exitCodeProperty>exitCode</exitCodeProperty>
+					</callExternalProcess>
+				</execDefinition>
+			</stage>
+			<stage name="GENERATE-LOAN-FILE" id="E2D-LOAN-ISL">
+				<description>Generate Loan file</description>
+				<stageFailure>
+					<failureCondition><![CDATA[${E2D-LOAN-ISL.exitCode} != 0]]></failureCondition>
+					<failureMessage>FSM-(${E2D-LOAN-ISL.exitCode}) : Error while generating Loan file. See FSM log for details.</failureMessage>
+				</stageFailure>
+				<execDefinition>
+					<callExternalProcess>
+						<commandLine>${CTR_APP_ROOT_PATH}/script/extractEATbl.${SHELL_SCRIPT_EXTENSION} ${CTR_DB_SCHEMA} LO ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_Loans_${BUSINESS-DATE}.dat ${SHELL_COMMA_DELIM_PARAM} ${RUN-ID} ${EXTRACT-MAP-SRC-SYSTEM.result} ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_Loans_${BUSINESS-DATE}.chk</commandLine>
+						<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+						<exitCodeProperty>exitCode</exitCodeProperty>
+					</callExternalProcess>
+				</execDefinition>
+			</stage>
+			<stage name="GENERATE-CROSS-REFERENCE-FILE" id="E2D-XREF-ISL">
+				<description>Generate Cross-Reference file</description>
+				<stageFailure>
+					<failureCondition>${E2D-XREF-ISL.exitCode} != 0</failureCondition>
+					<failureMessage>FSM-(${E2D-XREF-ISL.exitCode}) : Error while generating Cross-Reference file. See FSM log for details.</failureMessage>
+				</stageFailure>
+				<execDefinition>
+					<callExternalProcess>
+						<commandLine>${CTR_APP_ROOT_PATH}/script/extractEATbl.${SHELL_SCRIPT_EXTENSION} ${CTR_DB_SCHEMA} XR ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_Crossreference_${BUSINESS-DATE}.dat ${SHELL_COMMA_DELIM_PARAM} ${RUN-ID} ${EXTRACT-MAP-SRC-SYSTEM.result} ${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_Full_Crossreference_${BUSINESS-DATE}.chk</commandLine>
+						<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+						<exitCodeProperty>exitCode</exitCodeProperty>
+					</callExternalProcess>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<parallel name="SEND-GENERATED-FILES" id="SEND-GENERATED-FILES">
+			<stage name="SEND-TO-ISL" id="SEND-TO-ISL">
+				<skipCondition>'${ISL_DESTINATION_URI}' == 'NONE'</skipCondition>
+				<execDefinition>
+					<fileTransfer>
+						<transfer>
+							<sourceResource>
+								<uri>${CTR_OUTBOUND_PATH}</uri>
+								<searchPattern>${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_.*_${BUSINESS-DATE}\.(dat|chk)</searchPattern>
+								<matchedUriOutputProperty>ISL-FILES</matchedUriOutputProperty>
+							</sourceResource>
+							<targetResource>
+								<uri>${ISL_DESTINATION_URI}</uri>
+							</targetResource>
+						</transfer>
+						<transferCountProperty>transferCount</transferCountProperty>
+					</fileTransfer>
+				</execDefinition>
+			</stage>
+		</parallel>
+		
+		<!-- BEGIN : TRANSFER SOURCE FILES TO DS -->
+		<externalWorkflowReference name="TRANSFER-LOANS-OUT-FILES-TO-EDL" id="TRANSFER-LOANS-OUT-FILES-TO-EDL">
+			<skipCondition>'${EDL_COPY_URI}' == 'NONE' </skipCondition>
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="SOURCE-SYSTEM-LC">NONE</property>
+				<property name="DEST_URI">${EDL_COPY_URI}/${SOURCE-SYSTEM-LC}</property>
+				<property name="SRC_URI">${CTR_OUTBOUND_PATH}</property>
+				<property name="SRCH_PATTERN">${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_.*_${BUSINESS-DATE}\.(dat|chk)</property>
+				<property name="DEST_SYSTEM">EDL</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="TRANSFER-LOANS-OUT-FILES-TO-VOLCKER" id="TRANSFER-LOANS-OUT-FILES-TO-VOLCKER">
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="SOURCE-SYSTEM-LC">NONE</property>
+				<property name="DEST_URI">${VOLCKER_DESTINATION_URI}</property>
+				<property name="SRC_URI">${CTR_OUTBOUND_PATH}</property>
+				<property name="SRCH_PATTERN">${EXTRACT-MAP-SRC-SYSTEM.result}_${EOD-EOM-IND}_.*_${BUSINESS-DATE}\.(dat|chk)</property>
+				<property name="DEST_SYSTEM">VOLCKER</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<!-- END : TRANSFER SOURCE FILES TO DS -->
+		
+		
+	</sequential>
+
+</workflow>
+	

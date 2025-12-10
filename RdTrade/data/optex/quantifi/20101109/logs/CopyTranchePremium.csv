@@ -1,0 +1,6 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+08-Nov-2010,09-Nov-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.03-0.07,0.0806925482799
+08-Nov-2010,09-Nov-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.07-0.1,0.02720732588605
+08-Nov-2010,09-Nov-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.1-0.15,0.0079
+08-Nov-2010,09-Nov-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.15-0.3,0.00225
+08-Nov-2010,09-Nov-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0-0.03,0.05

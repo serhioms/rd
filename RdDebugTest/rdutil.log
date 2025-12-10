@@ -1,0 +1,7 @@
+03/17/2015@08:50:22 DEBUG DEBUG: true
+03/17/2015@08:50:22 INFO  INFO: true
+03/17/2015@08:50:22 WARN  WARN
+03/17/2015@08:50:22 ERROR ERROR
+03/17/2015@08:50:22 ERROR ERROR
+java.lang.RuntimeException: Terrible Disaster...
+	at ca.mss.rd.util.test.TestDebug.main(TestDebug.java:16)

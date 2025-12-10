@@ -1,0 +1,19 @@
+<jxb:bindings version="1.0"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+               
+	<jxb:bindings schemaLocation="CalypsoMQIncomingMessage.xsd">
+ 		<jxb:bindings node="xs:element[@name='CalypsoTrade']">
+  			<jxb:bindings node="xs:complexType/xs:sequence/xs:element[@name='version']">
+				<jxb:property name="version"/>
+			</jxb:bindings>
+		</jxb:bindings>
+
+ 		<jxb:bindings node="xs:element[@name='CalypsoTrade']">
+			<jxb:bindings node="xs:complexType/xs:attribute[@name='version']">
+				<jxb:property name="messageVer"/>
+			</jxb:bindings>
+		</jxb:bindings>
+	</jxb:bindings>
+	
+</jxb:bindings>

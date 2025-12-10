@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: PREPARE-LOANS-LOAD-WF.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>PREPARE-LOANS-LOAD-WF</name> 
+  	<externalWorkflowCode>PREPARE-LOANS-LOAD-WF</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>PREPARE-LOANS-LOAD-WF ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="SOURCE-SYSTEM" />
+			<property name="SOURCE-SYSTEM-LC" />
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="FTP-SOURCE-DIR" />
+			<property name="PROCESSING-DIR" />
+			<property name="HOLDING-SOURCE-DIR" />
+			<property name="REPLICATE-IF-MONTH-END" />
+			<property name="IS-MONTH-END" />
+			<property name="EOD-EOM-INDICATOR" />
+		</inputProperties>
+	</properties>
+
+	<sequential id="PREPARE-LOANS-LOAD" name="PREPARE-LOANS-LOAD">
+	
+		<stage name="FORMAT-BUSINESS-DATE" id="FORMAT-BUSINESS-DATE">
+			<description>Format the business date</description>
+			<stageFailure>
+				<failureCondition><![CDATA['${FORMAT-BUSINESS-DATE.result}' == '']]></failureCondition>
+				<failureMessage>FORMAT-BUSINESS-DATE returned empty date</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbFunction name="CTRMSO.FORMAT_DATE_FN">
+					<in>
+						<param name="DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="FORMAT_I" type="STRING">yyyymmdd</param>
+					</in>
+					<result name="result" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+		
+		<stage id="GET-FILE-METADATA" name="GET-FILE-METADATA">
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.FileMetaDataRetriever</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="filePath">${FTP-SOURCE-DIR}</simpleProperty>
+							<simpleProperty name="busDate">${FORMAT-BUSINESS-DATE.result}</simpleProperty>
+							<simpleProperty name="procDirPath">${PROCESSING-DIR}</simpleProperty>
+							<simpleProperty name="sourceSystem">${SOURCE-SYSTEM}</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>fileMetaDataMap</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+
+		<!-- COPY FILES -->
+
+		<stage name="TRANSFER-FTP-FILES-FOR-LOAD" id="TRANSFER-FTP-FILES-FOR-LOAD">
+			<description>Transfer files from FTP directory to inbound processing directory</description>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${FTP-SOURCE-DIR}</uri>
+							<searchPattern>${SOURCE-SYSTEM}_.+_${EOD-EOM-INDICATOR}_.*${FORMAT-BUSINESS-DATE.result}_.*</searchPattern>
+							<matchedUriOutputProperty>matchedFiles</matchedUriOutputProperty>
+						</sourceResource>
+						<targetResource>
+							<uri>${PROCESSING-DIR}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>matchedCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+		
+		<stage name="REPLICATE-AS-MONTHLY" id="REPLICATE-AS-MONTHLY">
+			<description>Replicate files as monthly and place in holding directory</description>
+			<skipCondition>'${REPLICATE-IF-MONTH-END}' != 'T' || '${IS-MONTH-END}' != 'T' || '${EOD-EOM-INDICATOR}' != 'D'</skipCondition>
+			<stageFailure>
+				<failureCondition><![CDATA[${REPLICATE-AS-MONTHLY.exitCode} != 0]]></failureCondition>
+				<failureMessage>FSM-(${REPLICATE-AS-MONTHLY.exitCode}) : Error while replicating files monthly from directory '${FTP-SOURCE-DIR}' and placing in holding directory '${HOLDING-SOURCE-DIR}'. See FSM log for details.</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<callExternalProcess>
+					<commandLine>${CTR_APP_ROOT_PATH}/script/ctrmakemonthendfile.${SHELL_SCRIPT_EXTENSION} ${PROCESSING-DIR} ${HOLDING-SOURCE-DIR} ${SOURCE-SYSTEM-LC} ${FORMAT-BUSINESS-DATE.result}</commandLine>
+					<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+					<exitCodeProperty>exitCode</exitCodeProperty>
+				</callExternalProcess>
+			</execDefinition>
+		</stage>
+		
+		<!-- BEGIN : TRANSFER SOURCE FILES TO DS -->
+		<externalWorkflowReference name="TRANSFER-DATA-FILES-TO-EDL" id="TRANSFER-DATA-FILES-TO-EDL">
+			<skipCondition>'${EDL_COPY_URI}' == 'NONE' </skipCondition>
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+				<property name="DEST_URI">${EDL_COPY_URI}/${SOURCE-SYSTEM-LC}</property>
+				<property name="SRC_URI">${CTR_FTP_ROOT_PATH}/${SOURCE-SYSTEM-LC}/inbox/</property>
+				<property name="SRCH_PATTERN">.*_${FORMAT-BUSINESS-DATE.result}.*</property>
+				<property name="DEST_SYSTEM">EDL</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="TRANSFER-MRK-FILES-TO-EDL" id="TRANSFER-MRK-FILES-TO-EDL">
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+				<property name="DEST_URI">${EDL_DESTINATION_URI}</property>
+				<property name="SRC_URI">${CTR_FTP_ROOT_PATH}/${SOURCE-SYSTEM-LC}/inbox/</property>
+				<property name="SRCH_PATTERN">.*_${FORMAT-BUSINESS-DATE.result}_.*.mrk</property>
+				<property name="DEST_SYSTEM">EDL</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="TRANSFER-DATA-FILES-TO-VOLCKER" id="TRANSFER-DATA-FILES-TO-VOLCKER">
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+				<property name="DEST_URI">${VOLCKER_DESTINATION_URI}</property>
+				<property name="SRC_URI">${CTR_FTP_ROOT_PATH}/${SOURCE-SYSTEM-LC}/inbox/</property>
+				<property name="SRCH_PATTERN">.*_${FORMAT-BUSINESS-DATE.result}.*</property>
+				<property name="DEST_SYSTEM">VOLCKER</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<!-- END : TRANSFER SOURCE FILES TO DS -->
+
+		<!-- TRUNCATE LANDING -->
+
+		<parallel id="LOANS-TRUNCATE-LANDING-PARTITIONS" name="TRUNCATE-LANDING">
+			<stage name="TRUNCATE-PARTY" id="LOANS-TRUNCATE-PARTY">
+				<description>Truncate party landing</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">TRUNCATE-PARTY</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-FACILITY" id="LOANS-TRUNCATE-FACILITY">
+				<description>Truncate facility landing</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">TRUNCATE-FACILITY</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-COLLATERAL" id="LOANS-TRUNCATE-COLLATERAL">
+				<description>Truncate collateral landing</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrngmnt_collatrl_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">TRUNCATE-COLLATERAL</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-LOAN" id="LOANS-TRUNCATE-LOAN">
+				<description>Truncate loan landing</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_loan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">TRUNCATE-LOAN</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-PAY-SCHEDULE" id="LOANS-TRUNCATE-PAY-SCHEDULE">
+				<description>Truncate pay-schedule landing</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">pay_schedule_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">TRUNCATE-PAY-SCHEDULE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-CROSS-REF" id="LOANS-TRUNCATE-CROSS-REF">
+				<description>Truncate cross-reference landing</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<!-- (use any dependant type) -->
+							<param name="P_TYPE_NAME_I" type="STRING">org_to_org_rel_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">TRUNCATE-CROSS-REF</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+	</sequential>
+</workflow>
+	

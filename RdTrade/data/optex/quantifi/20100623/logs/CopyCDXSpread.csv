@@ -1,0 +1,16 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS5V5-5Y (CIBC).Mid,1E-12
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-10Y.Mid,0.0144
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-3Y.Mid,0.021
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-5Y.Mid,0.0138
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V4-7Y.Mid,0.0142
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V5-10Y.Mid,0.0137
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-10Y.Mid,0.0147
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-3Y.Mid,0.0211
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-5Y.Mid,0.0133
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V3-7Y.Mid,0.0141
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,Dow Jones CDX.NA.IG.7-V5,0.0137
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-10Y.Mid,0.0106
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-3Y.Mid,0.0055
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-5Y.Mid,0.0085
+22-Jun-2010,23-Jun-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES5V1-7Y.Mid,0.01

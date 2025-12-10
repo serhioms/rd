@@ -1,0 +1,67 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.03-0.07,0.1143157331986
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.07-0.1,0.06370977201855
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.1-0.15,0.0291
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.15-0.3,0.01015
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.03-0.07,0.083
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.07-0.1,0.016
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.1-0.15,0.004
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.15-0.3,0.0018
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.03-0.07,0.09486600308305
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.07-0.1,0.0363355207664
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.1-0.15,0.0115
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.15-0.3,0.0041
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.03-0.07,0.1139905245388
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.07-0.1,0.04817722818175
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.1-0.15,0.02035
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.15-0.3,0.0079
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 10Y.0.03-0.07,0.1472441983122
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 10Y.0.07-0.1,0.0724507531865
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 10Y.0.1-0.15,0.03065
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 10Y.0.15-0.3,0.00975
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 10Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.03-0.07,0.083
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.07-0.1,0.016
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.1-0.15,0.004
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.15-0.3,0.0018
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.03-0.07,0.10447820871645
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.07-0.1,0.04316060508525
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.1-0.15,0.0131
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0.15-0.3,0.0033
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 5Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 7Y.0.03-0.07,0.14203427483335
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 7Y.0.07-0.1,0.0533317179549
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 7Y.0.1-0.15,0.02135
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 7Y.0.15-0.3,0.00635
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 7Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.03-0.07,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.07-0.1,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.1-0.15,0.01
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.15-0.3,0.01
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.3-1,0.01
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 10Y.0.03-0.06,0.1018765718707
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 10Y.0.06-0.09,0.0582312366562
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 10Y.0.09-0.12,0.0337
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 10Y.0.12-0.22,0.01405
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 10Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 3Y.0.03-0.06,0.034
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 3Y.0.06-0.09,0.0135
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 3Y.0.09-0.12,0.0045
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 3Y.0.12-0.22,0.00225
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 3Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 5Y.0.03-0.06,0.07822481572475
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 5Y.0.06-0.09,0.03898373983735
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 5Y.0.09-0.12,0.0201
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 5Y.0.12-0.22,0.00795
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 5Y.0-0.03,0.05
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 7Y.0.03-0.06,0.0946703561116
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 7Y.0.06-0.09,0.0508471416735
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 7Y.0.09-0.12,0.02625
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 7Y.0.12-0.22,0.0124
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Premium,Next,iTraxx Europe Series 9 Version 1 7Y.0-0.03,0.05

@@ -1,0 +1,1373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpdl:Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="ca.mss.chess.ofbiz.xpdl.workflow" Name="TriplB Chess Workflow" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <xpdl:PackageHeader>
+        <xpdl:XPDLVersion>1.0</xpdl:XPDLVersion>
+        <xpdl:Vendor>OFBiz</xpdl:Vendor>
+        <xpdl:Created>2004-03-16 00:56:04</xpdl:Created>
+    </xpdl:PackageHeader>
+    <xpdl:RedefinableHeader PublicationStatus="UNDER_REVISION">
+        <xpdl:Author>Sergey Moskovskiy</xpdl:Author>
+        <xpdl:Version>1.0.3.0</xpdl:Version>
+    </xpdl:RedefinableHeader>
+    <xpdl:ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <xpdl:WorkflowProcesses>
+        <xpdl:WorkflowProcess AccessLevel="PUBLIC" Id="TriplBChessWorkflow" Name="TripleB Chess Workflow">
+            <xpdl:ProcessHeader DurationUnit="s">
+                <xpdl:Created>2007-09-11 17:18:23</xpdl:Created>
+                <xpdl:Description>TripleB chess workflow for human against human/computer</xpdl:Description>
+                <xpdl:Limit>10</xpdl:Limit>
+            </xpdl:ProcessHeader>
+            <xpdl:RedefinableHeader PublicationStatus="RELEASED">
+                <xpdl:Author>Sergey Moskovskiy</xpdl:Author>
+                <xpdl:Version>1.0.3.0</xpdl:Version>
+            </xpdl:RedefinableHeader>
+            <xpdl:FormalParameters>
+                <xpdl:FormalParameter Id="tableId" Index="1" Mode="IN">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:Description>Chess table Id</xpdl:Description>
+                </xpdl:FormalParameter>
+                <xpdl:FormalParameter Id="ownerPartyId" Index="2" Mode="IN">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:Description>Owner's party Id</xpdl:Description>
+                </xpdl:FormalParameter>
+            </xpdl:FormalParameters>
+            <xpdl:DataFields>
+                <xpdl:DataField Id="" IsArray="FALSE">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                </xpdl:DataField>
+                <xpdl:DataField Id="adviserPartyId" IsArray="FALSE" Name="adviserPartyId">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>chessmaster</xpdl:InitialValue>
+                    <xpdl:Description>Aadviser's partyId</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="drawStatus" IsArray="FALSE" Name="drawStatus">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>accepted</xpdl:InitialValue>
+                    <xpdl:Description>Draw acceptance status {accepted, rejected}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="gameScores" IsArray="FALSE" Name="gameScores">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>0-0</xpdl:InitialValue>
+                    <xpdl:Description>Results of the game {0-0, 1-0, 0-1, 1/2-1/2}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="inviteStatus" IsArray="FALSE" Name="inviteStatus">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>accepted</xpdl:InitialValue>
+                    <xpdl:Description>Rival invitation status {accepted, cancelled or rejected}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isBlackPlay" IsArray="FALSE" Name="isBlackPlay">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>true</xpdl:InitialValue>
+                    <xpdl:Description>Black player acceptance status {true, false}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isCheckmated" IsArray="FALSE" Name="isCheckmated">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>false</xpdl:InitialValue>
+                    <xpdl:Description>Game checkmated {true, false}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isDrawed" IsArray="FALSE" Name="isDrawed">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>false</xpdl:InitialValue>
+                    <xpdl:Description>Game drawed {true, false}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isPlayer" IsArray="FALSE" Name="isPlayer">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>true</xpdl:InitialValue>
+                    <xpdl:Description>Request maden by owner or rival</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isResigned" IsArray="FALSE" Name="isResigned">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>false</xpdl:InitialValue>
+                    <xpdl:Description>Game resigned {true, false}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isStalemated" IsArray="FALSE" Name="isStalemated">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>false</xpdl:InitialValue>
+                    <xpdl:Description>Game stalemated {true, false}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isValid" IsArray="FALSE" Name="isValid">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>true</xpdl:InitialValue>
+                    <xpdl:Description>Move validation {true, false}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="isWhitePlay" IsArray="FALSE" Name="isWhitePlay">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>true</xpdl:InitialValue>
+                    <xpdl:Description>White player acceptance status {true, false}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="move" IsArray="FALSE" Name="move">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>e4</xpdl:InitialValue>
+                    <xpdl:Description>Just move itself like O-O, O-O-O, e2-e4, etc.</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="ownerColor" IsArray="FALSE" Name="ownerColor">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>white</xpdl:InitialValue>
+                    <xpdl:Description>Table owner color {white, black}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="ownerEngine" IsArray="FALSE" Name="ownerEngine">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>chessRandomEngine</xpdl:InitialValue>
+                    <xpdl:Description>Deep Reed engine {chessRandomEngine, chessSwampEngine}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="ownerType" IsArray="FALSE" Name="ownerType">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>computer</xpdl:InitialValue>
+                    <xpdl:Description>Owner type {human, computer}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="playerId" IsArray="FALSE" Name="playerId">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>eric</xpdl:InitialValue>
+                    <xpdl:Description>Request maden by one of two players {ownerPartyId value or rivalPArtyId value}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="reqStatus" IsArray="FALSE" Name="reqStatus">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>move</xpdl:InitialValue>
+                    <xpdl:Description>Request action status {move, draw, resign}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="resStatus" IsArray="FALSE" Name="resStatus">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>nextmove</xpdl:InitialValue>
+                    <xpdl:Description>Response action status {nextmove, checkmate, stalemate}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="rivalEngine" IsArray="FALSE" Name="rivalEngine">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>chessRandomEngine</xpdl:InitialValue>
+                    <xpdl:Description>Deep Reed engine {chessRandomEngine, chessSwampEngine}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="rivalPartyId" IsArray="FALSE" Name="rivalPartyId">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>eric</xpdl:InitialValue>
+                    <xpdl:Description>Rival's party Id</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="rivalType" IsArray="FALSE" Name="rivalType">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>computer</xpdl:InitialValue>
+                    <xpdl:Description>Rival type {human, computer}</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="userId" IsArray="FALSE" Name="userId">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>eric</xpdl:InitialValue>
+                    <xpdl:Description>Who made request oliver, eric, pablo any partyId</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="viewerPartyId" IsArray="FALSE" Name="viewerPartyId">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>pablo</xpdl:InitialValue>
+                    <xpdl:Description>Viewer's party Id</xpdl:Description>
+                </xpdl:DataField>
+                <xpdl:DataField Id="wichTurn" IsArray="FALSE" Name="wichTurn">
+                    <xpdl:DataType>
+                        <xpdl:BasicType Type="STRING"/>
+                    </xpdl:DataType>
+                    <xpdl:InitialValue>owner</xpdl:InitialValue>
+                    <xpdl:Description>Who's turn {owner, rival}</xpdl:Description>
+                </xpdl:DataField>
+            </xpdl:DataFields>
+            <xpdl:Activities>
+                <xpdl:Activity Id="Init_Flow" Name="Init Flow">
+                    <xpdl:Description>Flow initialization</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="ONCE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="57,12"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="Y"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="N"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Init_Game" Name="Init Game">
+                    <xpdl:Description>Game initialization</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="assignTableOwner" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerPartyId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessAssignOwner"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="ONCE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="164,12"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="N"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Invite_Player" Name="Invite Player">
+                    <xpdl:Description>Rival invitation</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_InvitePlayer_To_BlackInvitation"/>
+                                    <xpdl:TransitionRef Id="Fr_InvatePlayer_To_WhiteInvitation"/>
+                                    <xpdl:TransitionRef Id="Fr_InvitePlayer_To_ComputerInvitation"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="278,12"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Black_Invitation" Name="Black Invitation">
+                    <xpdl:Description>Black request waiting...</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_BlackInvitation_To_InvitePlayer"/>
+                                    <xpdl:TransitionRef Id="Fr_BlackInvitation_To_GameApproval"/>
+                                    <xpdl:TransitionRef Id="Fr_BlackInvitation_Loop"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="341,111"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="White_Invitation" Name="White Invitation">
+                    <xpdl:Description>White request waiting...</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_WhiteInvitation_To_GameApproval"/>
+                                    <xpdl:TransitionRef Id="Fr_WhiteInvitation_To_InvitePlayer"/>
+                                    <xpdl:TransitionRef Id="Fr_WhiteInvitation_Loop_Back"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="205,107"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Game_Approval" Name="Game Approval">
+                    <xpdl:Description>Last chance reject the game</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_GameApproval_To_StartGame"/>
+                                    <xpdl:TransitionRef Id="Fr_GameAprooval_Loop"/>
+                                    <xpdl:TransitionRef Id="Fr_GameApproval_To_InvitePlayer"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="272,197"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Start_Game" Name="Start Game">
+                    <xpdl:Description>Game approved</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="assignWhitePlayer" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerColor</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerPartyId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>rivalPartyId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessAssignWhite"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                        <xpdl:Tool Id="assignBlackPlayer" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerColor</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerPartyId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>rivalPartyId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessAssignBlack"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                        <xpdl:Tool Id="createTheGame" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>workEffortId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerPartyId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>rivalPartyId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessCreateNew"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="377,199"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="N"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Which_Turn" Name="Which turn?">
+                    <xpdl:Description>Which turn it is human or computer?</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="showPosition" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessPosition"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_WhichTurn_To_Computer"/>
+                                    <xpdl:TransitionRef Id="Fr_WhichTurn_To_UserRequest"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="298,264"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="User_Request" Name="User Request">
+                    <xpdl:Description>User request waiting...</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="checkUserId" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>userId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>rivalPartyId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerPartyId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessCheckUser"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Manual/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_UserRequest_Loop_Back"/>
+                                    <xpdl:TransitionRef Id="Fr_UserRequest_To_Player"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="393,350"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Finish_Flow" Name="Finish Flow">
+                    <xpdl:Description>The last activity in the game</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="showPosition" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessPosition"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="480,700"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Computer_Invitation" Name="Comp Invitation">
+                    <xpdl:Description>Invite computer for the game</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_ComputerInvitation_To_InvitePlayer"/>
+                                    <xpdl:TransitionRef Id="Fr_ComputerInvitation_To_GameApproval"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="88,104"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Computer" Name="Computer">
+                    <xpdl:Description>Deep Red turn</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="generateMove" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>wichTurn</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerEngine</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>rivalEngine</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessGenerateMove"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_Computer_To_Resign"/>
+                                    <xpdl:TransitionRef Id="Fr_Computer_To_AcceptMove"/>
+                                    <xpdl:TransitionRef Id="Fr_Computer_To_Draw"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="203,353"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Accept_Move" Name="Accept Move">
+                    <xpdl:Description>Accept valid move</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="addMove" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>move</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessAddMove"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_AcceptMove_To_StaleMate"/>
+                                    <xpdl:TransitionRef Id="Fr_Accept_To_NextMove"/>
+                                    <xpdl:TransitionRef Id="Fr_AcceptMove_To_CheckMate"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="140,463"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Validate_Move" Name="Validate Move">
+                    <xpdl:Description>Is move valid?</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="validateMove" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>move</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessValidateMove"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_ValidateMove_To_InvalidMove"/>
+                                    <xpdl:TransitionRef Id="Fr_ValidateMove_To_AcceptMove"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="561,500"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Invalid_Move" Name="Invalid Move">
+                    <xpdl:Description>Player's move is not valid</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="468,278"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Draw_Request" Name="Draw Request">
+                    <xpdl:Description>Player ask for draw</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Manual/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_DrawRequest_To_PlayAgain"/>
+                                    <xpdl:TransitionRef Id="Fr_DrawRequest_To_Draw"/>
+                                    <xpdl:TransitionRef Id="Fr_DrawRequest_Loop_Back"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="248,537"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Resign" Name="Resign">
+                    <xpdl:Description>Game resigned</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="resignGame" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerColor</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>playerId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>rivalPartyId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerPartyId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessResign"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="395,535"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Draw" Name="Draw">
+                    <xpdl:Description>Draw accepted</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="draw" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessDraw"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="328,619"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Play_Again" Name="Play Again">
+                    <xpdl:Description>Continuing the game</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="351,415"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Next_Move" Name="Next move">
+                    <xpdl:Description>Turn players over</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="chessNextMove" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>ownerColor</xpdl:ActualParameter>
+                                <xpdl:ActualParameter>wichTurn</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessNextMove"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="116,283"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Scores" Name="Scores">
+                    <xpdl:Description>Evaluate scores</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="resign" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessScores"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Join Type="XOR"/>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="372,704"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Player" Name="Player">
+                    <xpdl:Description>Human turn</xpdl:Description>
+                    <xpdl:Route/>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:TransitionRestrictions>
+                        <xpdl:TransitionRestriction>
+                            <xpdl:Split Type="XOR">
+                                <xpdl:TransitionRefs>
+                                    <xpdl:TransitionRef Id="Fr_Player_To_ValidateMove"/>
+                                    <xpdl:TransitionRef Id="Fr_Player_To_Resign"/>
+                                    <xpdl:TransitionRef Id="Fr_Player_To_DrawRequest"/>
+                                </xpdl:TransitionRefs>
+                            </xpdl:Split>
+                        </xpdl:TransitionRestriction>
+                    </xpdl:TransitionRestrictions>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="458,423"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Check_Mate" Name="Check Mate">
+                    <xpdl:Description>Checkmate happens</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="checkmate" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessCheckmate"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="120,628"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Stale_Mate" Name="Stale Mate">
+                    <xpdl:Description>Stalemate happens</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="stalemate" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessStalemate"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="223,617"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="Y"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+                <xpdl:Activity Id="Notify_Players" Name="Notify Players">
+                    <xpdl:Description>Send messages to players</xpdl:Description>
+                    <xpdl:Implementation>
+                        <xpdl:Tool Id="NotifyWhitePlayer" Type="PROCEDURE">
+                            <xpdl:ActualParameters>
+                                <xpdl:ActualParameter>tableId</xpdl:ActualParameter>
+                            </xpdl:ActualParameters>
+                            <xpdl:ExtendedAttributes>
+                                <xpdl:ExtendedAttribute Name="serviceName" Value="chessNotifyWhite"/>
+                                <xpdl:ExtendedAttribute Name="runAsUser" Value="admin"/>
+                            </xpdl:ExtendedAttributes>
+                        </xpdl:Tool>
+                    </xpdl:Implementation>
+                    <xpdl:StartMode>
+                        <xpdl:Automatic/>
+                    </xpdl:StartMode>
+                    <xpdl:FinishMode>
+                        <xpdl:Automatic/>
+                    </xpdl:FinishMode>
+                    <xpdl:SimulationInformation Instantiation="MULTIPLE">
+                        <xpdl:Cost/>
+                        <xpdl:TimeEstimation/>
+                    </xpdl:SimulationInformation>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="482,198"/>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="FreeTextExpressionParticipant"/>
+                        <xpdl:ExtendedAttribute Name="canStart" Value="N"/>
+                        <xpdl:ExtendedAttribute Name="completeAllAssignments" Value="N"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Activity>
+            </xpdl:Activities>
+            <xpdl:Transitions>
+                <xpdl:Transition From="Init_Flow" Id="To_Init_Game" To="Init_Game">
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Init_Game" Id="Fr_InitGame_To_InvitePlayer" Name="invite" To="Invite_Player">
+                    <xpdl:Description>Invite rival</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Invite_Player" Id="Fr_InvatePlayer_To_WhiteInvitation" Name="white" To="White_Invitation">
+                    <xpdl:Condition Type="CONDITION">
+						ownerColor.equals("black") &amp;&amp; rivalType.equals("human")
+					</xpdl:Condition>
+                    <xpdl:Description>Owner invite human as white rival</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Invite_Player" Id="Fr_InvitePlayer_To_BlackInvitation" Name="black" To="Black_Invitation">
+                    <xpdl:Condition Type="CONDITION">
+						ownerColor.equals("white") &amp;&amp; rivalType.equals("human")
+					</xpdl:Condition>
+                    <xpdl:Description>Owner invite human as black rival</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Black_Invitation" Id="Fr_BlackInvitation_To_GameApproval" Name="accept" To="Game_Approval">
+                    <xpdl:Condition Type="CONDITION">inviteStatus.equals("accepted")</xpdl:Condition>
+                    <xpdl:Description>Black player accepted the invitation</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="White_Invitation" Id="Fr_WhiteInvitation_To_GameApproval" Name="accept" To="Game_Approval">
+                    <xpdl:Condition Type="CONDITION">inviteStatus.equals("accepted")</xpdl:Condition>
+                    <xpdl:Description>White player accepted the invitation</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Which_Turn" Id="Fr_WhichTurn_To_UserRequest" Name="player" To="User_Request">
+                    <xpdl:Condition Type="CONDITION">
+						(wichTurn.equals("rival") &amp;&amp; rivalType.equals("human")) || (wichTurn.equals("owner") &amp;&amp; ownerType.equals("human"))
+					</xpdl:Condition>
+                    <xpdl:Description>User turn</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Invite_Player" Id="Fr_InvitePlayer_To_ComputerInvitation" Name="computer" To="Computer_Invitation">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Owner choose computer as an opponent player</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="White_Invitation" Id="Fr_WhiteInvitation_To_InvitePlayer" Name="cancel" To="Invite_Player">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Owner cancelled the invitation</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Black_Invitation" Id="Fr_BlackInvitation_To_InvitePlayer" Name="cancel" To="Invite_Player">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Owner cancelled the invitation</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Computer_Invitation" Id="Fr_ComputerInvitation_To_InvitePlayer" Name="reject" To="Invite_Player">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Computer reject the invitation</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Computer_Invitation" Id="Fr_ComputerInvitation_To_GameApproval" Name="accept" To="Game_Approval">
+                    <xpdl:Condition Type="CONDITION">inviteStatus.equals("accepted")</xpdl:Condition>
+                    <xpdl:Description>Computer accepted the invitation</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Game_Approval" Id="Fr_GameApproval_To_InvitePlayer" Name="cancel" To="Invite_Player">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>White or black player canceled the game</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Game_Approval" Id="Fr_GameApproval_To_StartGame" Name="accept" To="Start_Game">
+                    <xpdl:Condition Type="CONDITION">
+						isWhitePlay.equals("true") &amp;&amp; isBlackPlay.equals("true")
+					</xpdl:Condition>
+                    <xpdl:Description>White and black players approved the game both</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Which_Turn" Id="Fr_WhichTurn_To_Computer" Name="computer" To="Computer">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Computer turn</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Computer" Id="Fr_Computer_To_AcceptMove" Name="move" To="Accept_Move">
+                    <xpdl:Condition Type="CONDITION">reqStatus.equals("move")</xpdl:Condition>
+                    <xpdl:Description>Process move generated by computer</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Player" Id="Fr_Player_To_ValidateMove" Name="move" To="Validate_Move">
+                    <xpdl:Condition Type="CONDITION">reqStatus.equals("move")</xpdl:Condition>
+                    <xpdl:Description>Player made move</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Notify_Players" Id="Fr_NotifyPlayers_To_WhichTurn" Name="play" To="Which_Turn">
+                    <xpdl:Description>Goto first move</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Validate_Move" Id="Fr_ValidateMove_To_AcceptMove" Name="valid" To="Accept_Move">
+                    <xpdl:Condition Type="CONDITION">isValid.equals("true")</xpdl:Condition>
+                    <xpdl:Description>Move is valid. Lets process it.</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Validate_Move" Id="Fr_ValidateMove_To_InvalidMove" Name="not valid" To="Invalid_Move">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Move is not valid</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Invalid_Move" Id="Fr_InvalidMove_To_WhichTurn" Name="back" To="Which_Turn">
+                    <xpdl:Description>Repeat the move</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Player" Id="Fr_Player_To_DrawRequest" To="Draw_Request">
+                    <xpdl:Condition Type="CONDITION">reqStatus.equals("draw")</xpdl:Condition>
+                    <xpdl:Description>Player asked for draw</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Player" Id="Fr_Player_To_Resign" Name="resign" To="Resign">
+                    <xpdl:Condition Type="CONDITION">reqStatus.equals("resign")</xpdl:Condition>
+                    <xpdl:Description>Player asked for resigning</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="User_Request" Id="Fr_UserRequest_Loop_Back" Name="player loop" To="User_Request">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Just skip unexpected requests</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_BEZIER"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Draw" Id="Fr_Draw_To_Scores" To="Scores">
+                    <xpdl:Description>1/2-1/2</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Draw_Request" Id="Fr_DrawRequest_To_Draw" Name="accept" To="Draw">
+                    <xpdl:Condition Type="CONDITION">drawStatus.equals("accepted")</xpdl:Condition>
+                    <xpdl:Description>Draw accepted</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Draw_Request" Id="Fr_DrawRequest_To_PlayAgain" To="Play_Again">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:Description>Draw rejected</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Play_Again" Id="Fr_PlayAgain_To_WhichTurn" To="Which_Turn">
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Accept_Move" Id="Fr_AcceptMove_To_StaleMate" Name="if stalemate" To="Stale_Mate">
+                    <xpdl:Condition Type="CONDITION">resStatus.equals("stalemate")</xpdl:Condition>
+                    <xpdl:Description>Stalemate happens</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Accept_Move" Id="Fr_AcceptMove_To_Draw" Name="if draw" To="Draw">
+                    <xpdl:Condition Type="CONDITION">resStatus.equals("draw")</xpdl:Condition>
+                    <xpdl:Description>Draw happens</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Accept_Move" Id="Fr_Accept_To_NextMove" Name="if next" To="Next_Move">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <!--
+                    <xpdl:Condition Type="CONDITION">resStatus.equals("nextmove")</xpdl:Condition>
+                    -->
+                    <xpdl:Description>Game continuing</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Next_Move" Id="Fr_NextMove_To_WhichTurn" To="Which_Turn">
+                    <xpdl:Description>Just follow next move flow</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Computer" Id="Fr_Computer_To_Resign" Name="resign" To="Resign">
+                    <xpdl:Condition Type="CONDITION">reqStatus.equals("resign")</xpdl:Condition>
+                    <xpdl:Description>Computer asked for resigned</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Computer" Id="Fr_Computer_To_Draw" Name="draw" To="Draw_Request">
+                    <xpdl:Condition Type="CONDITION">reqStatus.equals("draw")</xpdl:Condition>
+                    <xpdl:Description>Computer asked for draw</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Draw_Request" Id="Fr_DrawRequest_Loop_Back" Name="draw loop" To="Draw_Request">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_BEZIER"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="White_Invitation" Id="Fr_WhiteInvitation_Loop_Back" Name="white loop" To="White_Invitation">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_BEZIER"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Black_Invitation" Id="Fr_BlackInvitation_To_LoopBack" Name="black loop" To="Black_Invitation">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_BEZIER"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Game_Approval" Id="Fr_GameAprooval_To_LoopBack" Name="approval loop" To="Game_Approval">
+                    <xpdl:Condition Type="OTHERWISE"/>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_BEZIER"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="User_Request" Id="Fr_UserRequest_To_Player" Name="Process move" To="Player">
+                    <xpdl:Condition Type="CONDITION">isPlayer.equals("true")</xpdl:Condition>
+                    <xpdl:Description>Request came from owner or rival</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Scores" Id="Fr_Scores_To_FinishFlow" To="Finish_Flow">
+                    <xpdl:Description>Last transition in the game</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Resign" Id="Fr_Resign_To_Scores" To="Scores">
+                    <xpdl:Description>Game is resigned</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Accept_Move" Id="Fr_AcceptMove_To_CheckMate" Name="if checkmate" To="Check_Mate">
+                    <xpdl:Condition Type="CONDITION">resStatus.equals("checkmate")</xpdl:Condition>
+                    <xpdl:Description>Checkmate happens</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Stale_Mate" Id="Fr_StaleMate_To_Scores" To="Scores">
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Check_Mate" Id="Fr_CheckMate_To_Scores" To="Scores">
+                    <xpdl:Description>Game is checkmated</xpdl:Description>
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+                <xpdl:Transition From="Start_Game" Id="Fr_StartGames_To_NotifyPlayers" Name="notify" To="Notify_Players">
+                    <xpdl:ExtendedAttributes>
+                        <xpdl:ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+                    </xpdl:ExtendedAttributes>
+                </xpdl:Transition>
+            </xpdl:Transitions>
+            <xpdl:ExtendedAttributes>
+                <xpdl:ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="FreeTextExpressionParticipant"/>
+                <xpdl:ExtendedAttribute Name="sourceReferenceField" Value="tableId"/>
+            </xpdl:ExtendedAttributes>
+        </xpdl:WorkflowProcess>
+    </xpdl:WorkflowProcesses>
+    <xpdl:ExtendedAttributes>
+        <xpdl:ExtendedAttribute Name="EDITING_TOOL" Value="Together Workflow Editor"/>
+        <xpdl:ExtendedAttribute Name="EDITING_TOOL_VERSION" Value="3.3-1-20101119-0903"/>
+        <xpdl:ExtendedAttribute Name="JaWE_CONFIGURATION" Value="default"/>
+    </xpdl:ExtendedAttributes>
+</xpdl:Package>

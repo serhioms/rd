@@ -1,0 +1,78 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0-0.03,500
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.03-0.07,500
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.07-0.1,500
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.1-0.15,100
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.15-0.3,100
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.3-1,100
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0-0.03,0.7904
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.03-0.07,0.3836
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.07-0.1,0.0917
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.1-0.15,0.0922
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.15-0.3,-0.0078
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.3-1,-0.0365
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 5Y.0-0.03,0.44625
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 7Y.0-0.03,0.62875
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 10Y.0-0.03,0.715
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 3Y.0-0.03,0.3
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 10Y.0.03-0.07,0.378194317348175
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 10Y.0.07-0.1,0.126013749082992
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 10Y.0-0.03,0.744163153138157
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 10Y.0.1-0.15,0.134844163419171
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 10Y.0.15-0.3,0.000940937270748035
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 10Y.0.3-1,-0.0357289092242921
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 5Y.0.03-0.07,0.14709355063028
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 5Y.0.07-0.1,-0.0142190990622893
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 3Y.0-0.03,0.3
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 5Y.0-0.03,0.509982367395997
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 5Y.0.1-0.15,0.00811618369799859
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 5Y.0.15-0.3,-0.0158168046577147
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 5Y.0.3-1,-0.0198518966922002
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 7Y.0-0.03,0.68314037145732
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 7Y.0.03-0.07,0.302645581442705
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 7Y.0.07-0.1,0.0261251391916813
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 7Y.0.1-0.15,0.051040884502048
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 7Y.0.15-0.3,-0.0141530384993173
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,CDX.NA.IG.9-V4 7Y.0.3-1,-0.0286760062049305
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 5Y.0.03-0.06,0.0547146710175657
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 5Y.0.06-0.09,0.0112902871055584
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 10Y.0-0.03,0.588268522958228
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 10Y.0.03-0.06,0.23837661890294
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 10Y.0.06-0.09,0.14860321021428
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 10Y.0.09-0.12,0.133965570219931
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 10Y.0.12-0.22,0.0219069893358534
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 10Y.0.22-1,0.0155348173773196
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 5Y.0-0.03,0.361455164470559
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 5Y.0.09-0.12,0.0153356558681346
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 5Y.0.12-0.22,-0.00851125793419098
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 5Y.0.22-1,-0.00028931817367639
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 7Y.0-0.03,0.494250087905994
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 7Y.0.03-0.06,0.146960464547667
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 7Y.0.06-0.09,0.0727932352323359
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 7Y.0.09-0.12,0.0566652817091145
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 7Y.0.12-0.22,0.00378476051972575
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 8 Version 1 7Y.0.22-1,0.00479665267365807
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 10Y.0-0.03,0.603260275741765
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 10Y.0.03-0.06,0.259310524545461
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 10Y.0.06-0.09,0.171123271477278
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 10Y.0.09-0.12,0.155741227840913
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 10Y.0.12-0.22,0.0289125332840929
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 10Y.0.22-1,0.0194550139780108
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 3Y.0-0.03,0.137735573743671
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 3Y.0.03-0.06,-0.0163668026008014
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 3Y.0.06-0.09,-0.0177146513004007
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 3Y.0.09-0.12,-0.00498782200568338
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 3Y.0.12-0.22,-0.00770723950078507
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 3Y.0.22-1,-0.00173447135965494
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 5Y.0-0.03,0.407779644450742
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 5Y.0.03-0.06,0.0836984526932747
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 5Y.0.06-0.09,0.0282675459210511
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 5Y.0.09-0.12,0.0279614079742624
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 5Y.0.12-0.22,-0.0064256037341388
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 5Y.0.22-1,0.000583928866578206
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 7Y.0.03-0.06,0.174871395654223
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 7Y.0-0.03,0.520856476398671
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 7Y.0.06-0.09,0.0953335467406674
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 7Y.0.09-0.12,0.0716179499140272
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 7Y.0.12-0.22,0.0101132483633609
+19-Jul-2010,20-Jul-2010,Insert,True,Closing,Tranche Fee,Markit,iTraxx Europe Series 9 Version 1 7Y.0.22-1,0.00753495359288548

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://www.cibc.com/schemas/Apollo/ApolloResponseMessage/1"
+	xmlns="http://www.cibc.com/schemas/Apollo/ApolloResponseMessage/1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+  <xs:element name="ApolloResponseMessage">
+    <xs:annotation>
+      <xs:documentation>Apollo response message</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="status" type="StatusType" />
+        <xs:element name="errors" type="ErrorsElementType" minOccurs="0" />
+        <xs:element name="warnings" type="WarningsElementType" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="version" type="PositiveIntegerType" use="required" fixed="1"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="PositiveIntegerType">
+    <xs:restriction base="xs:integer">
+      <xs:minExclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="StatusType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="OK|Error|Warning"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ErrorsElementType">
+    <xs:annotation>
+      <xs:documentation>Errors occurred during validation of the incoming message</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="error" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WarningsElementType">
+    <xs:annotation>
+      <xs:documentation>Warnings occurred during validation of the incoming message</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="warning" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

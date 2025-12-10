@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: LOANS-ETL-WF.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>LOANS-ETL-WF</name> 
+  	<externalWorkflowCode>LOANS-ETL-WF</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>LOANS-ETL-WF ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="SOURCE-SYSTEM" />
+			<property name="SOURCE-SYSTEM-LC" />
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+		</inputProperties>
+	</properties>
+
+	<sequential id="LOANS-ETL" name="LOANS-ETL">
+
+		<!-- STAGING PHASE 1 -->
+
+		<stage name="TRUNCATE-STAGING" id="TRUNCATE-STAGING">
+			<description>Truncate staging tables for a source system</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">base_etl_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_truncate_staging</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+						<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+						<param name="P_TASK_ID_I" type="STRING">${SOURCE-SYSTEM}-TRUNCATE-STAGING</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+
+		<parallel id="LOANS-LANDING-TO-STAGING-1" name="LOANS-LANDING-TO-STAGING-1">
+			<stage name="LOANS-LAND-TO-STAGE-PARTY" id="LOANS-L2S-PARTY">
+				<description>Loads party records from party_l to party_organization_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">PA-L2S</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-LAND-TO-STAGE-FACILITY" id="LOANS-L2S-FACILITY">
+				<description>Loads facility from facility_L to ARRANGEMENT_facility_S</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">FA-L2S</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-LAND-TO-STAGE-COLLATERAL" id="LOANS-L2S-COLLATERAL">
+				<description>Loads collateral records from collateral_l to arrangement_collateral_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrngmnt_collatrl_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">CO-L2S</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- TARGET PHASE 1 -->
+
+		<parallel id="LOANS-STAGING-TO-TARGET-1" name="LOANS-STAGING-TO-TARGET-1">
+			<stage name="LOANS-STAGE-TO-TARGET-PARTY" id="LOANS-S2T-PARTY">
+				<description>Loads Party records from party_organization_s to party_organization_d</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">PA-S2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGE-TO-TARGET-FACILITY" id="LOANS-S2T-FACILITY">
+				<description>Loads facility from ARRANGEMENT_FACILITY_S to ARRANGEMENT_FACILITY_D</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">FA-S2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGE-TO-TARGET-COLLATERAL" id="LOANS-S2T-COLLATERAL">
+				<description>Loads collateral records from arrangement_collateral_s to arrangement_collateral_d</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrngmnt_collatrl_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CO-S2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- STAGING PHASE 2 -->
+
+		<parallel id="LOANS-LANDING-TO-STAGING-2" name="LOANS-LANDING-TO-STAGING-2">
+			<stage name="LOANS-LAND-TO-STAGE-LOAN" id="LOANS-L2S-LOAN">
+				<description>Loads loan from LOAN_L to ARRANGEMENT_LOAN_S</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_loan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">LO-L2S</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- TARGET PHASE 2 -->
+
+		<parallel id="LOANS-STAGING-TO-TARGET-2" name="LOANS-STAGING-TO-TARGET-2">
+			<stage name="LOANS-STAGE-TO-TARGET-LOAN" id="LOANS-S2T-LOAN">
+				<description>Loads loan from ARRANGEMENT_LOAN_S to ARRANGEMENT_LOAN_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_loan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">LO-S2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- STAGING PHASE 3 -->
+
+		<parallel id="LOANS-LANDING-TO-STAGING-3" name="LOANS-LANDING-TO-STAGING-3">
+			<stage name="LOANS-LAND-TO-STAGE-PAY-SCHEDULE" id="LOANS-L2S-PAY-SCHEDULE">
+				<description>Loads Pay Schedule records frompay_schedule_l to pay_schedule_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">pay_schedule_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">PS-L2S</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- TARGET PHASE 3 -->
+
+		<parallel id="LOANS-STAGING-TO-TARGET-3" name="LOANS-STAGING-TO-TARGET-3">
+			<stage name="LOANS-STAGE-TO-TARGET-PAY-SCHEDULE" id="LOANS-S2T-PAY-SCHEDULE">
+				<description>Loads Pay Schedule records frompay_schedule_s to pay_schedule_f</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">pay_schedule_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">PS-S2T</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- STAGING PHASE 4 -->
+
+		<parallel id="LOANS-LANDING-TO-STAGING-4" name="LOANS-LANDING-TO-STAGING-4">
+			<stage name="LOANS-LAND-TO-STAGE-ORG-FAC" id="LOANS-L2S-ORG-FAC">
+				<description>Loads Cross Reference IPFC records from cross_reference_l to organization_facility_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">organization_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-L2S-ORG-FA</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-LAND-TO-STAGE-FACILITY-COLLATERAL" id="LOANS-L2S-FAC-COL">
+				<description>Loads Cross Reference FCCO records from cross_reference_l to facility_collateral_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">facility_collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-L2S-FA-CO</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-LAND-TO-STAGE-LOAN-FACILITY" id="LOANS-L2S-LOAN-FAC">
+				<description>Loads Cross Reference FCLO records from cross_reference_l to loan_facility_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-L2S-LO-FA</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-LAND-TO-STAGE-LOAN-COLLATERAL" id="LOANS-L2S-LOAN-COL">
+				<description>Loads Cross Reference LOCO records fromcross_reference_l to loan_collateral_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-L2S-LO-CO</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-LAND-TO-STAGE-LOAN-ORGANIZATION" id="LOANS-L2S-LOAN-ORG">
+				<description>Loads Cross Reference IPLO records from cross_reference_l to loan_organization_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-L2S-LO-ORG</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-LAND-TO-STAGE-ORG-ORG" id="LOANS-L2S-ORG-ORG">
+				<description>Loads Cross Reference IPIP records from cross_reference_l to org_to_org_rel_s</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">org_to_org_rel_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_stage</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-L2S-ORG-ORG</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- TARGET PHASE 4 -->
+
+		<parallel id="LOANS-STAGING-TO-TARGET-4" name="LOANS-STAGING-TO-TARGET-4">
+			<stage name="LOANS-STAGE-TO-TARGET-ORG-FAC" id="LOANS-S2T-ORG-FAC">
+				<description>Loads from organization_facility_s to organization_facility_b</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">organization_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2T-ORG-FA</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGE-TO-TARGET-FAC-COL" id="LOANS-S2T-FAC-COL">
+				<description>Loads from facility_collateral_s to facility_collateral_b</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">facility_collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2T-FA-CO</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGE-TO-TARGET-LOAN-FACILITY" id="LOANS-S2T-LOAN-FAC">
+				<description>Loads from loan_facility_s to loan_facility_b</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2T-LO-FA</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGE-TO-TARGET-LOAN-COLLATERAL" id="LOANS-S2T-LOAN-COL">
+				<description>Loads from loan_collateral_s to loan_collateral_b</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2T-LO-CO</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGE-TO-TARGET-LOAN-ORGANIZATION" id="LOANS-S2T-LOAN-ORG">
+				<description>Loads from loan_organization_s to loan_organization_b</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2T-LO-ORG</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGE-TO-TARGET-ORG-ORG" id="LOANS-S2T-ORG-ORG">
+				<description>Loads from org_to_org_rel_s to org_to_org_rel_b</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">org_to_org_rel_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_target</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2T-ORG-ORG</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- ERROR PHASE -->
+
+		<parallel id="LOANS-STAGING-TO-ERROR" name="LOANS-STAGING-TO-ERROR">
+			<stage name="LOANS-STAGING-TO-ERROR-LOAN" id="LOANS-STAGING-TO-ERROR-LOAN">
+				<description>Loads Loan records from ARRANGEMENT_LOAN_SE to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_loan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">LO-S2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-FACILITY" id="LOANS-STAGING-TO-ERROR-FACILITY">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">FA-S2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-PAY-SHCEDULE" id="LOANS-STAGING-TO-ERROR-PAY-SHCEDULE">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">pay_schedule_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">PS-S2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-ORG-FAC" id="LOANS-STAGING-TO-ERROR-ORG-FAC">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">organization_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2E-ORG-FA</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-LOAN-COLLATERAL" id="LOANS-STAGING-TO-ERROR-LOAN-COLLATERAL">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2E-LO-CO</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-ORG-ORG-REL" id="LOANS-STAGING-TO-ERROR-ORG-ORG-REL">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">org_to_org_rel_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2E-ORG-ORG</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-LOAN-ORG" id="LOANS-STAGING-TO-ERROR-LOAN-ORG">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2E-LO-ORG</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-FAC-COL" id="LOANS-STAGING-TO-ERROR-FAC-COL">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">facility_collateral_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2E-FA-CO</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-LOAN-FAC" id="LOANS-STAGING-TO-ERROR-LOAN-FAC">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">loan_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2E-LO-FA</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-PARTY-ORG" id="LOANS-STAGING-TO-ERROR-PARTY-ORG">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-S2E-PA-ORG</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-STAGING-TO-ERROR-COLLATERAL" id="LOANS-STAGING-TO-ERROR-COLLATERAL">
+				<description>Loads error recrods to ERROR_F</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrngmnt_collatrl_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_move_stage_2_error</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+							<param name="P_TASK_ID_I" type="STRING">CO-S2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+
+		<!-- EXTRACT PHASE -->
+
+		<parallel id="LOANS-TARGET-TO-EXTRACT" name="LOANS-TARGET-TO-EXTRACT">
+			<stage name="LOANS-TARGET-TO-EXTRACT-PARTY" id="LOANS-T2E-PARTY">
+				<description>Loads Party records from party_organization_d to isl_party_exp</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+							<param name="P_TASK_ID_I" type="STRING">PA-T2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-TARGET-TO-EXTRACT-FACILITY" id="LOANS-T2E-FACILITY">
+				<description>Loads facility from ARRANGEMENT_FACILITY_D to ISL_FACILITY_EXP</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_facility_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+							<param name="P_TASK_ID_I" type="STRING">FA-T2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-TARGET-TO-EXTRACT-LOAN" id="LOANS-T2E-LOAN">
+				<description>Loads loan records from ARRANGEMENT_LOAN_F to ISL_LOAN_EXP</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrangement_loan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+							<param name="P_TASK_ID_I" type="STRING">LO-T2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-TARGET-TO-EXTRACT-COLLATERAL" id="LOANS-T2E-COLLATERAL">
+				<description>Loads Collateral records from arrangement_collateral_d to isl_arrangement_collateral_exp</description>
+				<skipCondition>'${SOURCE-SYSTEM}' != 'GBOS'</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">arrngmnt_collatrl_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+							<param name="P_TASK_ID_I" type="STRING">CO-T2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-TARGET-TO-EXTRACT-CROSS-REFERENCE" id="LOANS-T2E-CROSS-REF">
+				<description>Loads from cross reference bridge tables to isl_cross_reference_exp</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">cross_reference_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+							<param name="P_TASK_ID_I" type="STRING">XR-T2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="LOANS-TARGET-TO-EXTRACT-PAY-SCHEDULE" id="LOANS-T2E-PAY-SCHEDULE">
+				<description>Loads Pay Schedule records from from pay_schedule_f to isl_pay_schedule_exp</description>
+				<skipCondition><![CDATA['${SOURCE-SYSTEM}' == 'GBOS' || '${SOURCE-SYSTEM}' == 'ACBS']]></skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">pay_schedule_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+							<param name="P_TASK_ID_I" type="STRING">PS-T2E</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+	</sequential>
+
+</workflow>
+	

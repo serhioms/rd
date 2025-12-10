@@ -1,0 +1,72 @@
+
+******************** RISK RUN START (11/21/2010 9:20:01 PM - ) ********************
+
+11/21/2010 9:20:01 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 27-Jul-2010 Official --index="CDX.NA.IG.9-V4" -e
+11/21/2010 9:20:10 PM - 	
+11/21/2010 9:20:10 PM - 	Calibrating Curve Scaling for index [CDX.NA.IG.9-V4]...
+11/21/2010 9:20:14 PM - 	Added 0 quotes and updated 0 quotes
+11/21/2010 9:20:17 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 27-Jul-2010 Official --index="iTraxx Europe Series 9 Version 1" -e
+11/21/2010 9:20:24 PM - 	
+11/21/2010 9:20:24 PM - 	Calibrating Curve Scaling for index [iTraxx Europe Series 9 Version 1]...
+11/21/2010 9:20:29 PM - 	Added 0 quotes and updated 0 quotes
+11/21/2010 9:20:31 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 27-Jul-2010 Official --index="Dow Jones CDX.NA.IG.7-V5" -e
+11/21/2010 9:20:39 PM - 	
+11/21/2010 9:20:39 PM - 	Calibrating Curve Scaling for index [Dow Jones CDX.NA.IG.7-V5]...
+11/21/2010 9:20:43 PM - 	Added 0 quotes and updated 0 quotes
+11/21/2010 9:20:45 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 27-Jul-2010 Official --surface="CDX.NA.IG.9-V4" -e
+11/21/2010 9:20:52 PM - 	
+11/21/2010 9:20:52 PM - 	Calibrating Correlation Surface [CDX.NA.IG.9-V4]...
+11/21/2010 9:21:23 PM - 	Added 0 quotes and updated 10 quotes
+11/21/2010 9:21:25 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 27-Jul-2010 Official --surface="iTraxx Europe Series 9 Version 1" -e
+11/21/2010 9:21:33 PM - 	
+11/21/2010 9:21:33 PM - 	Calibrating Correlation Surface [iTraxx Europe Series 9 Version 1]...
+11/21/2010 9:22:09 PM - 	Added 0 quotes and updated 0 quotes
+11/21/2010 9:22:10 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 27-Jul-2010 Official --surface="Dow Jones CDX.NA.IG.7-V5" -e
+11/21/2010 9:22:18 PM - 	
+11/21/2010 9:22:18 PM - 	Calibrating Correlation Surface [Dow Jones CDX.NA.IG.7-V5]...
+11/21/2010 9:22:35 PM - 	Added 0 quotes and updated 0 quotes
+11/21/2010 9:22:37 PM - Script call: C:/Quantifi/9.4.1/bin/BatchRisk.py 27-Jul-2010 -n Official -f --riskConfig=historical --calcEnv=Official  -s quantifi --official --excludePending --desc="Nightly batch run - historical"
+11/21/2010 9:22:40 PM - 	Warning: Using workstation GC. Server GC is recommended.
+11/21/2010 9:22:52 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000653 20-Jun-2016 114.75/CDOPricer
+11/21/2010 9:22:57 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Up_UniformBaseCorr
+11/21/2010 9:22:58 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Down_UniformBaseCorr
+11/21/2010 9:22:59 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000654 20-Jun-2013 51.25/CDOPricer
+11/21/2010 9:23:00 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000654 20-Jun-2013 51.25/1%Down_UniformBaseCorr
+11/21/2010 9:23:01 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000655 20-Jun-2016 118/CDOPricer
+11/21/2010 9:23:02 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000655 20-Jun-2016 118/1%Up_UniformBaseCorr
+11/21/2010 9:23:03 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000655 20-Jun-2016 118/1%Down_UniformBaseCorr
+11/21/2010 9:23:04 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000656 20-Jun-2013 50/1%Up_UniformBaseCorr
+11/21/2010 9:23:05 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000656 20-Jun-2013 50/1%Down_UniformBaseCorr
+11/21/2010 9:23:06 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000673 20-Dec-2016 6660/1%Up_UniformBaseCorr
+11/21/2010 9:23:07 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000672 20-Dec-2016 6660/1%Up_UniformBaseCorr
+11/21/2010 9:23:08 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000672 20-Dec-2016 6660/1%Down_UniformBaseCorr
+11/21/2010 9:23:09 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000671 20-Dec-2016 6660/1%Up_UniformBaseCorr
+11/21/2010 9:23:10 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000674 20-Dec-2016 6660/1%Up_UniformBaseCorr
+11/21/2010 9:23:11 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000674 20-Dec-2016 6660/1%Down_UniformBaseCorr
+11/21/2010 9:23:12 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000646 20-Mar-2013 13/1%Up_UniformBaseCorr
+11/21/2010 9:23:13 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000646 20-Mar-2013 13/1%Down_UniformBaseCorr
+11/21/2010 9:23:14 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000649 20-Sep-2013 11/CDOPricer
+11/21/2010 9:23:15 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000649 20-Sep-2013 11/1%Up_UniformBaseCorr
+11/21/2010 9:23:16 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000649 20-Sep-2013 11/1%Down_UniformBaseCorr
+11/21/2010 9:23:17 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000651 20-Dec-2013 11/1%Up_UniformBaseCorr
+11/21/2010 9:23:19 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000651 20-Dec-2013 11/1%Down_UniformBaseCorr
+11/21/2010 9:23:20 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000652 20-Dec-2013 15/1%Up_UniformBaseCorr
+11/21/2010 9:23:21 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000652 20-Dec-2013 15/1%Down_UniformBaseCorr
+11/21/2010 9:23:23 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000659 20-Mar-2013 7.5/1%Up_UniformBaseCorr
+11/21/2010 9:23:24 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000659 20-Mar-2013 7.5/1%Down_UniformBaseCorr
+11/21/2010 9:23:25 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000661 20-Mar-2013 10.3/CDOPricer
+11/21/2010 9:23:26 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000661 20-Mar-2013 10.3/1%Up_UniformBaseCorr
+11/21/2010 9:23:27 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000661 20-Mar-2013 10.3/1%Down_UniformBaseCorr
+11/21/2010 9:23:28 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000657 20-Dec-2016 3.03/1%Up_UniformBaseCorr
+11/21/2010 9:23:30 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000657 20-Dec-2016 3.03/1%Down_UniformBaseCorr
+11/21/2010 9:23:32 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000658 20-Dec-2016 5/1%Up_UniformBaseCorr
+11/21/2010 9:23:34 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000658 20-Dec-2016 5/1%Down_UniformBaseCorr
+11/21/2010 9:23:36 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000662 20-Mar-2013 8.3/1%Up_UniformBaseCorr
+11/21/2010 9:23:37 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000662 20-Mar-2013 8.3/1%Down_UniformBaseCorr
+11/21/2010 9:23:38 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000660 20-Mar-2013 6.5/1%Up_UniformBaseCorr
+11/21/2010 9:23:39 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDO0000660 20-Mar-2013 6.5/1%Down_UniformBaseCorr
+11/21/2010 9:23:41 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Product/CDX-NAIGS5V5-5Y (CIBC)/CDXPricer
+11/21/2010 9:23:42 PM - 	CBBCE-Z3-CLO03.6576.Worker1 Completed
+11/21/2010 9:23:45 PM - Script call: C:/Quantifi/9.4.1/bin/qpsExportCorrExposure.py 07/27/10 07/27/10 -o "C:/Quantifi/NightlyBatch/20100727/logs/CorrExposureOutput.csv" -l "C:/Quantifi/NightlyBatch/20100727/logs/CorrExposureOutputErrLog.csv" 
+11/21/2010 9:24:37 PM - 	Finished.
+******************** RISK RUN END (11/21/2010 9:24:37 PM - ) ********************

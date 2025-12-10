@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<project name="RdDebug" default="build.jar">
+
+	<property name="jar.name" value="rddebug"/>
+
+	<import file="../RdStudio/build.xml"/>
+
+</project>

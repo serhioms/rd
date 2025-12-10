@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-4">
+<title>JS Interview Questions</title>
+</head>
+
+<body>
+
+<a href="http://www.thatjsdude.com/interview/js2.html">4. True Lies</a>
+
+
+<script type="text/javascript">
+
+		console.log("Question: Is 'false' is false?");
+		if( 'false' ) console.log("No"); else console.log("Yes");
+		console.log("Answer: No. Because, it's a string with length greater than 0. Only empty string is false.");
+
+		console.log("Question: Is ' ' is false?");
+		if( ' ' ) console.log("No"); else console.log("Yes");
+		console.log("Answer: No. Because, it's not an empty string. There is a white space in it.");
+
+/*
+		Question: What about {}?
+
+		Answer: true. It's an object. An object without any property is an object can't be falsy.
+
+		Question: Tell me about []?
+
+		Answer: This is also truthy. It's an array object (array is child of object) is truthy.
+
+		Question: You talked bout '' to be falsy. What about new String('')?
+
+		Answer: Though you are passing empty string to the string constructor, it is creating an String object. More precisely a instance of String object. It becomes an object. Hence, it is not false. so, it is truthy.
+
+		Question: Tell me about new Boolean(false)
+
+		Answer: truthy. As it creates an instance of the Boolean object which is an object. Object is truthy.
+
+		Question: Boolean(function(){})
+
+		Answer: true if you pass a truthy value to Boolean, it will be true.
+
+		Question: Boolean(/foo/)
+
+		Answer: true
+
+		Question: true%1
+
+		Answer: 0. When you are trying to find reminder of true, true becomes 1 and reminder of 1 while dividing by 1 is 0. you will get same result if you doe false%1
+
+		Question: ''%1
+
+		Answer: 0
+*/		
+</script>
+        
+    
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-edmo-set-status-wf.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-edmo-set-status-wf</name> 
+  	<externalWorkflowCode>ctr-edmo-set-status-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-edmo-set-status-wf ($LastChangedRevision: 3690 $)</description>
+	
+	<properties>
+		<inputProperties>
+			<property name="EDMO_STATUS" >ON-or-OFF</property>
+		</inputProperties>
+	</properties>
+	
+	<sequential name="EDMO-SET-STATUS" id="EDMO-SET-STATUS-ONLINE">
+		<stage name="SET-EDMO-STATUS-ONLINE" id="SET-EDMO-STATUS-ONLINE">
+			<description>SET Status of EDMO code ONLINE</description>
+			<skipCondition>'${EDMO_STATUS}' == 'OFF'</skipCondition>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.EDMO_DQ_PKG.set_status_online">
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+		<stage name="SET-EDMO-STATUS-OFFLINE" id="SET-EDMO-STATUS-OFFLINE">
+			<description>SET Status of EDMO code OFFLINE</description>
+			<skipCondition>'${EDMO_STATUS}' == 'ON'</skipCondition>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.EDMO_DQ_PKG.set_status_offline"></dbProcedure>
+			</execDefinition>
+		</stage>
+	</sequential>
+</workflow>
+	

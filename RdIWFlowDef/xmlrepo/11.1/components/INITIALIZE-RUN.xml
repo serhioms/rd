@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: INITIALIZE-RUN.xml 4327 2016-06-30 20:59:27Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>INITIALIZE-RUN</name> 
+  	<externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>INITIALIZE-RUN ($LastChangedRevision: 4327 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="EOD-EOM-INDICATOR" />
+			<property name="SOURCE-SYSTEM" />
+			<property name="ROOT-WF-ID" />
+			<property name="TARGET-SYSTEM" />
+			<property name="RUN-TYPE" />
+			<property name="RUN-INSTANCE">1</property>
+			<property name="WORKFLOW-RUN-ID" />
+		</inputProperties>
+		<outputProperties>
+			<property name="BUSINESS-DATE">${#BUSINESS-DATE}</property>
+			<property name="BUSINESS-DATE-FORMATTED">${FORMAT-BUSINESS-DATE.result}</property>
+			<property name="RUN-ID">${#P_RUN_ID_O}</property>
+			<property name="IS-MONTH-END">${IS-MONTH-END.result}</property>
+		</outputProperties>
+	</properties>
+
+	<sequential id="INIT-RUN" name="INIT-RUN">
+	
+		<stage name="INPUT-PARAM-VALIDATION" id="INPUT-PARAM-VALIDATION">
+			<description>Verify if the common workflow steps completed</description>
+			<stageFailure>
+				<failureCondition>not(T(org.apache.commons.lang.math.NumberUtils).isNumber("${RUN-INSTANCE}"))</failureCondition>
+				<failureMessage>The RUN-INSTANCE passed is not numeric</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<noOpExecDefinition>
+					<input>INPUT-PARAM-VALIDATION</input>
+					<numberOfTasks>1</numberOfTasks>
+					<numberOfInterimStatusResponses>1</numberOfInterimStatusResponses>
+				</noOpExecDefinition>
+			</execDefinition>
+		</stage>
+	
+		<!-- PREPARE PHASE -->
+	
+		<stage name="GET-BUSINESS-DATE" id="GET-BUSINESS-DATE">
+			<description>Retrieve the business date</description>
+			<skipCondition>'${EOD-EOM-INDICATOR}' != 'D'</skipCondition>
+			<stageFailure>
+				<failureCondition><![CDATA['${#BUSINESS-DATE}' == 'INSTANCE NAME NO FOUND']]></failureCondition>
+				<failureMessage>GET-BUSINESS-DATE returned: INSTANCE NAME NOT FOUND</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbFunction name="CTRMSO.GET_CONFIG_BUSINESS_DATE_FN">
+					<in>
+						<param name="P_INSTANCE_NAME_I" type="STRING">${CONFIG_INSTANCE_NAME}</param>
+					</in>
+					<result name="#BUSINESS-DATE" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+		<stage name="GET-MONTHLY-BUSINESS-DATE" id="GET-MONTHLY-BUSINESS-DATE">
+			<description>Retrieve the business date</description>
+			<skipCondition>'${EOD-EOM-INDICATOR}' != 'M'</skipCondition>
+			<stageFailure>
+				<failureCondition><![CDATA['${#BUSINESS-DATE}' == 'INSTANCE NAME NO FOUND']]></failureCondition>
+				<failureMessage>GET-MONTHLY-BUSINESS-DATE returned: INSTANCE NAME NOT FOUND</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbFunction name="CTRMSO.GET_MONTHLY_BUSINESS_DATE_FN">
+					<in>
+						<param name="P_INSTANCE_NAME_I" type="STRING">${CONFIG_INSTANCE_NAME}</param>
+					</in>
+					<result name="#BUSINESS-DATE" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+		<stage name="FORMAT-BUSINESS-DATE" id="FORMAT-BUSINESS-DATE">
+			<description>Format the business date</description>
+			<stageFailure>
+				<failureCondition><![CDATA['${FORMAT-BUSINESS-DATE.result}' == '']]></failureCondition>
+				<failureMessage>FORMAT-BUSINESS-DATE returned empty date</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbFunction name="CTRMSO.FORMAT_DATE_FN">
+					<in>
+						<param name="DATE_I" type="STRING">${#BUSINESS-DATE}</param>
+						<param name="FORMAT_I" type="STRING">yyyymmdd</param>
+					</in>
+					<result name="result" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+		<stage id="CHECK-IF-FUTURE-DATED-RUN" name="CHECK-IF-FUTURE-DATED-RUN">
+			<description>Prevent future dated runs by checking if the CTR business date is in the future.</description>
+			<skipCondition>'${ALLOW_FUTURE_DATED_RUNS}' == 'YES' || '${SOURCE-SYSTEM}' == '-1'</skipCondition>
+			<stageFailure>
+				<failureCondition>'${CHECK-IF-FUTURE-DATED-RUN.isFutureDate}' == 'true'</failureCondition>
+				<failureMessage>BUSINESS-DATE '${#BUSINESS-DATE}' IS IN THE FUTURE - FUTURE DATED RUNS ARE NOT ALLOWED</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.BusinessDateVerifierExec</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="businessDate">${FORMAT-BUSINESS-DATE.result}</simpleProperty>
+							<simpleProperty name="dateFormat">yyyyMMdd</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>isFutureDate</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+		<stage name="INITIALIZE-RUN" id="INITIALIZE-RUN">
+			<description>Initialize the run and retrieve the Run ID</description>
+			<skipCondition>'${SOURCE-SYSTEM}' == '' or '${RUN-TYPE}' == 'BATCH' </skipCondition>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.RUN_PKG.INITIALIZE_RUN_SP">
+					<in>
+						<param name="P_STAGE_ID_I" type="STRING">PREPARE</param>
+						<param name="P_TASK_ID_I" type="STRING">INITIALIZE-RUN</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSSINESS_DATE_I" type="STRING">${#BUSINESS-DATE}</param>
+						<param name="P_RUN_TYPE_I" type="STRING">${EOD-EOM-INDICATOR}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						<param name="P_MAESTRO_RUN_ID_I" type="STRING">${WORKFLOW-RUN-ID}</param>
+						<param name="P_RUN_INSTANCE_ID_I" type="STRING">${RUN-INSTANCE}</param>
+					</in>
+					<out>
+						<param name="P_RUN_ID_O" type="NUMBER"></param>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+					<outputPropertyMapping>
+						<mapping source="P_RUN_ID_O" target="#P_RUN_ID_O"/>
+					</outputPropertyMapping>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="INITIALIZE-EXPORT-RUN" id="INITIALIZE-EXPORT-RUN">
+			<description>Initialize the run and retrieve the export batch ID</description>
+			<skipCondition>'${TARGET-SYSTEM}' == ''</skipCondition>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.RUN_PKG.INITIALIZE_BATCH_SP">
+					<in>
+						<param name="P_TARG_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SYSTEM}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						<param name="P_STAGE_ID_I" type="STRING">PREPARE</param>
+						<param name="P_TASK_ID_I" type="STRING">INITIALIZE-RUN</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSSINESS_DATE_I" type="STRING">${#BUSINESS-DATE}</param>
+						<param name="P_RUN_TYPE_I" type="STRING">${EOD-EOM-INDICATOR}</param>
+						<param name="P_MAESTRO_RUN_ID_I" type="STRING">${WORKFLOW-RUN-ID}</param>
+						<param name="P_RUN_INSTANCE_ID_I" type="STRING">${RUN-INSTANCE}</param>
+					</in>
+					<out>
+						<param name="P_EXPORT_BATCH_ID_O" type="NUMBER"></param>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+					<outputPropertyMapping>
+						<mapping source="P_EXPORT_BATCH_ID_O" target="#P_RUN_ID_O"/>
+					</outputPropertyMapping>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="CHECK-IF-MONTH-END" id="IS-MONTH-END">
+			<description>Check if business date is end of month</description>
+			<execDefinition>
+				<dbFunction name="CTRMSO.IS_MONTH_END_DATE_FN">
+					<in>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${#BUSINESS-DATE}</param>
+					</in>
+					<result name="result" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+
+	</sequential>
+
+</workflow>

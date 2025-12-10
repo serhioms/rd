@@ -1,0 +1,9 @@
+06/13/2014@16:22:43 DEBUG ALL: true
+06/13/2014@16:22:43 DEBUG DEBUG: true
+06/13/2014@16:22:43 DEBUG VERBOSE: true
+06/13/2014@16:22:43 INFO  INFO: true
+06/13/2014@16:22:43 WARN  WARN
+06/13/2014@16:22:43 ERROR ERROR
+06/13/2014@16:22:43 ERROR ERROR
+java.lang.RuntimeException: Terrible Disaster...
+	at ca.mss.rd.util.test.TestDebug.main(TestDebug.java:19)

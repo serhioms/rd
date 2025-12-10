@@ -1,0 +1,14 @@
+http.proxy = true
+http.proxy.host = wmpcamamc02ic.net.ca.cibcwm.com
+http.proxy.port = 8080
+http.proxy.scheme = http
+
+http.auth = true
+http.auth.scope.host = wmpcamamc02ic.net.ca.cibcwm.com
+http.auth.scope.port = 8080
+
+http.nt.credentials = true
+http.nt.credentials.userName = moskovsk
+http.nt.credentials.password = November1
+http.nt.credentials.workstation = TO22FXBTSWO1FYD
+http.nt.credentials.domain = AD

@@ -1,0 +1,9 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V5-10Y.Mid,0.0134
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-10Y.Mid,0.0122
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-5Y.Mid,0.0116
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-7Y.Mid,0.0103
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-10Y.Mid,0.0122
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-3Y.Mid,0.003
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-5Y.Mid,0.0075
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-7Y.Mid,0.0106

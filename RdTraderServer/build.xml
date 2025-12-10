@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<project name="RdTradeServer" default="omega">
+
+	<tstamp>
+        <format property="now" pattern="yyyy-MM-dd=HH-mm"/>
+    </tstamp>
+
+	<!--
+	<target name="full">
+		<zip destfile="trsr.zip" compress="true" >
+			<fileset dir="..">
+				<include name="*/src/**/*.*" />
+				<include name="*/test/**/*.*" />
+				<include name="*/repository/**/*.*" />
+				<include name="*/junit/**/*.*" />
+				<include name="*/lib/**/*.*" />
+				<include name="*/prop/**/*.*" />
+				<include name="*/properties/**/*.*" />
+				<include name="*/build.xml" />
+				<include name="*/build.properties" />
+				<include name="*/.classpath" />
+				<include name="*/.project" />
+			</fileset>
+		</zip>
+	</target>
+	-->
+	
+	<target name="omega">
+		<zip destfile="omega=${now}.zip" compress="true" >
+			<fileset dir="..">
+			    <include name="RdFlowEngine/src/**/*.java" />
+			    <include name="RdMath/src/**/*.java" />
+			    <include name="RdTraderConsole/src/**/*.java" />
+			    <include name="RdTraderServer/src/**/*.java" />
+			    <include name="RdTraderSource/src/**/*.java" />
+			    <include name="RdUtil/src/**/*.java" />
+			    <include name="RdFlowEngine/test/**/*.java" />
+			    <include name="RdMath/test/**/*.java" />
+			    <include name="RdTraderConsole/test/**/*.java" />
+			    <include name="RdTraderServer/test/**/*.java" />
+			    <include name="RdTraderSource/test/**/*.java" />
+			    <include name="RdUtil/test/**/*.java" />
+			    <include name="RdFlowEngine/junit/**/*.java" />
+			    <include name="RdMath/junit/**/*.java" />
+			    <include name="RdTraderConsole/junit/**/*.java" />
+			    <include name="RdTraderServer/junit/**/*.java" />
+			    <include name="RdTraderSource/junit/**/*.java" />
+			    <include name="RdUtil/junit/**/*.java" />
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="leto">
+		<zip destfile="alto=${now}.zip" compress="true" >
+			<fileset dir="..">
+			    <include name="RdLoto/src/**/generator/**/*.java" />
+			    <include name="RdUtil/src/**/*.java" />
+			    <include name="RdLoto/data/**/*.*" />
+			</fileset>
+		</zip>
+	</target>
+	
+</project>
+

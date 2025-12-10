@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/cms/downloads/joint.css" />
+<script src="http://jointjs.com/js/vendor/jquery/jquery.min.js"></script>
+<script src="http://jointjs.com/js/vendor/lodash/lodash.min.js"></script>
+<script src="http://jointjs.com/js/vendor/backbone/backbone-min.js"></script>
+<script src="http://jointjs.com/cms/downloads/joint.min.js"></script>
+</head>
+<body>
+
+	<div id="myholder"></div>
+	<div id="myholder-small"></div>
+	
+	<script type="text/javascript">
+
+	var graph = new joint.dia.Graph;
+
+    var paper = new joint.dia.Paper({
+        el: $('#myholder'),
+        width: 1600,
+        height: 500,
+        model: graph,
+        gridSize: 50
+    });
+
+    /* MORE PAPERS FOR THE SAME GRAPH */
+    var paperSmall = new joint.dia.Paper({
+	    el: $('#myholder-small'),
+	    width: 600,
+	    height: 100,
+	    model: graph,
+	    gridSize: 1
+	});
+    
+	paperSmall.scale(.5);
+	paperSmall.$el.css('pointer-events', 'none');
+
+	/* Model below will viewed on both papers! */
+	
+    var rect = new joint.shapes.basic.Rect({
+        position: { x: 100, y: 30 },
+        size: { width: 100, height: 30 },
+        attrs: { rect: { fill: 'blue' }, text: { text: 'my box', fill: 'white' } }
+    });
+
+    var rect2 = rect.clone();
+    rect2.translate(300);
+
+    var link = new joint.dia.Link({
+        source: { id: rect.id },
+        target: { id: rect2.id }
+    });
+
+    graph.addCells([rect, rect2, link]);
+
+    /* EVENT HANDLING */
+    graph.on('all', function(eventName, cell) {
+       console.log(cell, arguments);
+    });
+    
+    rect.on('change:position', function(element) {
+       console.log(element.id, ':', element.get('position'));
+    });
+    
+    /* ELEMENT STYLING */
+    rect.attr({
+        rect: { fill: '#E74C3C', rx: 20, ry: 20, 'stroke-width': 0 },
+        text: {
+            text: 'my label', fill: '#ECF0F1',
+            'font-size': 11, 'font-weight': 'normal', 'font-variant': 'small-caps', 'text-transform': 'capitalize'
+        }
+    });
+    
+    /* LINK STYLING */
+    link.attr({
+        '.connection': { stroke: 'black', 'stroke-width': 2 },
+        '.marker-source': { stroke: 'black', fill: 'black', d: 'M5.5,15.499,15.8,21.447,15.8,15.846,25.5,21.447,25.5,9.552,15.8,15.152,15.8,9.552z' },
+        '.marker-target': { stroke: 'black', fill: 'black', d: 'M5.5,15.499,15.8,21.447,15.8,15.846,25.5,21.447,25.5,9.552,15.8,15.152,15.8,9.552z' }
+    });
+    
+    link.set('smooth', true);
+    
+	</script>
+</body>
+</body>
+</html>

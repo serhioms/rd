@@ -1,0 +1,25 @@
+
+******************** qpsEDSF-trade START (6/11/2013 11:07:30 AM - ) ********************
+
+6/11/2013 11:11:26 AM - No Official risk run found for 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000653 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000653 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000654 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000654 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000655 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000655 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000656 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000656 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000657 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000657 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000658 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000658 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000671 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000671 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000672 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000672 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000673 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000673 on 10-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000674 on 11-Jun-2013.
+6/11/2013 11:11:26 AM - No Pv Risk Measure found for TradeCDO0000674 on 10-Jun-2013.
+******************** qpsEDSF-trade END (6/11/2013 11:12:53 AM - ) ********************

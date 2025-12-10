@@ -1,0 +1,27 @@
+-=[ ictk ]=- Internet Chess Toolkit 
+
+DEVELOPERS:
+-----------
+
+   Jason Varsoke <jvarsoke@ghostmanonfirst.com> 
+      Original Author / Main Developer
+      FICS: TibetianTick
+
+CONTRIBUTORS:
+-------------
+
+   Alexander Maryanovsky <msasha@engineer.com>
+      Timeseal from the Jin library
+      FICS: AlexTheGreat
+
+PATCH PEEPS:
+------------
+   Jerome Zago
+        
+BUG SEEKERS:
+------------
+   David Spencer
+   Franck (obelixft)
+
+---
+Last Updated: 2003-09-30 by jvarsoke

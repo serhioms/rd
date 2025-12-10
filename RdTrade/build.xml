@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<project name="RdTrade" default="build.jar">
+
+	<property name="jar.name" value="rdtrade"/>
+
+	<import file="../RdStudio/build.xml"/>
+
+</project>

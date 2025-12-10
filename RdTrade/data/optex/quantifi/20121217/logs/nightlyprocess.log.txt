@@ -1,0 +1,262 @@
+
+******************** RISK RUN START (1/3/2013 5:41:02 PM - ) ********************
+
+1/3/2013 5:41:02 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 17-Dec-2012 Official --index="CDX.NA.IG.9-V4" -e
+1/3/2013 5:41:09 PM - 	
+1/3/2013 5:41:09 PM - 	Calibrating Curve Scaling for index [CDX.NA.IG.9-V4]...
+1/3/2013 5:41:13 PM - 	Added 0 quotes and updated 2 quotes
+1/3/2013 5:42:51 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 17-Dec-2012 Official --index="iTraxx Europe Series 9 Version 1" -e
+1/3/2013 5:44:28 PM - 	
+1/3/2013 5:44:28 PM - 	Calibrating Curve Scaling for index [iTraxx Europe Series 9 Version 1]...
+1/3/2013 5:44:31 PM - 	Added 0 quotes and updated 0 quotes
+1/3/2013 5:46:09 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 17-Dec-2012 Official --index="Dow Jones CDX.NA.IG.7-V5" -e
+1/3/2013 5:46:16 PM - 	
+1/3/2013 5:46:16 PM - 	Calibrating Curve Scaling for index [Dow Jones CDX.NA.IG.7-V5]...
+1/3/2013 5:46:19 PM - 	Added 0 quotes and updated 0 quotes
+1/3/2013 5:47:57 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 17-Dec-2012 Official --surface="CDX.NA.IG.9-V4" -e
+1/3/2013 5:48:04 PM - 	
+1/3/2013 5:48:04 PM - 	Calibrating Correlation Surface [CDX.NA.IG.9-V4]...
+1/3/2013 5:48:22 PM - 	Added 0 quotes and updated 20 quotes
+1/3/2013 5:49:46 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 17-Dec-2012 Official --surface="iTraxx Europe Series 9 Version 1" -e
+1/3/2013 5:49:52 PM - 	
+1/3/2013 5:49:52 PM - 	Calibrating Correlation Surface [iTraxx Europe Series 9 Version 1]...
+1/3/2013 5:50:11 PM - 	Added 0 quotes and updated 0 quotes
+1/3/2013 5:51:34 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 17-Dec-2012 Official --surface="Dow Jones CDX.NA.IG.7-V5" -e
+1/3/2013 5:51:40 PM - 	
+1/3/2013 5:51:40 PM - 	Calibrating Correlation Surface [Dow Jones CDX.NA.IG.7-V5]...
+1/3/2013 5:51:51 PM - 	Added 0 quotes and updated 0 quotes
+1/3/2013 5:53:22 PM - Script call: C:/Quantifi/9.4.1/bin/BatchRisk.py 17-Dec-2012 -n Official -f --riskConfig=POC_Detailed --calcEnv=Official  -s quantifi --official --excludePending --desc="Nightly batch run"
+1/3/2013 5:53:25 PM - 	Warning: Using workstation GC. Server GC is recommended.
+1/3/2013 5:53:36 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/CDOPricer
+1/3/2013 5:53:42 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/JTDRiskCalculator
+1/3/2013 5:53:45 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/JTDRiskCalculator_rescaleOn
+1/3/2013 5:54:20 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/RateRiskCalculator
+1/3/2013 5:54:21 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/ByTenor_IR
+1/3/2013 5:54:26 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/RecoveryRiskCalculator
+1/3/2013 5:55:01 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/RecoveryRiskCalculator_RecalOff
+1/3/2013 5:55:37 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/TimeEffectRiskCalculator
+1/3/2013 5:55:38 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/ByTenorSpreadRiskCalculator
+1/3/2013 5:55:58 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/UniformSpreadRiskCalculator
+1/3/2013 5:55:59 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/FlatteningSpreadRiskCalculator
+1/3/2013 5:56:00 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/SteepeningSpreadRiskCalculator
+1/3/2013 5:56:01 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/Hedge_Delta
+1/3/2013 5:56:09 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/5%_sprdshif
+1/3/2013 5:56:44 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/UniformBaseCorrelationCalculator
+1/3/2013 5:56:47 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%bumping_BaseCorrSurface
+1/3/2013 5:56:49 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Down_ByPointCDXIG9
+1/3/2013 5:56:52 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Up_ByPointCDXIG9
+1/3/2013 5:56:55 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Down_ByPointITX9
+1/3/2013 5:56:56 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Down_UniformBaseCorr
+1/3/2013 5:56:57 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000653 20-Jun-2016 114.75/RiskReserve-10%
+1/3/2013 5:57:05 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/JTDRiskCalculator
+1/3/2013 5:57:06 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/JTDRiskCalculator_rescaleOn
+1/3/2013 5:57:18 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/ByTenor_IR
+1/3/2013 5:57:20 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/RecoveryRiskCalculator
+1/3/2013 5:57:31 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/RecoveryRiskCalculator_RecalOff
+1/3/2013 5:57:42 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/ByTenorSpreadRiskCalculator
+1/3/2013 5:57:45 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/UniformSpreadRiskCalculator
+1/3/2013 5:57:46 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/Hedge_Delta
+1/3/2013 5:57:49 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/5%_sprdshif
+1/3/2013 5:57:59 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/1%bumping_BaseCorrSurface
+1/3/2013 5:58:00 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/1%Down_ByPointCDXIG9
+1/3/2013 5:58:01 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/1%Up_ByPointCDXIG9
+1/3/2013 5:58:02 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000654 20-Jun-2013 51.25/RiskReserve-10%
+1/3/2013 5:58:07 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/CDOPricer
+1/3/2013 5:58:09 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/JTDRiskCalculator
+1/3/2013 5:58:12 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/JTDRiskCalculator_rescaleOn
+1/3/2013 5:58:48 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/RateRiskCalculator
+1/3/2013 5:58:49 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/ByTenor_IR
+1/3/2013 5:58:54 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/RecoveryRiskCalculator
+1/3/2013 5:59:29 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:00:03 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/ByTenorSpreadRiskCalculator
+1/3/2013 6:00:25 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/UniformSpreadRiskCalculator
+1/3/2013 6:00:26 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/FlatteningSpreadRiskCalculator
+1/3/2013 6:00:27 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/Hedge_Delta
+1/3/2013 6:00:34 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/5%_sprdshif
+1/3/2013 6:01:08 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/1%bumping_BaseCorrSurface
+1/3/2013 6:01:10 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/1%Down_ByPointCDXIG9
+1/3/2013 6:01:13 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/1%Up_ByPointCDXIG9
+1/3/2013 6:01:16 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/1%Up_UniformBaseCorr
+1/3/2013 6:01:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000655 20-Jun-2016 118/RiskReserve-10%
+1/3/2013 6:01:27 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/CDOPricer
+1/3/2013 6:01:28 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/JTDRiskCalculator
+1/3/2013 6:01:29 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/JTDRiskCalculator_rescaleOn
+1/3/2013 6:01:40 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/ByTenor_IR
+1/3/2013 6:01:42 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/RecoveryRiskCalculator
+1/3/2013 6:01:52 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:02:04 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/TimeEffectRiskCalculator
+1/3/2013 6:02:05 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/ByTenorSpreadRiskCalculator
+1/3/2013 6:02:07 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/UniformSpreadRiskCalculator
+1/3/2013 6:02:08 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/Hedge_Delta
+1/3/2013 6:02:10 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/5%_sprdshif
+1/3/2013 6:02:21 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/1%Down_ByPointCDXIG9
+1/3/2013 6:02:22 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/1%Up_ByPointCDXIG9
+1/3/2013 6:02:23 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/1%Up_UniformBaseCorr
+1/3/2013 6:02:24 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000656 20-Jun-2013 50/RiskReserve-10%
+1/3/2013 6:02:28 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/CDOPricer
+1/3/2013 6:02:30 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/JTDRiskCalculator
+1/3/2013 6:02:33 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/JTDRiskCalculator_rescaleOn
+1/3/2013 6:02:53 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/ByTenor_IR
+1/3/2013 6:02:57 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/RecoveryRiskCalculator
+1/3/2013 6:03:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:03:36 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/ByTenorSpreadRiskCalculator
+1/3/2013 6:03:48 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/UniformSpreadRiskCalculator
+1/3/2013 6:03:49 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/Hedge_Delta
+1/3/2013 6:03:52 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/5%_sprdshif
+1/3/2013 6:04:13 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/1%bumping_BaseCorrSurface
+1/3/2013 6:04:14 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/1%Down_ByPointCDXIG9
+1/3/2013 6:04:16 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/1%Up_ByPointCDXIG9
+1/3/2013 6:04:18 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000673 20-Dec-2016 6660/RiskReserve-10%
+1/3/2013 6:04:29 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/CDOPricer
+1/3/2013 6:04:30 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/JTDRiskCalculator
+1/3/2013 6:04:32 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/JTDRiskCalculator_rescaleOn
+1/3/2013 6:04:52 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/ByTenor_IR
+1/3/2013 6:04:56 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/RecoveryRiskCalculator
+1/3/2013 6:05:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:05:35 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/TimeEffectRiskCalculator
+1/3/2013 6:05:36 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/ByTenorSpreadRiskCalculator
+1/3/2013 6:05:48 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/UniformSpreadRiskCalculator
+1/3/2013 6:05:49 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/FlatteningSpreadRiskCalculator
+1/3/2013 6:05:50 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/Hedge_Delta
+1/3/2013 6:05:53 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/5%_sprdshif
+1/3/2013 6:06:12 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/1%bumping_BaseCorrSurface
+1/3/2013 6:06:13 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/1%Down_ByPointCDXIG9
+1/3/2013 6:06:16 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/1%Up_ByPointCDXIG9
+1/3/2013 6:06:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/1%Up_ByPointITX9
+1/3/2013 6:06:18 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000672 20-Dec-2016 6660/RiskReserve-10%
+1/3/2013 6:06:30 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/CDOPricer
+1/3/2013 6:06:31 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/JTDRiskCalculator
+1/3/2013 6:06:33 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/JTDRiskCalculator_rescaleOn
+1/3/2013 6:06:54 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/ByTenor_IR
+1/3/2013 6:06:58 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/RecoveryRiskCalculator
+1/3/2013 6:07:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:07:36 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/ByTenorSpreadRiskCalculator
+1/3/2013 6:07:48 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/UniformSpreadRiskCalculator
+1/3/2013 6:07:49 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/FlatteningSpreadRiskCalculator
+1/3/2013 6:07:50 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/SteepeningSpreadRiskCalculator
+1/3/2013 6:07:51 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/Hedge_Delta
+1/3/2013 6:07:54 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/5%_sprdshif
+1/3/2013 6:08:15 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/UniformBaseCorrelationCalculator
+1/3/2013 6:08:16 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/1%bumping_BaseCorrSurface
+1/3/2013 6:08:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/1%Down_ByPointCDXIG9
+1/3/2013 6:08:18 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/1%Up_ByPointCDXIG9
+1/3/2013 6:08:20 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/1%Up_UniformBaseCorr
+1/3/2013 6:08:21 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000671 20-Dec-2016 6660/RiskReserve-10%
+1/3/2013 6:08:31 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/CDOPricer
+1/3/2013 6:08:33 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/JTDRiskCalculator
+1/3/2013 6:08:35 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/JTDRiskCalculator_rescaleOn
+1/3/2013 6:08:55 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/RateRiskCalculator
+1/3/2013 6:08:56 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/ByTenor_IR
+1/3/2013 6:09:00 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/RecoveryRiskCalculator
+1/3/2013 6:09:20 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:09:40 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/ByTenorSpreadRiskCalculator
+1/3/2013 6:09:52 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/UniformSpreadRiskCalculator
+1/3/2013 6:09:53 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/Hedge_Delta
+1/3/2013 6:09:57 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/5%_sprdshif
+1/3/2013 6:10:18 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/1%bumping_BaseCorrSurface
+1/3/2013 6:10:19 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/1%Down_ByPointCDXIG9
+1/3/2013 6:10:21 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/1%Up_ByPointCDXIG9
+1/3/2013 6:10:23 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/1%Down_UniformBaseCorr
+1/3/2013 6:10:24 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000674 20-Dec-2016 6660/RiskReserve-10%
+1/3/2013 6:10:34 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/CDOPricer_GNT
+1/3/2013 6:10:35 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/JTDRiskCalculator
+1/3/2013 6:10:40 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/JTDRiskCalculator_rescaleOn
+1/3/2013 6:10:44 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/RateRiskCalculator
+1/3/2013 6:10:45 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/ByTenor_IR
+1/3/2013 6:10:52 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/RecoveryRiskCalculator
+1/3/2013 6:11:05 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:11:18 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/TimeEffectRiskCalculator
+1/3/2013 6:11:19 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/ByTenorSpreadRiskCalculator
+1/3/2013 6:11:41 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/UniformSpreadRiskCalculator
+1/3/2013 6:11:42 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/FlatteningSpreadRiskCalculator
+1/3/2013 6:11:43 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/Hedge_Delta
+1/3/2013 6:11:50 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/5%_sprdshif
+1/3/2013 6:11:53 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000657 20-Dec-2016 3.03/RiskReserve-10%
+1/3/2013 6:12:03 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/CDOPricer_GNT
+1/3/2013 6:12:04 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/JTDRiskCalculator
+1/3/2013 6:12:07 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/JTDRiskCalculator_rescaleOn
+1/3/2013 6:12:11 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/RateRiskCalculator
+1/3/2013 6:12:12 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/ByTenor_IR
+1/3/2013 6:12:20 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/RecoveryRiskCalculator
+1/3/2013 6:12:33 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:12:47 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/ByTenorSpreadRiskCalculator
+1/3/2013 6:13:10 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/SteepeningSpreadRiskCalculator
+1/3/2013 6:13:11 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/Hedge_Delta
+1/3/2013 6:13:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/5%_sprdshif
+1/3/2013 6:13:21 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000658 20-Dec-2016 5/RiskReserve-10%
+1/3/2013 6:13:31 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/CDOPricer
+1/3/2013 6:13:32 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/JTDRiskCalculator
+1/3/2013 6:13:33 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/JTDRiskCalculator_rescaleOn
+1/3/2013 6:13:39 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/RateRiskCalculator
+1/3/2013 6:13:40 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/ByTenor_IR
+1/3/2013 6:13:56 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/RecoveryRiskCalculator
+1/3/2013 6:14:02 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:14:07 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/ByTenorSpreadRiskCalculator
+1/3/2013 6:14:08 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/UniformSpreadRiskCalculator
+1/3/2013 6:14:09 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/Hedge_Delta
+1/3/2013 6:14:11 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/5%_sprdshif
+1/3/2013 6:14:16 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/1%bumping_BaseCorrSurface
+1/3/2013 6:14:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/1%Up_ByPointCDXIG9
+1/3/2013 6:14:18 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/1%Down_ByPointITX9
+1/3/2013 6:14:19 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000660 20-Mar-2013 6.5/RiskReserve-10%
+1/3/2013 6:14:24 PM - 	CBBCE-Z3-CLO03.4052.Worker1 CDO0000662 20-Mar-2013 8.3
+1/3/2013 6:14:25 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/JTDRiskCalculator
+1/3/2013 6:14:26 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/JTDRiskCalculator_rescaleOn
+1/3/2013 6:14:32 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/RateRiskCalculator
+1/3/2013 6:14:33 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/ByTenor_IR
+1/3/2013 6:14:47 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/RecoveryRiskCalculator
+1/3/2013 6:14:53 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/RecoveryRiskCalculator_RecalOff
+1/3/2013 6:14:59 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/ByTenorSpreadRiskCalculator
+1/3/2013 6:15:01 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/Hedge_Delta
+1/3/2013 6:15:03 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/5%_sprdshif
+1/3/2013 6:15:08 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/1%bumping_BaseCorrSurface
+1/3/2013 6:15:09 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/1%Up_ByPointCDXIG9
+1/3/2013 6:15:10 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/1%Up_UniformBaseCorr
+1/3/2013 6:15:11 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Product/CDO0000662 20-Mar-2013 8.3/RiskReserve-10%
+1/3/2013 6:15:17 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000640/PNLExplainCalculator
+1/3/2013 6:15:20 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000653/PNLExplainCalculator
+1/3/2013 6:15:24 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000654/PNLExplainCalculator
+1/3/2013 6:15:25 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000655/PNLExplainCalculator
+1/3/2013 6:15:29 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000656/PNLExplainCalculator
+1/3/2013 6:15:30 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000673/PNLExplainCalculator
+1/3/2013 6:15:34 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000672/PNLExplainCalculator
+1/3/2013 6:15:38 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000671/PNLExplainCalculator
+1/3/2013 6:15:42 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000674/PNLExplainCalculator
+1/3/2013 6:15:46 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000657/PNLExplainCalculator
+1/3/2013 6:15:50 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000658/PNLExplainCalculator
+1/3/2013 6:15:54 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0001101/PNLExplainCalculator
+1/3/2013 6:15:55 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000660/PNLExplainCalculator
+1/3/2013 6:15:56 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Pnl/CDO0000662/PNLExplainCalculator
+1/3/2013 6:15:58 PM - 	CBBCE-Z3-CLO03.4052.Worker1 Completed
+1/3/2013 6:16:00 PM - Script call: C:/Quantifi/9.4.1/bin/qpsRiskRunStatus.py 12/17/12 12/17/12 -f "C:/Quantifi/NightlyBatch/20121217/logs/RiskStatus.csv" -l "C:/Quantifi/NightlyBatch/20121217/logs/ErrLog.txt" 
+1/3/2013 6:18:06 PM - 	Finished.
+1/3/2013 6:18:06 PM - Risk Status file on web folder is deleted
+
+1/3/2013 6:18:06 PM - Risk Status file copied to web folder
+
+1/3/2013 6:18:06 PM - Script call: C:/Quantifi/9.4.1/bin/qpsClientStatement.exe  --date=12/17/12 -o C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:19:50 PM - Script call: C:/Quantifi/9.4.1/bin/qpsEDSF.exe  --date=12/17/12 --trade -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:21:33 PM - Script call: C:/Quantifi/9.4.1/bin/qpsEDSF.exe  --date=12/17/12 --settlement --days=5 -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:26:51 PM - Script call: C:/Quantifi/9.4.1/bin/qpsMARS.exe  --date=12/17/12 -o C:/Quantifi/NightlyBatch/20121217/reports --prod
+1/3/2013 6:28:36 PM - Script call: C:/Quantifi/9.4.1/bin/qpsSettlementDiary.exe  --date=12/17/12 -o C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:30:04 PM - Script call: C:/Quantifi/9.4.1/bin/qpsTRACS.exe  --date=12/17/12 -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:31:48 PM - Script call: C:/Quantifi/9.4.1/bin/qpsVoyager.exe  --date=12/17/12 --exposure -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:33:32 PM - Script call: C:/Quantifi/9.4.1/bin/qpsVoyager.exe  --date=12/17/12 --trading -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:38:58 PM - Script call: C:/Quantifi/9.4.1/bin/qpsVoyager.exe  --date=12/17/12 --greeks -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:40:41 PM - Script call: C:/Quantifi/9.4.1/bin/qpsVoyager.exe  --date=12/17/12 --basket -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:52:16 PM - Script call: C:/Quantifi/9.4.1/bin/qpsVoyager.exe  --date=12/17/12 --irdelta -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:54:00 PM - Script call: C:/Quantifi/9.4.1/bin/qpsVoyager.exe  --date=12/17/12 --quanto -o C:/Quantifi/NightlyBatch/20121217/reports -c C:/Quantifi/NightlyBatch/20121217/reports
+1/3/2013 6:55:44 PM - Today is a valid settlement date, generate FO reports now
+
+1/3/2013 6:55:44 PM - Script call: C:/Quantifi/9.4.1/bin/BatchRiskViewer.exe -d 17-Dec-2012 -o "C:/Quantifi/NightlyBatch/20121217/reports/Risk_Reserve_Report_20121217.csv" -v "Users\birnie\Risk_Reserve_Report_20100825" --showStats --excludePending
+1/3/2013 6:57:33 PM - Risk Reserve Report sent to FO
+
+1/3/2013 6:57:33 PM - Script call: C:/Quantifi/9.4.1/bin/BatchRiskViewer.exe -n Today=17-Dec-2012,Official:Yesterday=14-Dec-2012,Official -o "C:/Quantifi/NightlyBatch/20121217/reports/PnL_Sensitivities_Report_20121217.csv" -v "Shared\POC_Detailed_Daily_Deltas" --showStats --excludePending
+1/3/2013 6:59:18 PM - Pnl Sensitivities Report sent to FO
+
+1/3/2013 6:59:18 PM - Script call: C:/Quantifi/9.4.1/bin/BatchRiskViewer.exe -n Today=17-Dec-2012,Official:LastBusinessDate=14-Dec-2012,Official -v Shared\MO_Daily_Pnl_Report -o "C:/Quantifi/NightlyBatch/20121217/reports/PnL_Explain_Report_20121217.csv " --excludePending
+1/3/2013 7:01:02 PM - Pnl Explain Report sent to FO
+
+1/3/2013 7:01:02 PM - Quantifi Settlement Diary sent to MO
+
+******************** RISK RUN END (1/3/2013 7:01:02 PM - ) ********************

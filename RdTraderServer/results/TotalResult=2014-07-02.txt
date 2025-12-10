@@ -1,0 +1,56 @@
+BACK-TEST RESULTS:
+===================================================================
+      USDJPY [PROFIT=  526.84spr][LOSES=  -40.47spr][ +92.9%][ 565]
+      NZDJPY [PROFIT=  276.67spr][LOSES=  -23.15spr][ +92.3%][ 292]
+      USDDKK [PROFIT=  229.02spr][LOSES=  -34.42spr][ +86.9%][ 316]
+      GBPJPY [PROFIT=  209.69spr][LOSES=   -7.76spr][ +96.4%][ 238]
+      EURUSD [PROFIT=  200.70spr][LOSES=  -22.95spr][ +89.7%][ 203]
+      AUDUSD [PROFIT=  175.97spr][LOSES=  -22.99spr][ +88.4%][ 177]
+      EURJPY [PROFIT=  164.39spr][LOSES=  -21.29spr][ +88.5%][ 211]
+      EURGBP [PROFIT=  137.17spr][LOSES=   -6.29spr][ +95.6%][ 133]
+      NZDUSD [PROFIT=  115.91spr][LOSES=  -43.44spr][ +72.7%][ 183]
+      XCUUSD [PROFIT=  106.37spr][LOSES=  -40.21spr][ +72.6%][ 187]
+      CHFJPY [PROFIT=  106.35spr][LOSES=  -14.30spr][ +88.1%][ 141]
+    AU200AUD [PROFIT=  105.60spr][LOSES=  -27.00spr][ +79.6%][ 137]
+      GBPUSD [PROFIT=  103.93spr][LOSES=  -44.33spr][ +70.1%][ 175]
+      EURNZD [PROFIT=   93.50spr][LOSES=  -46.95spr][ +66.6%][ 166]
+     US30USD [PROFIT=   66.80spr][LOSES=  -98.76spr][ +40.3%][ 212]-
+      USDCHF [PROFIT=   66.33spr][LOSES=  -11.08spr][ +85.7%][  83]
+      USDCAD [PROFIT=   63.28spr][LOSES=  -19.24spr][ +76.7%][ 104]
+     DE30EUR [PROFIT=   57.62spr][LOSES=  -55.15spr][ +51.1%][ 130]
+      GBPCHF [PROFIT=   51.91spr][LOSES=  -19.06spr][ +73.1%][ 110]
+     SG30SGD [PROFIT=   49.05spr][LOSES=    0.00spr][+100.0%][  42]
+      EURCAD [PROFIT=   48.27spr][LOSES=  -35.20spr][ +57.8%][  98]
+      CADJPY [PROFIT=   47.50spr][LOSES=  -37.84spr][ +55.7%][ 124]
+   NATGASUSD [PROFIT=   41.79spr][LOSES=  -37.40spr][ +52.8%][ 107]
+      AUDJPY [PROFIT=   38.01spr][LOSES=  -25.52spr][ +59.8%][  93]
+   SPX500USD [PROFIT=   36.80spr][LOSES=  -34.60spr][ +51.5%][  90]
+      EURSEK [PROFIT=   26.22spr][LOSES=  -14.52spr][ +64.4%][  53]
+      XPTUSD [PROFIT=   24.28spr][LOSES=    0.00spr][+100.0%][  27]
+      EURCHF [PROFIT=   18.17spr][LOSES=  -24.81spr][ +42.3%][  66]
+   NAS100USD [PROFIT=   15.57spr][LOSES= -167.86spr][  +8.5%][ 265]-
+      XAUUSD [PROFIT=   14.77spr][LOSES= -120.55spr][ +10.9%][ 208]-
+      XPDUSD [PROFIT=    6.63spr][LOSES=   -2.60spr][ +71.9%][  14]
+     HK33HKD [PROFIT=    4.81spr][LOSES= -177.91spr][  +2.6%][ 240]-
+      USDCNY [PROFIT=    3.16spr][LOSES=    0.00spr][+100.0%][   3]-
+    WHEATUSD [PROFIT=    1.67spr][LOSES=    0.00spr][+100.0%][   5]-
+   UK10YBGBP [PROFIT=    0.00spr][LOSES=    0.00spr][   NaN%][   0]-
+     EU50EUR [PROFIT=  -10.00spr][LOSES=  -10.00spr][-100.0%][   5]-
+   DE10YBEUR [PROFIT=   -6.10spr][LOSES=  -13.50spr][ -64.6%][  18]-
+   USB10YUSD [PROFIT=  -25.81spr][LOSES=  -25.81spr][-100.0%][   6]-
+   USB05YUSD [PROFIT=  -15.13spr][LOSES=  -26.13spr][ -70.4%][  34]-
+      XAGUSD [PROFIT=  -17.18spr][LOSES=  -34.03spr][ -66.9%][  50]-
+    JP225USD [PROFIT=  -36.10spr][LOSES=  -36.59spr][ -98.7%][  30]-
+    UK100GBP [PROFIT=   -6.22spr][LOSES=  -50.27spr][ -53.3%][  61]-
+      BCOUSD [PROFIT=  -75.74spr][LOSES=  -99.62spr][ -80.7%][  39]-
+      AUDCAD [PROFIT=   -0.00spr][LOSES= -128.94spr][ -50.0%][ 170]-
+    WTICOUSD [PROFIT=  -93.14spr][LOSES= -239.42spr][ -62.1%][ 148]-
+===================================================================
+     TOTALS: [PROFIT= 2949.33spr][LOSES=-1941.95spr][ +60.3%][5759]
+   w/o negative profit
+     TOTALS: [PROFIT= 3234.74spr][LOSES=-1277.66spr][ +71.7%][5198]
+ + w/o HK33HKD, XAUUSD, NAS100USD, US30USD        
+     TOTALS: [PROFIT= 3132.80spr][LOSES= -712.57spr][ +81.5%][4273]
+ + w/o low trade USDCNY,WHEATUSD,UK10YBGBP, EU50EUR     
+     TOTALS: [PROFIT= 3127.98spr][LOSES= -712.57spr][ +81.4%][4265]
+     

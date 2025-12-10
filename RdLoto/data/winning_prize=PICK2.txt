@@ -1,0 +1,3 @@
+Match	WinTickets	Prize
+2/2	252	$99.00
+Match First	1392	$2.00

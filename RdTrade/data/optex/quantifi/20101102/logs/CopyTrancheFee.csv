@@ -1,0 +1,7 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+01-Nov-2010,02-Nov-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 5Y.0-0.03,0.459375
+01-Nov-2010,02-Nov-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.03-0.07,0.2855
+01-Nov-2010,02-Nov-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.07-0.1,0.0383
+01-Nov-2010,02-Nov-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.1-0.15,0.077
+01-Nov-2010,02-Nov-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.15-0.3,-0.0117
+01-Nov-2010,02-Nov-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0-0.03,0.7574

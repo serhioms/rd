@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<project name="RdUtil" default="build.jar">
+
+	<property name="jar.name" value="rdutil"/>
+
+	<import file="../RdStudio/build.xml"/>
+
+</project>

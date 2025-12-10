@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-gather-stats-full-wf.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-gather-stats-full-wf</name> 
+  	<externalWorkflowCode>ctr-gather-stats-full-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-gather-stats-full-wf ($LastChangedRevision: 3690 $)</description>
+	
+	<sequential name="GATHER-STATS" id="GATHER-STATS">
+
+		<stage name="GET-BUSINESS-DATE" id="GET-BUSINESS-DATE">
+			<description>Retrieve the business date</description>
+			<stageFailure>
+				<failureCondition><![CDATA['${#BUSINESS-DATE}' == 'INSTANCE NAME NO FOUND']]></failureCondition>
+				<failureMessage>GET-BUSINESS-DATE returned: INSTANCE NAME NOT FOUND</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbFunction name="CTRMSO.GET_CONFIG_BUSINESS_DATE_FN">
+					<in>
+						<param name="P_INSTANCE_NAME_I" type="STRING">${CONFIG_INSTANCE_NAME}</param>
+					</in>
+					<result name="#BUSINESS-DATE" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+	
+		<stage name="GATHER-STATS-FULL" id="GATHER-STATS-FULL">
+			<description>Gathers full statistics</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.GATHER_STATS_FULL_SP">
+					<in>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${#BUSINESS-DATE}</param>
+					</in>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+
+	</sequential>
+</workflow>
+	

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-roll-monthly-business-date-wf.xml 4168 2016-06-23 19:16:47Z gmusial $
+	 Maestro version: 1.16.0 -->
+	
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-roll-monthly-business-date-wf</name> 
+  	<externalWorkflowCode>ctr-roll-monthly-business-date-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-roll-monthly-business-date-wf ($LastChangedRevision: 4168 $)</description>
+	
+	<properties>
+		<generalProperties>		
+			<!-- BUSINESS-DATE uses the date format: DD-MMM-YY OR the value: 'NEXT-MONTH'
+			DD-MMM-YY - will roll the date to the specified date
+			NEXT-MONTH - will roll the date to the last business day of the next month
+			-->
+			<property name="BUSINESS-DATE">NEXT-MONTH</property>
+			<property name="WF-EOD-EOM-INDICATOR">M</property>
+			<property name="RUN-INSTANCE">1</property>
+			<property name="ROOT-WF-ID">ctr-roll-monthly-business-date-wf</property>
+			<property name="WORKFLOW_RUN_ID">0</property>
+		</generalProperties>
+	</properties>	
+
+	<sequential name="CTR-ROLL-BPD" id="CTR-ROLL-BPD">
+	
+		<externalWorkflowReference name="INITIALIZE-RUN" id="INITIALIZE-RUN">
+			<externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+				<property name="SOURCE-SYSTEM">-1</property>
+				<property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+				<property name="TARGET-SYSTEM"></property>
+				<property name="RUN-TYPE" />
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+				<property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+			</inputProperties>
+			<outputPropertyMapping>
+				<mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+				<mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+				<mapping source="RUN-ID" target="P_RUN_ID_O"/>
+				<mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+			</outputPropertyMapping>
+		</externalWorkflowReference>
+		
+		<!-- ROLL TO NEXT MONTH BUSINESS DATE -->
+		
+		<stage name="GET-NEXT-MONTH-BUSINESS-DATE" id="GET-NEXT-MONTH-BUSINESS-DATE">
+			<description>Get the next business date</description>
+			<skipCondition>'${BUSINESS-DATE}' != 'NEXT-MONTH'</skipCondition>
+			<execDefinition>
+				<dbFunction name="CTRMSO.GET_NEXT_MONTH_END_DATE_FN">
+					<in>
+						<param name="P_CUR_MONTH_END_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+					</in>
+					<result name="result" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+		<stage name="SET-NEXT-MONTH-BUSINESS-DATE" id="SET-NEXT-MONTH-BUSINESS-DATE">
+			<description>Set the new business date</description>
+			<skipCondition>'${BUSINESS-DATE}' != 'NEXT-MONTH'</skipCondition>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.SET_MONTH_END_DATE_SP">
+					<in>
+						<param name="P_INSTANCE_NAME_I" type="STRING">${CONFIG_INSTANCE_NAME}</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">PREPARE</param>
+						<param name="P_TASK_ID_I" type="STRING">SET-BUSINESS-DATE</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_MONTH_END_DATE_I" type="STRING">${GET-NEXT-MONTH-BUSINESS-DATE.result}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+
+		<!--  SET BUSINESS DATE TO PARAM SPECIFIED DATE -->
+		
+		<stage name="SET-BUSINESS-DATE" id="SET-BUSINESS-DATE">
+			<description>Set the new business date</description>
+			<skipCondition>'${BUSINESS-DATE}' == 'NEXT-MONTH'</skipCondition>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.SET_MONTH_END_DATE_SP">
+					<in>
+						<param name="P_INSTANCE_NAME_I" type="STRING">${CONFIG_INSTANCE_NAME}</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">PREPARE</param>
+						<param name="P_TASK_ID_I" type="STRING">SET-BUSINESS-DATE</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_MONTH_END_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+
+		<stage name="GET-UPDATED-MONTHLY-BUSINESS-DATE" id="GET-UPDATED-MONTHLY-BUSINESS-DATE">
+			<description>Retrieve the business date</description>
+			<stageFailure>
+				<failureCondition><![CDATA['${GET-UPDATED-MONTHLY-BUSINESS-DATE.result}' == 'INSTANCE NAME NO FOUND']]></failureCondition>
+				<failureMessage>GET-UPDATED-MONTHLY-BUSINESS-DATE returned: INSTANCE NAME NOT FOUND</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbFunction name="CTRMSO.GET_MONTHLY_BUSINESS_DATE_FN">
+					<in>
+						<param name="P_INSTANCE_NAME_I" type="STRING">${CONFIG_INSTANCE_NAME}</param>
+					</in>
+					<result name="result" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+		
+		<externalWorkflowReference name="FINALIZE-RUN" id="COMPLETE-RUN">
+			<description>Finalize the run and mark complete</description>
+			<externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">NONE</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="SRC-FILE-SUFFIX-PATTERN">NONE</property>
+				<property name="FTP-SOURCE-DIR">NONE</property>
+			</inputProperties>
+		</externalWorkflowReference>
+	</sequential>
+</workflow>

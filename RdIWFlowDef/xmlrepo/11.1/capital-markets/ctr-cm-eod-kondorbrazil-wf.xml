@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-cm-eod-kondorbrazil-wf.xml 4168 2016-06-23 19:16:47Z gmusial $
+	 Maestro version: 1.19.1 -->
+	
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-cm-eod-kondorbrazil-wf</name> 
+  	<externalWorkflowCode>ctr-cm-eod-kondorbrazil-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-cm-eod-kondorbrazil-wf ($LastChangedRevision: 4168 $)</description>
+	
+	<properties>
+		<inputProperties>
+			<property name="WF-EOD-EOM-INDICATOR">D</property>
+			<property name="RUN-INSTANCE">1</property>
+		</inputProperties>
+		<generalProperties>
+			<property name="ROOT-WF-ID">ctr-cm-eod-kondorbrazil-wf</property>
+			<property name="WORKFLOW_RUN_ID">0</property>
+			<!-- Source Directories -->
+			<property name="FTP-SOURCE-DIR">kondorbrazil/inbox</property>
+			<property name="HOLDING-DIR">${CTR_DATA_ROOT_PATH}/manual/kondorbrazil</property>
+			<property name="HOLDING-MATCH-PATTERN">.+_${WF-EOD-EOM-INDICATOR}_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}_.+</property>
+			<property name="SQLLDR-PROCESSING-SOURCE-DIR">data_in/infiles</property>
+			<property name="SQLLDR-CONTROL-DIRECTORY">sqlldr</property>
+			<property name="SQLLDR-DISCARD-DIR">data_in/discard</property>
+			<property name="SQLLDR-REJECT-DIRECTORY">data_in/reject</property>
+			<property name="SQLLDR-LOG-DIRECTORY">data_in/ldrlog</property>
+			<property name="SOURCE-SYSTEM">KONDORBRAZIL</property>
+			
+			<property name="REPLICATE-SRC-IF-MONTH-END">T</property>
+			<property name="DATA-CATEGORY-TYPE">CM</property>
+			
+			<!-- Source file naming pattern -->
+			<property name="SRC-FILE-PRODUCTTYPE-PATTERN">[^_]*[_]?</property>
+			<property name="SRC-FILE-FILETYPE-PATTERN">[PT]?[_]?</property>
+			<property name="SRC-FILE-FREQUENCY-PATTERN">${WF-EOD-EOM-INDICATOR}_</property>
+			<property name="SRC-FILE-VERSION-PATTERN">(${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED})?_[0-9]{2,2}</property>
+			<property name="SRC-FILE-SUFFIX-PATTERN-1">${SRC-FILE-PRODUCTTYPE-PATTERN}${SRC-FILE-FILETYPE-PATTERN}${SRC-FILE-FREQUENCY-PATTERN}${SRC-FILE-VERSION-PATTERN}</property>
+			
+		</generalProperties>
+	</properties>	
+
+	<sequential name="CTR-CAPITAL-MARKETS" id="CTR-CAPITAL-MARKETS">
+	
+		<externalWorkflowReference name="INITIALIZE-RUN" id="INITIALIZE-RUN">
+			<externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+				<property name="SOURCE-SYSTEM">KONDORBRAZIL</property>
+				<property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+				<property name="TARGET-SYSTEM"></property>
+				<property name="RUN-TYPE" />
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+				<property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+			</inputProperties>
+			<outputPropertyMapping>
+				<mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+				<mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+				<mapping source="RUN-ID" target="P_RUN_ID_O"/>
+				<mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+			</outputPropertyMapping>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="PREPARE-SOURCE-FILES" id="PREPARE-SOURCE-FILES">
+			<externalWorkflowCode>PREPARE-SOURCE-FILES</externalWorkflowCode>
+			<inputProperties>
+				<property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+				<property name="HOLDING-SOURCE-DIR">${HOLDING-DIR}</property>
+				<property name="HOLDING-MATCH-PATTERN">${HOLDING-MATCH-PATTERN}</property>
+				<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<stage name="INIT-COMPLETE-CHECK" id="INIT-COMPLETE-CHECK">
+			<description>Verify if the common workflow steps completed</description>
+			<stageFailure>
+				<failureCondition><![CDATA[${INITIALIZE-RUN.P_RUN_ID_O} <= 0 || "${CTR_APP_ROOT_PATH}" == '' || "${CTR_ROOT_PATH}" == ''|| "${CTR_FTP_ROOT_PATH}" == ''|| "${CTR_DATA_ROOT_PATH}" == ''|| "${CTR_CONFIG_ROOT_PATH}" == '']]></failureCondition>
+				<failureMessage>Common workflow initialization failed</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<noOpExecDefinition>
+					<input>CHECK-IF-INIT-COMPLETE</input>
+					<numberOfTasks>1</numberOfTasks>
+					<numberOfInterimStatusResponses>1</numberOfInterimStatusResponses>
+				</noOpExecDefinition>
+			</execDefinition>
+		</stage>
+		
+		<!-- KONDORBRAZIL-WORKFLOWS -->
+		
+		<parallel id="KONDORBRAZIL-WORKFLOWS" name="KONDORBRAZIL-WORKFLOWS">
+			<sequential id="KONDORBRAZIL" name="KONDORBRAZIL">	
+				<stage name="FILEWATCH-WF" id="FILEWATCH-WF">
+					<autoRetryConfiguration>
+						<delayBetweenAttemptsInMs>60000</delayBetweenAttemptsInMs>
+                        <maximumNumberOfRetryAttempts>720</maximumNumberOfRetryAttempts>
+                        <maximumRetryDurationInMs>43200000</maximumRetryDurationInMs>
+					</autoRetryConfiguration>
+					<execDefinition>
+						<pollingFileWatcher>
+							<watchedFiles>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_PA_LegalEntity_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>PA-LegalEntity-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_PA_LegalEntity_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>PA-LegalEntity-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_Measures_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>CM-Measures-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_Measures_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>CM-Measures-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_Repo_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>CM-REPO-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_Repo_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>CM-REPO-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_HL_Portfolio_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>HL-Portfolio-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_HL_Portfolio_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>HL-Portfolio-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_IN_Basket_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>IN-BASKET-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_IN_Basket_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>IN-BASKET-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_Swap_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>CM-SWAP-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_Swap_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>CM-SWAP-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+								<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_FXOption_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>CM-FXOPTIONOTC-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_FXOption_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>CM-FXOPTIONOTC-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>KONDORBRAZIL_CO_Collateral_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+                                    <matchedUriOutputProperty>CO-Collateral-FILE</matchedUriOutputProperty>
+                                </resource>
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>KONDORBRAZIL_CO_Collateral_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+                                    <matchedUriOutputProperty>CO-Collateral-MRK</matchedUriOutputProperty>
+                                </resource>
+								<resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>KONDORBRAZIL_HL_Holding_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+                                    <matchedUriOutputProperty>HL-Holding-FILE</matchedUriOutputProperty>
+                                </resource>
+                                <resource>
+                                    <uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+                                    <searchPattern>KONDORBRAZIL_HL_Holding_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+                                    <matchedUriOutputProperty>HL-Holding-MRK</matchedUriOutputProperty>
+                                </resource>	
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_FXForward_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>CM-FXFORWARD-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_FXForward_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>CM-FXFORWARD-MRK</matchedUriOutputProperty>
+								</resource>
+								
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_BrazilFX_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>CM_BrazilFX-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_BrazilFX_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>CM_BrazilFX-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_BrazilIR_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>CM_BrazilIR-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+									<searchPattern>KONDORBRAZIL_CM_BrazilIR_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>CM_BrazilIR-MRK</matchedUriOutputProperty>
+								</resource>	
+						</watchedFiles>
+							<matchedCountProperty>matchedCount</matchedCountProperty>
+						</pollingFileWatcher>
+					</execDefinition>
+				</stage>
+				<parallel id="CHECKSUM" name="CHECKSUM">
+					 <stage id="CHECKSUM-CM-HOLDING-FILE" name="CHECKSUM-CM-HOLDING-FILE">
+                        <description>Validate checksum for file CM-Holding</description>
+                        <execDefinition>
+                            <checksumValidation>
+                                <sourceResource>
+                                    <uri>${FILEWATCH-WF.HL-Holding-FILE}</uri>
+                                </sourceResource>
+                                <markerResource>
+                                    <uri>${FILEWATCH-WF.HL-Holding-MRK}</uri>
+                                </markerResource>
+                                <checksumAlgorithm>SHA256</checksumAlgorithm>
+                            </checksumValidation>
+                        </execDefinition>
+                    </stage>
+					<stage name="CHECKSUM-CM-FXFORWARD-FILE" id="CHK-CM-FXFORWWARD-FILE">
+						<description>Validate checksum for file CM-FXForward</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.CM-FXFORWARD-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.CM-FXFORWARD-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage id="CHECKSUM-HL-COLLATERAL-FILE" name="CHECKSUM-HL-COLLATERAL-FILE">
+                        <description>Validate checksum for file CO-Collateral</description>
+                        <execDefinition>
+                            <checksumValidation>
+                                <sourceResource>
+                                    <uri>${FILEWATCH-WF.CO-Collateral-FILE}</uri>
+                                </sourceResource>
+                                <markerResource>
+                                    <uri>${FILEWATCH-WF.CO-Collateral-MRK}</uri>
+                                </markerResource>
+                                <checksumAlgorithm>SHA256</checksumAlgorithm>
+                            </checksumValidation>
+                        </execDefinition>
+                    </stage>
+					<stage name="CHECKSUM-PA-LEGAL-ENTITY" id="CHK-1">
+						<description>Validate checksum for file PA-LegalEntity</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.PA-LegalEntity-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.PA-LegalEntity-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-CM-MEASURES" id="CHK-2">
+						<description>Validate checksum for file CM-Measures</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.CM-Measures-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.CM-Measures-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-CM-REPO-FILE" id="CHK-3">
+						<description>Validate checksum for file CM-REPO</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.CM-REPO-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.CM-REPO-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-IN-SWAP-FILE" id="CHK-5">
+						<description>Validate checksum for file CM-SWAP</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.CM-SWAP-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.CM-SWAP-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-IN-FXOPTIONOTC-FILE" id="CHK-FXOPTIONOTC">
+						<description>Validate checksum for file CM-FXOPTIONOTC</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.CM-FXOPTIONOTC-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.CM-FXOPTIONOTC-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-IN-BASKET-FILE" id="CHK-4">
+						<description>Validate checksum for file IN-BASKET</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.IN-BASKET-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.IN-BASKET-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-HL-PORTFOLIO-FILE" id="CHECKSUM-HL-PORTFOLIO-FILE">
+						<description>Validate checksum for file HL-Portfolio-FILE</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.HL-Portfolio-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.HL-Portfolio-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					
+					<stage name="CHECKSUM-CM_BrazilFX-FILE" id="CHECKSUM-CM_BrazilFX-FILE">
+						<description>Validate checksum for file CM_BrazilFX-FILE</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.CM_BrazilFX-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.CM_BrazilFX-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					
+					
+					<stage name="CHECKSUM-CM_BrazilIR-FILE" id="CHECKSUM-CM_BrazilIR-FILE">
+						<description>Validate checksum for file CM_BrazilIR-FILE</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${FILEWATCH-WF.CM_BrazilIR-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${FILEWATCH-WF.CM_BrazilIR-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>					
+				</parallel>
+				<externalWorkflowReference name="PREPARE-LOAD-WF" id="PREPARE-LOAD-WF">
+					<skipCondition>${FILEWATCH-WF.matchedCount} == 0</skipCondition>
+					<externalWorkflowCode>PREPARE-CM-LOAD-WF</externalWorkflowCode>
+					<inputProperties>
+						<property name="SOURCE-SYSTEM">KONDORBRAZIL</property>
+						<property name="SOURCE-SYSTEM-LC">kondorbrazil</property>
+						<property name="CTR-SOURCE-SYSTEM-CODE">KONDORBRAZIL</property>
+						<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+						<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+						<property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+						<property name="PROCESSING-DIR">${CTR_DATA_INBOUND_PATH}</property>
+						<property name="HOLDING-SOURCE-DIR">${HOLDING-DIR}</property>
+						<property name="REPLICATE-IF-MONTH-END">${REPLICATE-SRC-IF-MONTH-END}</property>
+						<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+						<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+					</inputProperties>
+				</externalWorkflowReference>
+				<parallel id="LOAD" name="LOAD-SOURCE-FILES">
+				 	<skipCondition>${FILEWATCH-WF.matchedCount} == 0</skipCondition>
+						<externalWorkflowReference name="LOAD-LEGAL-ENTITY" id="LOAD-LEGAL-ENTITY">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.PA-LegalEntity-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					
+					<externalWorkflowReference name="LOAD-CM_BrazilFX" id="LOAD-CM_BrazilFX">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CM_BrazilFX-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+						<externalWorkflowReference name="LOAD-CM_BrazilIR" id="LOAD-CM_BrazilIR">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CM_BrazilIR-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					
+
+					
+					<externalWorkflowReference name="LOAD-MEASURES" id="LOAD-MEASURES">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CM-Measures-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="LOAD-REPO" id="LOAD-REPO">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CM-REPO-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference id="LOAD-HOLDING" name="LOAD-HOLDING">
+                        <externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+                        <inputProperties>
+                            <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                            <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                            <property name="SOURCE-FILE">${FILEWATCH-WF.HL-Holding-FILE}</property>
+                            <property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+                            <property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+                            <property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+                            <property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+                            <property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+                            <property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+                            <property name="DELIMITER">,</property>
+                        </inputProperties>
+                    </externalWorkflowReference>
+					<externalWorkflowReference name="LOAD-FXFORWARD" id="LOAD-FXFORWARD">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CM-FXFORWARD-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="LOAD-SWAP" id="LOAD-SWAP">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CM-SWAP-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="LOAD-FXOPTIONOTC" id="LOAD-FXOPTIONOTC">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CM-FXOPTIONOTC-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="LOAD-BASKET" id="LOAD-BASKET">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.IN-BASKET-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="LOAD-PORTFOLIO" id="LOAD-PORTFOLIO">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.HL-Portfolio-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="LOAD-COLLATERAL" id="LOAD-COLLATERAL">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${FILEWATCH-WF.CO-Collateral-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+						</inputProperties>
+					</externalWorkflowReference>
+				</parallel>
+				<externalWorkflowReference name="CM-ETL-WF" id="CM-ETL-WF">
+					<skipCondition>${FILEWATCH-WF.matchedCount} == 0</skipCondition>
+					<externalWorkflowCode>CM-ETL-WF</externalWorkflowCode>
+					<inputProperties>
+						<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+						<property name="SOURCE-SYSTEM-LC">kondorbrazil</property>
+						<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+						<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+						<property name="EOD-EOM-IND">${WF-EOD-EOM-INDICATOR}</property>
+					</inputProperties>
+				</externalWorkflowReference>
+				<externalWorkflowReference name="CM-CSM-ENRICHMENT-WF" id="CM-CSM-ENRICHMENT-WF">
+					<skipCondition>${FILEWATCH-WF.matchedCount} == 0</skipCondition>
+					<externalWorkflowCode>CM-CSM-ENRICHMENT-WF</externalWorkflowCode>
+					<inputProperties>
+						<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+						<property name="SOURCE-SYSTEM-LC">kondorbrazil</property>
+						<property name="WF-EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+						<property name="RUN-ID" >${INITIALIZE-RUN.P_RUN_ID_O}</property>
+						<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+						<property name="BUSINESS-DATE-FORMATTED">${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</property>
+						<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+					</inputProperties>
+				</externalWorkflowReference>
+			</sequential>
+		</parallel>
+		
+		<!-- FINALIZE PHASE -->
+		
+		<stage name="CLEAN-UP-FTP-DIR" id="CLEAN-UP-FTP-DIR">
+			<description>Clean up files in FTP directory</description>
+			<skipCondition>${FILEWATCH-WF.matchedCount} == 0</skipCondition>
+			<execDefinition>
+				<deleteResource failOnError="false">
+					<resource>
+						<uri>${FILEWATCH-WF.CM_BrazilFX-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM_BrazilFX-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM_BrazilIR-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM_BrazilIR-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-Measures-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-Measures-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-REPO-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-REPO-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-SWAP-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-SWAP-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-FXOPTIONOTC-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-FXOPTIONOTC-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.HL-Portfolio-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.HL-Portfolio-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.IN-BASKET-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.IN-BASKET-MRK}</uri>
+					</resource>	
+					<resource>
+						<uri>${FILEWATCH-WF.HL-Holding-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.HL-Holding-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.PA-LegalEntity-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.PA-LegalEntity-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CO-Collateral-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CO-Collateral-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-FXFORWARD-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${FILEWATCH-WF.CM-FXFORWARD-MRK}</uri>
+					</resource>
+					<deleteCountProperty>matchedCount</deleteCountProperty>
+				</deleteResource>
+			</execDefinition>
+		</stage>
+
+		<externalWorkflowReference name="FINALIZE-RUN" id="COMPLETE-RUN">
+			<description>Finalize the run and mark complete</description>
+			<externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="SRC-FILE-SUFFIX-PATTERN">NONE</property>
+				<property name="FTP-SOURCE-DIR">NONE</property>
+			</inputProperties>
+		</externalWorkflowReference>
+	</sequential>
+</workflow>

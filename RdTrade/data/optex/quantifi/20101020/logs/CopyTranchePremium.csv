@@ -1,0 +1,27 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.03-0.07,0.1143157331986
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.07-0.1,0.06370977201855
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.1-0.15,0.0291
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0.15-0.3,0.01015
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 10Y.0-0.03,0.05
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.03-0.07,0.083
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.07-0.1,0.016
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.1-0.15,0.004
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0.15-0.3,0.0018
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 3Y.0-0.03,0.05
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.03-0.07,0.09486600308305
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.07-0.1,0.0363355207664
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.1-0.15,0.0115
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0.15-0.3,0.0041
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 5Y.0-0.03,0.05
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.03-0.07,0.1139905245388
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.07-0.1,0.04817722818175
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.1-0.15,0.02035
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0.15-0.3,0.0079
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V3 7Y.0-0.03,0.05
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.03-0.07,0.083
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.07-0.1,0.016
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.1-0.15,0.004
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0.15-0.3,0.0018
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,CDX.NA.IG.9-V4 3Y.0-0.03,0.05
+19-Oct-2010,20-Oct-2010,Insert,True,Closing,Tranche Premium,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.3-1,0.01

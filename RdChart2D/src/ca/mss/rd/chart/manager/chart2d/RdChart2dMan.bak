@@ -1,0 +1,438 @@
+package ca.mss.rd.chart.manager.chart2d;
+
+import info.monitorenter.gui.chart.Chart2D;
+import info.monitorenter.gui.chart.IPointFinder;
+import info.monitorenter.gui.chart.ITrace2D;
+import info.monitorenter.gui.chart.ITracePoint2D;
+import info.monitorenter.gui.chart.TracePoint2D;
+import info.monitorenter.gui.chart.pointpainters.PointPainterDisc;
+import info.monitorenter.gui.chart.traces.Trace2DLtd;
+
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import ca.mss.rd.chart.manager.RdChartManager;
+import ca.mss.rd.chart.point.DrawPoint;
+import ca.mss.rd.chart2d.util.UtilChart2D;
+import ca.mss.rd.job.AbstractJob;
+import ca.mss.rd.job.JobPoolParallel;
+import ca.mss.rd.swing.RdWidgets;
+import ca.mss.rd.util.Logger;
+import ca.mss.rd.util.UtilDateTime;
+import ca.mss.rd.util.map.SmartMap;
+
+public final class RdChart2dMan implements RdChartManager {
+
+	static private final boolean SPECIAL_POINT = true;
+	static private final boolean REGULAR_POINT = false;
+
+	static private final Color DEFAULT_SPECIAL_POINT_COLOR = Color.RED;
+	static private final int DEFAULT_SPECIAL_POINT_SIZE = 20;
+	
+	private final Map<String, ITrace2D> traceByTrace = new ConcurrentHashMap<String, ITrace2D>();
+	private final Map<String, Chart2D> chartByChart = new TreeMap<String, Chart2D>();
+	private final Map<String, Chart2D> chartByTrace = new ConcurrentHashMap<String, Chart2D>();
+	private final Map<String, JPanel> panelByChart = new TreeMap<String, JPanel>();
+	
+	@SuppressWarnings("serial")
+	private final SmartMap<Set<ITrace2D>> traceByQuote = new SmartMap<Set<ITrace2D>>(){
+		@Override
+		public Set<ITrace2D> instance(Object key) {
+			return new HashSet<ITrace2D>();
+		}
+		
+	};
+	
+	@SuppressWarnings("serial")
+	private final SmartMap<Set<String>> traceByChart = new SmartMap<Set<String>>(){
+		@Override
+		public Set<String> instance(Object key) {
+			return new HashSet<String>();
+		}
+	
+	};
+
+	private final PointPainterDisc specialIcon = new PointPainterDisc(); 
+	private final Map<String, Double> prevVal = new HashMap<String, Double>();
+	
+	public RdChart2dMan() {
+		specialIcon.setDiscSize(DEFAULT_SPECIAL_POINT_SIZE);
+		specialIcon.setColorFill(DEFAULT_SPECIAL_POINT_COLOR);
+	}
+
+	private int maxPoints;
+
+	@Override
+	public final int getMaxPoints() {
+		return maxPoints;
+	}
+
+	@Override
+	public final void setMaxPoints(int maxPoints) {
+		this.maxPoints = maxPoints;
+		for (Iterator<ITrace2D> iter = traceByTrace.values().iterator(); iter.hasNext();) {
+			ITrace2D trace = iter.next();
+			if (trace instanceof Trace2DLtd) {
+				((Trace2DLtd) trace).setMaxSize(maxPoints);
+			}
+		}
+	}
+
+	@Override
+	public final JPanel getChartPanel(String chartName) {
+		return panelByChart.get(chartName);
+	}
+
+	@Override
+	public final JPanel createChartPanel(String chartName) {
+		return createChartPanel(chartName, null);
+	}
+	
+	@Override
+	public final JPanel createChartPanel(String chartName, PropertyChangeListener listener) {
+		JPanel chartpanel = panelByChart.get(chartName);
+		if( chartpanel == null ){
+			final Chart2D chart = UtilChart2D.createChart(chartName);
+			if( listener != null ){
+				chart.addPropertyChangeListener(listener);
+			}
+
+			chart.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if( e.getClickCount() == 1 ){
+						IPointFinder pfind = chart.getPointFinder();
+						ITracePoint2D point = pfind.getNearestPoint(e, chart);
+						if( point != null ){
+							long time = (new Double(point.getX())).longValue();
+							Date date = new Date(time);
+				            chart.firePropertyChange(EVENT_CHART_NEAREST_X, 0, UtilDateTime.getYear(date));
+						}
+					}
+				}
+			});
+
+			Set<String> traces = traceByChart.get(chartName);
+			if( traces != null ){
+				for(String traceName: traces){
+					ITrace2D trace = traceByTrace.get(traceName);
+					if( trace != null ){
+						chart.addTrace(trace);
+						chartByTrace.put(traceName, chart);
+					}
+				}
+			}
+			
+			chartpanel = RdWidgets.createPanelBorder(new JComponent[]{UtilChart2D.createChartPanel(chart)});
+			panelByChart.put(chartName, chartpanel);
+			chartByChart.put(chartName, chart);
+		}
+		return chartpanel;
+	}
+
+	@Override
+	public final void createTrace(String chartName, String traceName, String quoteName, Color color) {
+		
+		ITrace2D trace = traceByTrace.get(traceName);
+		if( trace == null ){
+			trace = UtilChart2D.createTrace2DLtd(traceName, color, getMaxPoints());
+			
+			traceByTrace.put(traceName, trace);
+			traceByQuote.get(quoteName).add(trace);
+			traceByChart.get(chartName).add(traceName);
+		}
+		
+		Chart2D chart = chartByChart.get(chartName);
+		if( chart != null && !chartByTrace.containsKey(traceName) ){
+				chart.addTrace(trace);
+				chartByTrace.put(traceName, chart);
+		}
+	}
+	
+	@Override
+	public final void removeTrace(String traceName) {
+		if (chartByTrace.containsKey(traceName))
+			if (traceByTrace.containsKey(traceName)){
+				chartByTrace.get(traceName).removeTrace(traceByTrace.get(traceName));
+			}
+	}
+
+	@Override
+	public final void restoreTrace(String traceName) {
+		if (chartByTrace.containsKey(traceName))
+			if (traceByTrace.containsKey(traceName)){
+				chartByTrace.get(traceName).removeTrace(traceByTrace.get(traceName));
+				chartByTrace.get(traceName).addTrace(traceByTrace.get(traceName));
+			}
+	}
+
+	@Override
+	public final void removeAllPoints(String quoteName) {
+		if( quoteName == null ){
+			// Clean all previous trace points
+			prevVal.clear();
+			
+			// Clean all traces
+			for (Iterator<ITrace2D> iter = traceByTrace.values().iterator(); iter.hasNext();) {
+				iter.next().removeAllPoints();
+			}
+		} else {
+			for (Iterator<Map.Entry<Object,Set<ITrace2D>>> iter1 = traceByQuote.entrySet().iterator(); iter1.hasNext();) {
+				Map.Entry<Object,Set<ITrace2D>> entry = iter1.next();
+				if( quoteName.equals(entry.getKey()) ){
+					
+					// Clean previous trace points
+					for(Iterator<String> titer=traceByChart.get(entry.getKey()).iterator(); titer.hasNext(); ){
+						prevVal.remove(titer.next());
+					}
+					
+					// Clean trace
+					for(Iterator<ITrace2D> iter=entry.getValue().iterator(); iter.hasNext(); ){
+						iter.next().removeAllPoints();
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public final Set<String> getTraces(String chartName){
+		return traceByChart.get(chartName);
+	}
+	/*
+	 * 	
+	 * Couple convenient privates
+	 */
+	private final TracePoint2D createPoint(long time, double y) {
+		return new TracePoint2D(time, y);
+	}
+	
+	@SuppressWarnings("serial")
+	static public SmartMap<Integer[]> counter = new SmartMap<Integer[]>(){
+		@Override
+		public Integer[] instance(Object key) {
+			Integer[] counter = new Integer[1];
+			counter[0] = new Integer(0);
+			return counter;
+		}
+		
+	};
+
+	@Override
+	public void drawSpecialPoint(DrawPoint dp) {
+		drawJob.get(dp.traceName).run(new Point(dp, SPECIAL_POINT)); 
+	}
+
+	long starttime;
+	volatile boolean isLast, isFirst;
+	
+	@Override
+	public void setFinish(boolean isLast){
+		this.isLast = isLast;
+	}
+	
+	@Override
+	public void setStart(){
+		isFirst = true;
+		starttime = System.currentTimeMillis();
+	}
+	
+	@Override
+	public void drawRegularPoint(DrawPoint dp){
+		ITrace2D trace = traceByTrace.get(dp.traceName);
+		
+		if( trace == null ){
+			return; // skip non initialized traces
+		}
+
+		JobPoolParallel<Point> pool = null;
+		
+		switch( CI ){
+		case ParentThread:
+			/*
+			 *  old implementation - all chart work done in single parent thread
+			 */
+			if( chartByTrace.containsKey(dp.traceName) ){
+				
+				if( dp.preval != 0 ){
+					trace.addPoint(createPoint(dp.time, dp.preval));
+				}
+				
+				trace.addPoint(createPoint(dp.time, dp.val));
+				dp.preval = dp.val;
+			}
+			return;
+		case SingleThread:
+		case MultipleThread3:
+		case MultipleThread10:
+		case MultipleThread20:
+			pool = drawJob.get("SharedPool");
+			break;
+		case ThreadPerQuote:
+			pool = drawJob.get(dp.quoteName);
+			break;
+		case THREAD_PER_CHART:
+		case ThreadPerChart2:
+			pool = drawJob.get(dp.chartName);
+			break;
+		case ThreadPerTrace:
+			pool = drawJob.get(dp.traceName);
+			break;
+		default:
+			throw new RuntimeException(String.format("Unexpected implementation: %s", CI.getClass().getName()));
+		}
+			
+		if( pool.isBusy() ){
+			counter.get(dp.traceName)[0]++;
+		} else {
+			pool.run(new Point(dp, REGULAR_POINT)); 
+		}
+	}
+		
+	// Point draw Implementation
+	ChartImplementation CI = ChartImplementation.THREAD_PER_CHART;
+	
+	enum ChartImplementation {		// In DEBUG mode
+									// 		2 traces	8 traces
+		ParentThread(0,0), 			// 		35 sec		659 sec
+		SingleThread(1,1000000), 	// 		9 sec		100 sec	- single for all quotes
+		MultipleThread3(10,100000), // 		10 sec		49 sec		- non guarantee point sequence
+		MultipleThread10(10,100000),// 		10 sec		41 sec		- non guarantee point sequence
+		MultipleThread20(20,100000),// 		9 sec		50 sec		- non guarantee point sequence
+		ThreadPerQuote(1,1000000), 	// 		9 sec		100 sec	- same as SingleThread perfomance
+		THREAD_PER_CHART(1,1000000),// 		4 sec		4 sec	- just 2 threads !!!
+		ThreadPerChart2(10,1000000),// 		4 sec		4 sec	- 20 threads...
+		ThreadPerTrace(1,1000000), 	// 		4 sec		5 sec	- 4/8 threads 
+		;
+		public int threadSize, queueSize;
+
+		private ChartImplementation(int threadSize, int queueSize) {
+			this.threadSize = threadSize;
+			this.queueSize = queueSize;
+		}
+	};
+
+	/*
+	 * Paint graphs on separate threads by traceName
+	 */
+
+	int jobscounter = 0;
+	Set<JobPoolParallel<Point>> pools = new HashSet<JobPoolParallel<Point>>();
+	
+	@SuppressWarnings("serial")
+	private SmartMap<JobPoolParallel<Point>> drawJob = new SmartMap<JobPoolParallel<Point>>(){
+		@Override
+		public JobPoolParallel<Point> instance(Object key) {
+			JobPoolParallel<Point> jobPool = new JobPoolParallel<Point>(CI.queueSize, CI.threadSize);
+			pools.add(jobPool);
+			
+			jobPool.start(); // started as created
+			Logger.CHART.printf("%d) Create new job pools=%d for %s", ++jobscounter, CI.threadSize, key);
+			return jobPool;
+		}
+	};
+	
+	private class Point extends AbstractJob {
+		
+		final private DrawPoint dp;
+		final private boolean isSpeacial;
+		
+		private double val;
+		private long time;
+		@SuppressWarnings("unused")
+		private Date time24;
+
+		public Point(DrawPoint dp, boolean isSpeacial) {
+			super();
+			this.dp = dp;
+			this.isSpeacial = isSpeacial;
+			this.val = dp.val;
+			this.time = dp.time;
+			this.time24 = dp.time24;
+		}
+
+		@Override
+		public String getName() {
+			return "GraphPoint";
+		}
+
+		@Override
+		public void executeJob() {
+			if( isFirst ){
+				synchronized( this ){
+					if( isFirst ){
+						isFirst = false;
+						Logger.CHART.printf("START DRAW");
+					}
+				}
+			}
+
+			if( isSpeacial )
+				RdChart2dMan.this.drawSpecialPoint(this);
+			else
+				RdChart2dMan.this.drawRegularPoint(this);
+			
+			if( isLast && checkIfPoolsEmpty() ){
+				synchronized( this ){
+					if( isLast ){
+						isLast = false;
+						Logger.CHART.printf("FINISH DRAW %d sec", (System.currentTimeMillis() - starttime)/1000);
+					}
+				}
+			}
+		}
+	}
+
+	private boolean checkIfPoolsEmpty() {
+		for( Iterator<JobPoolParallel<Point>> iter = pools.iterator(); iter.hasNext(); ){
+			if( iter.next().size() > 0 ){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void drawRegularPoint(Point p){
+		ITrace2D trace = traceByTrace.get(p.dp.traceName);
+		if( trace != null ){
+
+			if( chartByTrace.containsKey(p.dp.traceName) ){
+				
+				Double prevval = prevVal.get(p.dp.traceName);
+						
+				if( prevval != null ){
+					trace.addPoint(createPoint(p.time, prevval.doubleValue()));
+				}
+				trace.addPoint(createPoint(p.time, p.val));
+				
+				prevVal.put(p.dp.traceName, p.val);
+			}
+		}
+	}
+
+	private void drawSpecialPoint(Point p) {
+		
+		ITrace2D trace = traceByTrace.get(p.dp.traceName);
+		if( trace != null ){
+
+			TracePoint2D point = createPoint(p.time, p.val);
+			point.addAdditionalPointPainter(specialIcon);
+			
+			trace.addPoint(point);
+		}
+	}
+	
+}

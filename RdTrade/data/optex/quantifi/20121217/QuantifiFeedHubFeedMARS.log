@@ -1,0 +1,35 @@
+
+ Value date: 12/17/2012 12:00:00 AM
+
+
+--------------------------------------------------------------------------
+Log date: 18 Dec 2012 01:00:16 | Valuation date: 17 Dec 2012 | v1.2.24.0
+--------------------------------------------------------------------------
+
+
+Root Folder is: c:\quantifi\nightlybatch\20121217
+
+
+Need to send MARS files, processing...
+
+MARS Trade file exist. Transmitting...
+****** Output from sftp2 ******
+
+sftp2.exe arguments:  -N 1 -B "C:\Quantifi\FeedHubFeed\MARS\SentFileMARS.ftp" wm_quantifimars@st.ca.cibcwm.com
+Starting sftp2.exe process...
+sftp2.exe completed succesfully.
+quantifimars/
+quantifi_mars_trade.txt             |  5.9kB |  62.3kB/s | TOC: 00:00:00 | 100%
+sftp> ls
+sftp> ascii
+sftp> cd quantifimars/outbox
+/quantifimars/outbox
+sftp> put c:\quantifi\nightlybatch\20121217\reports\quantifi_mars_trade.txt
+quantifi_mars_trade.txt
+sftp> ls *
+sftp> quit
+
+*****************************
+
+
+Transmission of all MARS files completed successfully

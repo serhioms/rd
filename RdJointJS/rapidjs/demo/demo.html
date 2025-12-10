@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8">
+
+<title>Rappid - modular diagram builder</title>
+
+<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/rappid.min.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/layout.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/paper.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/inspector.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/navigator.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/stencil.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/halo.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/selection.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/toolbar.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/statusbar.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/freetransform.css">
+<link rel="stylesheet" type="text/css" href="http://jointjs.com/css/demos/rappid/style.css">
+</head>
+<body>
+	<h1>Rappid</h1>
+	<div class="toolbar-container">
+		<button id="btn-undo" class="btn" data-tooltip="Undo">
+			<img src="http://jointjs.com/images/demos/rappid/undo.png" alt="Undo">
+		</button>
+		<button id="btn-redo" class="btn" data-tooltip="Redo">
+			<img src="http://jointjs.com/images/demos/rappid/redo.png" alt="Redo">
+		</button>
+		<button id="btn-clear" class="btn" data-tooltip="Clear Paper">
+			<img src="http://jointjs.com/images/demos/rappid/clear.png" alt="Clear">
+		</button>
+		<button id="btn-svg" class="btn" data-tooltip="Open as SVG in a New Window">open as SVG</button>
+		<button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window">open as PNG</button>
+		<button id="btn-print" class="btn" data-tooltip="Open a Print Dialog">
+			<img src="http://jointjs.com/images/demos/rappid/print.png" alt="Print">
+		</button>
+		<button id="btn-zoom-in" class="btn" data-tooltip="Zoom In">
+			<img src="http://jointjs.com/images/demos/rappid/zoomin.png" alt="Zoom in">
+		</button>
+		<button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out">
+			<img src="http://jointjs.com/images/demos/rappid/zoomout.png" alt="Zoom out">
+		</button>
+		<div class="panel">
+			<span id="zoom-level">100</span> <span>%</span>
+		</div>
+		<button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit">
+			<img src="http://jointjs.com/images/demos/rappid/zoomtofit.png" alt="Zoom To Fit">
+		</button>
+		<button id="btn-fullscreen" class="btn" data-tooltip="Toggle Fullscreen Mode">
+			<img src="http://jointjs.com/images/demos/rappid/fullscreen.png" alt="Fullscreen">
+		</button>
+		<button id="btn-to-front" class="btn" data-tooltip="Bring Object to Front">to front</button>
+		<button id="btn-to-back" class="btn" data-tooltip="Send Object to Back">to back</button>
+		<button id="btn-layout" class="btn" data-tooltip="Auto-layout Graph">layout</button>
+		<label data-tooltip="Change Grid Size">Grid size:</label> <input type="range" value="10" min="1" max="50" step="1" id="input-gridsize">
+		<output id="output-gridsize">10</output>
+		<label data-tooltip="Enable/Disable Snaplines">Snaplines:</label> <input type="checkbox" id="snapline-switch" checked="">
+		<!-- Return Button -->
+		<style>
+.toolbar-container .btn-secondary {
+	background-color: #f1c40f;
+	padding: 12px 18px 13px;
+	line-height: 13px;
+	border: none;
+	color: white;
+	font-size: 18px;
+	text-shadow: none;
+	cursor: pointer;
+	border-radius: 5px;
+	display: block;
+	text-decoration: none;
+	float: right;
+	width: 70px;
+	position: absolute;
+	top: 0;
+	right: 1px;
+	font-family: "Source Sans Pro", sans-serif;
+}
+</style>
+		<a class="btn-secondary" href="/about-rappid">READ ME</a>
+	</div>
+	<div class="stencil-container">
+		<label>Stencil</label>
+		<button class="btn-expand" title="Expand all">+</button>
+		<button class="btn-collapse" title="Collapse all">-</button>
+		<div class="stencil searchable">
+			<input type="search" placeholder="search" class="search">
+			<div class="content"></div>
+		</div>
+	</div>
+	<div class="paper-container">
+		<div id=mypaper style="padding-left: 0px;"></div>
+		<!-- 
+		<div class="paper-scroller" style="padding-left: 155px; padding-top: 0px;">
+			<div class="paper" style="margin-bottom: 0px; margin-right: 0px;">
+				<div class="snaplines" style="display: none;">
+					<div class="snapline horizontal" style="top: 614px; display: block;"></div>
+					<div class="snapline vertical" style="left: 720px; display: none;"></div>
+				</div>
+				<div class="selection" style="display: none;">
+					<div class="selection-wrapper" data-selection-length="0" style="left: 113.391px; top: 480px; width: 224.422px; height: 118.031px;">
+						<div class="box">0 elements selected.</div>
+s						<div class="handle nw remove" data-action="remove"></div>
+						<div class="handle sw rotate" data-action="rotate"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		 -->
+	</div>
+	<div class="inspector-container">
+		<div class="inspector">
+			<div class="group" data-name="text">
+				<h3 class="group-label">Text</h3>
+				<div data-field="attrs/.label/text" class="field">
+					<label>Text</label>
+					<textarea class="textarea" data-type="textarea" data-attribute="attrs/.label/text"></textarea>
+				</div>
+				<div data-field="attrs/.label/font-size" class="field">
+					<label class="with-output">Font size</label>
+					<output>18</output>
+					<span class="units">px</span><input type="range" name="range" min="5" max="80" class="range" data-type="range" data-attribute="attrs/.label/font-size">
+				</div>
+				<div data-field="attrs/.label/font-family" class="field">
+					<label>Font family</label><select class="select" data-type="select" data-attribute="attrs/.label/font-family"><option value="Arial" selected="selected">Arial</option>
+						<option value="Helvetica">Helvetica</option>
+						<option value="Times New Roman">Times New Roman</option>
+						<option value="Courier New">Courier New</option>
+						<option value="Georgia">Georgia</option>
+						<option value="Garamond">Garamond</option>
+						<option value="Tahoma">Tahoma</option>
+						<option value="Lucida Console">Lucida Console</option>
+						<option value="Comic Sans MS">Comic Sans MS</option></select>
+				</div>
+				<div data-field="attrs/.label/font-weight" class="field">
+					<label class="with-output">Font weight</label>
+					<output>400</output>
+					<span class="units"></span><input type="range" name="range" min="100" max="900" step="100" class="range" data-type="range" data-attribute="attrs/.label/font-weight">
+				</div>
+				<div data-field="attrs/.label/fill" class="field">
+					<label>Fill color</label><input type="color" class="color" data-type="color" data-attribute="attrs/.label/fill">
+				</div>
+				<div data-field="attrs/.label/stroke" class="field">
+					<label>Stroke</label><input type="color" class="color" data-type="color" data-attribute="attrs/.label/stroke">
+				</div>
+				<div data-field="attrs/.label/stroke-width" class="field">
+					<label class="with-output">Stroke width</label>
+					<output>0</output>
+					<span class="units">px</span><input type="range" name="range" min="0" max="5" step="0.5" class="range" data-type="range" data-attribute="attrs/.label/stroke-width">
+				</div>
+				<div data-field="attrs/.label/ref-x" class="field">
+					<label class="with-output">Horizontal alignment</label>
+					<output>0.5</output>
+					<span class="units"></span><input type="range" name="range" min="0" max="0.9" step="0.1" class="range" data-type="range" data-attribute="attrs/.label/ref-x">
+				</div>
+				<div data-field="attrs/.label/ref-y" class="field">
+					<label class="with-output">Vertical alignment</label>
+					<output>10</output>
+					<span class="units"></span><input type="range" name="range" min="0" max="30" step="1" class="range" data-type="range" data-attribute="attrs/.label/ref-y">
+				</div>
+			</div>
+			<div class="group closed" data-name="presentation">
+				<h3 class="group-label">Presentation</h3>
+				<div data-field="attrs/rect/fill" class="field">
+					<label>Fill color</label><input type="color" class="color" data-type="color" data-attribute="attrs/rect/fill">
+				</div>
+				<div data-field="attrs/rect/stroke-width" class="field">
+					<label class="with-output">Stroke width</label>
+					<output>1</output>
+					<span class="units">px</span><input type="range" name="range" min="0" max="30" step="0.5" class="range" data-type="range" data-attribute="attrs/rect/stroke-width">
+				</div>
+				<div data-field="attrs/rect/stroke-dasharray" class="field">
+					<label>Stroke dasharray</label><select class="select" data-type="select" data-attribute="attrs/rect/stroke-dasharray"><option value="0" selected="selected">0</option>
+						<option value="1">1</option>
+						<option value="5,5">5,5</option>
+						<option value="5,10">5,10</option>
+						<option value="10,5">10,5</option>
+						<option value="3,5">3,5</option>
+						<option value="5,1">5,1</option>
+						<option value="15,10,5,10,15">15,10,5,10,15</option></select>
+				</div>
+				<div data-field="attrs/rect/rx" class="field">
+					<label class="with-output">X-axis radius</label>
+					<output>2</output>
+					<span class="units">px</span><input type="range" name="range" min="0" max="30" class="range" data-type="range" data-attribute="attrs/rect/rx">
+				</div>
+				<div data-field="attrs/rect/ry" class="field">
+					<label class="with-output">Y-axis radius</label>
+					<output>2</output>
+					<span class="units">px</span><input type="range" name="range" min="0" max="30" class="range" data-type="range" data-attribute="attrs/rect/ry">
+				</div>
+				<div data-field="attrs/.inPorts circle/fill" class="field">
+					<label>Input ports fill color</label><input type="color" class="color" data-type="color" data-attribute="attrs/.inPorts circle/fill">
+				</div>
+				<div data-field="attrs/.outPorts circle/fill" class="field">
+					<label>Output ports fill color</label><input type="color" class="color" data-type="color" data-attribute="attrs/.outPorts circle/fill">
+				</div>
+			</div>
+			<div class="group closed" data-name="geometry">
+				<h3 class="group-label">Geometry</h3>
+				<div data-field="size/width" class="field">
+					<label>width</label><input type="number" min="1" max="500" class="number" data-type="number" data-attribute="size/width">
+				</div>
+				<div data-field="size/height" class="field">
+					<label>height</label><input type="number" min="1" max="500" class="number" data-type="number" data-attribute="size/height">
+				</div>
+				<div data-field="position/x" class="field">
+					<label>x</label><input type="number" min="1" max="2000" class="number" data-type="number" data-attribute="position/x">
+				</div>
+				<div data-field="position/y" class="field">
+					<label>y</label><input type="number" min="1" max="2000" class="number" data-type="number" data-attribute="position/y">
+				</div>
+			</div>
+			<div class="group closed" data-name="data">
+				<h3 class="group-label">Data</h3>
+				<div data-field="inPorts" class="field">
+					<label>inPorts</label>
+					<div class="list" data-type="list" data-attribute="inPorts">
+						<button class="btn-list-add">+</button>
+						<div class="list-items">
+							<div data-index="0" class="list-item">
+								<button class="btn-list-del">-</button>
+								<div data-field="inPorts/0" class="field">
+									<label>inPorts/0</label><input type="text" class="text" data-type="text" data-attribute="inPorts/0">
+								</div>
+							</div>
+							<div data-index="1" class="list-item">
+								<button class="btn-list-del">-</button>
+								<div data-field="inPorts/1" class="field">
+									<label>inPorts/1</label><input type="text" class="text" data-type="text" data-attribute="inPorts/1">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div data-field="outPorts" class="field">
+					<label>outPorts</label>
+					<div class="list" data-type="list" data-attribute="outPorts">
+						<button class="btn-list-add">+</button>
+						<div class="list-items">
+							<div data-index="0" class="list-item">
+								<button class="btn-list-del">-</button>
+								<div data-field="outPorts/0" class="field">
+									<label>outPorts/0</label><input type="text" class="text" data-type="text" data-attribute="outPorts/0">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div data-field="custom" class="field">
+					<label data-tooltip="An example of setting custom data via Inspector.">Custom data</label><input type="text" class="text" data-type="text" data-attribute="custom">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="navigator-container">
+		<div class="navigator" style="width: 240px; height: 115px; padding: 10px;">
+			<div class="paper">
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="v-274" width="95" height="95">
+				</svg>
+			</div>
+			<div class="current-view" style="top: 74.6864px; left: 64.5977px; width: 92.91px; height: 32.205px;">
+				<div class="current-view-control"></div>
+			</div>
+		</div>
+	</div>
+	<div class="statusbar-container">
+		&nbsp;&nbsp;&nbsp;Copyright © 2014 <a target="_blank" href="http://client.io">client IO</a>. All rights reserved. Part of the <b><a href="http://jointjs.com">JointJS</a> diagramming library</b>. <span
+			class="rt-colab">Send this link to a friend to <b>collaborate in real-time</b>: <a href="http://jointjs.com/rappid#06551d20-3bc4-49d9-9236-c4e2cd6e4e06" target="_blank">http://jointjs.com/rappid#06551d20-3bc4-49d9-9236-c4e2cd6e4e06</a>
+		</span>
+	</div>
+	<!-- Dependencies: -->
+
+	<script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script>
+	<script>
+		SVGElement.prototype.getTransformToElement = SVGElement.prototype.getTransformToElement
+				|| function(toElement) {
+					return toElement.getScreenCTM().inverse().multiply(
+							this.getScreenCTM());
+				};
+	</script>
+
+	<script src="http://jointjs.com/js/vendor/jquery/jquery.js"></script>
+	<script src="http://jointjs.com/js/vendor/lodash/lodash.js"></script>
+	<script src="http://jointjs.com/js/vendor/backbone/backbone.js"></script>
+	<script src="http://jointjs.com/js/vendor/graphlib/dist/graphlib.core.js"></script>
+	<script src="http://jointjs.com/js/vendor/dagre/dist/dagre.core.js"></script>
+	<script src="http://jointjs.com/js/vendor/KeyboardJS/keyboard.js"></script>
+	<script src="http://jointjs.com/js/rappid.min.js"></script>
+	<script src="http://jointjs.com/js/demos/rappid/inspector.js"></script>
+	<script src="http://jointjs.com/js/demos/rappid/stencil.js"></script>
+	<!-- <script src="http://jointjs.com/js/demos/rappid/main.js"></script> -->
+	<script src="main.js"></script>
+	<!--[if IE 9]>
+	    <script src="http://jointjs.com/js/vendor/base64/base64.js"></script>
+	    <script type="text/javascript">
+	      // SVG Export requires window.btoa/atoa extension to convert binary data (the `b`)
+	      // to base64 (ascii, the `a`). Unfortunately it is not available in IE9.
+	      // To get it working under IE9 you may include compatible solution like `stringencoders`
+	      // (`https://code.google.com/p/stringencoders/source/browse/trunk/javascript/base64.js`)
+	      // and create a global alias `btoa`.
+	      window.btoa = base64.encode
+	      // `-ms-user-select: none` doesn't work in IE9
+	      document.onselectstart = function() { return false; };
+	    </script>
+	<![endif]-->
+	<script>
+		var app = new Rappid({
+		//channelUrl : 'ws://jointjs.com:4141'
+		});
+		Backbone.history.start();
+	</script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-5029684-2' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+11-Jun-2010,14-Jun-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 10Y.0-0.03,0.7175
+11-Jun-2010,14-Jun-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 3Y.0-0.03,0.3
+11-Jun-2010,14-Jun-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 5Y.0-0.03,0.4825
+11-Jun-2010,14-Jun-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 7Y.0-0.03,0.65125

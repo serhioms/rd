@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: CM-EXTRACT-TO-SUMMIX.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>CM-EXTRACT-TO-SUMMIX</name> 
+  	<externalWorkflowCode>CM-EXTRACT-TO-SUMMIX</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>CM-EXTRACT-TO-SUMMIX ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="SOURCE-SYSTEM" />
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="EOD-EOM-IND" />
+		</inputProperties>
+	</properties>
+
+	<!-- DELIVERY PHASE -->
+
+	<sequential name="EXTRACT-TO-SUMMIX" id="EXTRACT-TO-SUMMIX">
+	
+		<!-- SUMMIX TRADE EXPORT  -->
+
+		<stage name="GENERATE-SUMMIX-TRADE-FILE" id="GEN-SUMMIX-TRADE">
+			<description>Generate Summix Trade file</description>
+			<stageFailure>
+				<failureCondition><![CDATA[${GEN-SUMMIX-TRADE.exitCode} != 0]]></failureCondition>
+				<!-- <failureMessage>FSM-(${GEN-SUMMIX-TRADE.exitCode}) : Error while generating Party file. See FSM log for details.</failureMessage>-->
+				<failureMessage>CTR Issue, please check with support team.</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<callExternalProcess>
+					<commandLine>${CTR_APP_ROOT_PATH}/script/extractSummixTbl.${SHELL_SCRIPT_EXTENSION} ${CTR_DB_SCHEMA} ${SHELL_COMMA_DELIM_PARAM} ${RUN-ID} ${SOURCE-SYSTEM} </commandLine>
+					<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+					<exitCodeProperty>exitCode</exitCodeProperty>
+				</callExternalProcess>
+			</execDefinition>
+		</stage>
+		
+		<stage name="GET-SUMMIX-EXTRACT-VERSION" id="GET-SUMMIX-EXTRACT-VERSION">
+			<execDefinition>
+				 <dbFunction name="CTRMSO.RUN_PKG.GET_VERSION_SP">
+                    <in>
+                        <param name="P_BATCH_ID_I" type="STRING">${RUN-ID}</param>
+                    </in>
+                    <result name="version" type="NUMBER"/>
+                </dbFunction>
+			</execDefinition>
+		</stage>
+
+		<!--
+		<stage name="SET-SUMMIX-SFTP-TIMESTAMP" id="SET-SUMMIX-SFTP-TIMESTAMP">
+			<execDefinition>
+				 <dbProcedure name="CTRMSO.RISKWATCH_HELPER_PKG.SET_SFTPTSTMP_SP">
+                    <in>
+                        <param name="P_BATCH_ID_I" type="NUMBER">${RUN-ID}</param>
+                    </in>
+                </dbProcedure>
+			</execDefinition>
+		</stage>-->			
+
+		<stage name="SEND-TO-SUMMIX" id="SEND-TO-SUMMIX">
+			<skipCondition>'${SUMMIX_DESTINATION_URI}' == 'NONE'</skipCondition>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${CTR_OUTBOUND_PATH}/summix</uri>
+							<searchPattern>.*${SOURCE-SYSTEM}_.*_${BUSINESS-DATE}.*</searchPattern>
+							<matchedUriOutputProperty>SUMMIX-FILES</matchedUriOutputProperty>
+						</sourceResource>
+						<targetResource>
+							<uri>${SUMMIX_DESTINATION_URI}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>transferCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+		
+	</sequential>
+
+</workflow>
+	

@@ -1,0 +1,22 @@
+
+******************** qpsVoyager exposure START (6/11/2013 11:07:30 AM - ) ********************
+
+6/11/2013 11:11:50 AM - 
+6/11/2013 11:11:50 AM - Unhandled Exception: System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> Quantifi.Risk.RiskException: Base Correlations Surface contains too many NaN values
+6/11/2013 11:11:50 AM -    at Quantifi.Risk.CorrelationMixedSurface.CheckBaseCorrelations(BaseCorrelationObject[] bco)
+6/11/2013 11:11:50 AM -    at Quantifi.Risk.CorrelationMixedSurface.CombineBaseCorrelations(BaseCorrelationObject[] baseCorrelationObjects, Double[] weights)
+6/11/2013 11:11:50 AM -    at Quantifi.Risk.CorrelationMixedSurface.get_CorrelationObject()
+6/11/2013 11:11:50 AM -    at Quantifi.Risk.CDOPricerBase.get_Pricer()
+6/11/2013 11:11:50 AM -    --- End of inner exception stack trace ---
+6/11/2013 11:11:50 AM -    at System.RuntimeMethodHandle._InvokeMethodFast(Object target, Object[] arguments, SignatureStruct& sig, MethodAttributes methodAttributes, RuntimeTypeHandle typeOwner)
+6/11/2013 11:11:50 AM -    at System.RuntimeMethodHandle.InvokeMethodFast(Object target, Object[] arguments, Signature sig, MethodAttributes methodAttributes, RuntimeTypeHandle typeOwner)
+6/11/2013 11:11:50 AM -    at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture, Boolean skipVisibilityChecks)
+6/11/2013 11:11:50 AM -    at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+6/11/2013 11:11:50 AM -    at System.Reflection.RuntimePropertyInfo.GetValue(Object obj, BindingFlags invokeAttr, Binder binder, Object[] index, CultureInfo culture)
+6/11/2013 11:11:50 AM -    at System.Reflection.RuntimePropertyInfo.GetValue(Object obj, Object[] index)
+6/11/2013 11:11:50 AM -    at Quantifi.Risk.PricerUtil.PricerIPricer(Pricer pricer, String name)
+6/11/2013 11:11:50 AM -    at Quantifi.Risk.PricerUtil.PricerIPricer(Pricer pricer)
+6/11/2013 11:11:50 AM -    at qpsVoyager.qpsVoyager.RowsForExposure(RunMode rm, Int32& rowCount, Double& SumCorrSkewShiftUp1Pct)
+6/11/2013 11:11:50 AM -    at qpsVoyager.qpsVoyager.ExportTrades(StreamWriter exportFile, String eFileName, RunMode rm, Boolean Prod, Boolean dFlag)
+6/11/2013 11:11:50 AM -    at qpsVoyager.qpsVoyager.Main(String[] args)
+******************** qpsVoyager exposure END (6/11/2013 11:12:53 AM - ) ********************

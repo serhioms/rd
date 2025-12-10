@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-cm-eod-lancelot-extract.xml 4168 2016-06-23 19:16:47Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-cm-eod-lancelot-extract</name> 
+  	<externalWorkflowCode>ctr-cm-eod-lancelot-extract</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-cm-eod-lancelot-extract ($LastChangedRevision: 4168 $)</description>
+	
+	<!-- TODO: make these into input properties and pass from tidal -->
+	<properties>
+		<inputProperties>
+			<property name="WF-EOD-EOM-INDICATOR">D</property>
+			<property name="RUN-INSTANCE">1</property>
+			<property name="IN-SOURCE-SYSTEM" />
+			<property name="TARGET-SOURCE-SYSTEM">LANCELOT</property>
+		</inputProperties>
+		<generalProperties>
+			<property name="ROOT-WF-ID">ctr-cm-eod-lancelot-extract</property>
+			<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+			<property name="WORKFLOW_RUN_ID">0</property>
+		</generalProperties>
+	</properties>
+
+	<sequential name="LANCELOT-EXTRACT-WF" id="LANCELOT-EXTRACT-WF">
+	
+		<externalWorkflowReference name="INITIALIZE-RUN" id="INITIALIZE-RUN">
+			<externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+				<property name="SOURCE-SYSTEM">${IN-SOURCE-SYSTEM}</property>
+				<property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+				<property name="TARGET-SYSTEM">${TARGET-SOURCE-SYSTEM}</property>
+				<property name="RUN-TYPE">BATCH</property>
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+				<property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+			</inputProperties>
+			<outputPropertyMapping>
+				<mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+				<mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+				<mapping source="RUN-ID" target="P_EXPORT_BATCH_ID_O"/>
+				<mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+			</outputPropertyMapping>
+		</externalWorkflowReference>
+		
+		<stage name="TARGET-EXTRACT-LANCELOT-FXRATE" id="LANCELOT-FXRATE-T2E">
+			<description>Generates lancelot fxrate export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_fxrate_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-FXRATE-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>		
+		<stage name="TARGET-EXTRACT-LANCELOT-TRADE" id="LANCELOT-TRADE-T2E">
+			<description>Generates lancelot trade export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_trade_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-TRADE-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage id="LANCELOT-TRADEPKG-T2E" name="TARGET-EXTRACT-LANCELOT-TRADEPKG">
+            <description>Generates lancelot trade package export</description>
+            <execDefinition>
+                <dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+                    <in>
+                        <param name="P_TYPE_NAME_I" type="STRING">lancelot_tradepkg_tp</param>
+                        <param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+                        <param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+                        <param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+                        <param name="P_TASK_ID_I" type="STRING">LANCELOT-TRADEPKG-T2E</param>
+                        <param name="P_LOG_ID_I" type="STRING">1</param>
+                        <param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+                        <param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+                    </in>
+                    <out>
+                        <param name="P_RET_VALUE_O" type="NUMBER"/>
+                        <param name="P_RET_MESSAGE_O" type="STRING"/>
+                    </out>
+                </dbProcedure>
+            </execDefinition>
+        </stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-COLLATERAL" id="LANCELOT-COLLATERAL-T2E">
+			<description>Generates lancelot collateral export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_collateral_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-COLLATERAL-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-UND-BASKET" id="LANCELOT-UND-BASKET-T2E">
+			<description>Generates lancelot underlying basket export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_und_basket_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-UND-BASKET-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-UNDERLYING" id="LANCELOT-UNDERLYING-T2E">
+			<description>Generates lancelot collateral export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_underlying_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-UNDERLYING-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-TRANSIT" id="LANCELOT-REF-TRANSIT-T2E">
+			<description>Generates lancelot reference transit numbers export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_transit_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-TRANSIT-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-BUSINES-UNIT" id="LANCELOT-REF-BUSINESS-UNIT-T2E">
+			<description>Generates lancelot reference business unit export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_business_unit_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-BUSINESS-UNIT-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-EGL-DEPT" id="LANCELOT-REF-EGL-DEPT-T2E">
+			<description>Generates lancelot reference egl department export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_egl_department_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-EGL-DEPT-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>		
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-EGL-LOCATION" id="LANCELOT-REF-EGL-LOCATION-T2E">
+			<description>Generates lancelot reference egl location export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_egl_location_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-EGL-LOCATION-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>		
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-EXTRNL-RATNG" id="LANCELOT-REF-EXTRNL-RATNG-T2E">
+			<description>Generates lancelot reference external rating export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_extrnal_rating_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-EXTRNL-RATNG-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>			
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-CURRENCY" id="LANCELOT-REF-CURRENCY-T2E">
+			<description>Generates lancelot reference currency export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_currency_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-CURRENCY-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>		
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-COUNTRY" id="LANCELOT-REF-COUNTRY-T2E">
+			<description>Generates lancelot reference country export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_country_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-COUNTRY-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>			
+		<stage name="TARGET-EXTRACT-LANCELOT-REF-PRODUCT-MAP" id="LANCELOT-REF-PRODUCT-MAP-T2E">
+			<description>Generates lancelot reference product mapping export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_prdct_map_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-PRODUCT-MAP-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>			
+				<stage name="TARGET-EXTRACT-LANCELOT-REF-INDUSTR-CODE" id="LANCELOT-REF-INDUSTRIAL-CODES-T2E">
+			<description>Generates lancelot reference industrial codes export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_ref_industrial_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-REF-INDUSTRIAL-CODES-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>		
+		<stage name="TARGET-EXTRACT-LANCELOT-EXCEPTION" id="LANCELOT-EXCEPTION-T2E">
+			<description>Generates lancelot exception export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_exception_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-EXCEPTION-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-DATA-CATALOGUE" id="LANCELOT-DATA-CATALOGUE-T2E">
+			<description>Generates lancelot collateral export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_data_catalog_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-DATA-CATALOGUE-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<stage name="TARGET-EXTRACT-LANCELOT-ERROR" id="LANCELOT-ERROR-T2E">
+			<description>Generates lancelot exception export</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">lancelot_error_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">EXTRACT</param>
+						<param name="P_TASK_ID_I" type="STRING">LANCELOT-ERROR-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${TARGET-SOURCE-SYSTEM}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+		<stage id="SEND-LANCELOT-ERROR-STATUS-1" name="SEND-LANCELOT-ERROR-STATUS-1">
+			<skipCondition>'${LANCELOT-FXRATE-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-TRADE-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-TRADEPKG-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-COLLATERAL-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-UND-BASKET-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-UNDERLYING-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-EXCEPTION-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-DATA-CATALOGUE-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-ERROR-T2E.P_RET_VALUE_O}' == '0'
+			</skipCondition>
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.CTRExceptionAlert</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="LANCELOT-FXRATE-T2E">Code:${LANCELOT-FXRATE-T2E.P_RET_VALUE_O} ${LANCELOT-FXRATE-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-TRADE-T2E">Code:${LANCELOT-TRADE-T2E.P_RET_VALUE_O} ${LANCELOT-TRADE-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-TRADEPKG-T2E">Code:${LANCELOT-TRADEPKG-T2E.P_RET_VALUE_O} ${LANCELOT-TRADEPKG-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-COLLATERAL-T2E">Code:${LANCELOT-COLLATERAL-T2E.P_RET_VALUE_O} ${LANCELOT-COLLATERAL-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-UND-BASKET-T2E">Code:${LANCELOT-UND-BASKET-T2E.P_RET_VALUE_O} ${LANCELOT-UND-BASKET-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-UNDERLYING-T2E">Code:${LANCELOT-UNDERLYING-T2E.P_RET_VALUE_O} ${LANCELOT-UNDERLYING-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-TRANSIT-T2E">Code:${LANCELOT-REF-TRANSIT-T2E.P_RET_VALUE_O} ${LANCELOT-REF-TRANSIT-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-BUSINESS-UNIT-T2E">Code:${LANCELOT-REF-BUSINESS-UNIT-T2E.P_RET_VALUE_O} ${LANCELOT-REF-BUSINESS-UNIT-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-EGL-DEPT-T2E">Code:${LANCELOT-REF-EGL-DEPT-T2E.P_RET_VALUE_O} ${LANCELOT-REF-EGL-DEPT-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-EGL-LOCATION-T2E">Code:${LANCELOT-REF-EGL-LOCATION-T2E.P_RET_VALUE_O} ${LANCELOT-REF-EGL-LOCATION-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-EXTRNL-RATNG-T2E">Code:${LANCELOT-REF-EXTRNL-RATNG-T2E.P_RET_VALUE_O} ${LANCELOT-REF-EXTRNL-RATNG-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-CURRENCY-T2E">Code:${LANCELOT-REF-CURRENCY-T2E.P_RET_VALUE_O} ${LANCELOT-REF-CURRENCY-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-COUNTRY-T2E">Code:${LANCELOT-REF-COUNTRY-T2E.P_RET_VALUE_O} ${LANCELOT-REF-COUNTRY-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-PRODUCT-MAP-T2E">Code:${LANCELOT-REF-PRODUCT-MAP-T2E.P_RET_VALUE_O} ${LANCELOT-REF-PRODUCT-MAP-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-INDUSTRIAL-CODES-T2E">Code:${LANCELOT-REF-INDUSTRIAL-CODES-T2E.P_RET_VALUE_O} ${LANCELOT-REF-INDUSTRIAL-CODES-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-EXCEPTION-T2E">Code:${LANCELOT-EXCEPTION-T2E.P_RET_VALUE_O} ${LANCELOT-EXCEPTION-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-DATA-CATALOGUE-T2E">Code:${LANCELOT-DATA-CATALOGUE-T2E.P_RET_VALUE_O} ${LANCELOT-DATA-CATALOGUE-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-ERROR-T2E">Code:${LANCELOT-ERROR-T2E.P_RET_VALUE_O} ${LANCELOT-ERROR-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="subject">Exception in Records during Lancelot Extracts</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>emailSendStaus</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+		
+		<stage id="SEND-LANCELOT-ERROR-STATUS-2" name="SEND-LANCELOT-ERROR-STATUS-2">
+			<skipCondition>'${LANCELOT-REF-TRANSIT-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-BUSINESS-UNIT-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-EGL-DEPT-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-EGL-LOCATION-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-EXTRNL-RATNG-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-CURRENCY-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-COUNTRY-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-PRODUCT-MAP-T2E.P_RET_VALUE_O}' == '0' &amp;&amp; 
+							'${LANCELOT-REF-INDUSTRIAL-CODES-T2E.P_RET_VALUE_O}' == '0'
+			</skipCondition>
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.CTRExceptionAlert</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="LANCELOT-REF-TRANSIT-T2E">Code:${LANCELOT-REF-TRANSIT-T2E.P_RET_VALUE_O} ${LANCELOT-REF-TRANSIT-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-BUSINESS-UNIT-T2E">Code:${LANCELOT-REF-BUSINESS-UNIT-T2E.P_RET_VALUE_O} ${LANCELOT-REF-BUSINESS-UNIT-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-EGL-DEPT-T2E">Code:${LANCELOT-REF-EGL-DEPT-T2E.P_RET_VALUE_O} ${LANCELOT-REF-EGL-DEPT-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-EGL-LOCATION-T2E">Code:${LANCELOT-REF-EGL-LOCATION-T2E.P_RET_VALUE_O} ${LANCELOT-REF-EGL-LOCATION-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-EXTRNL-RATNG-T2E">Code:${LANCELOT-REF-EXTRNL-RATNG-T2E.P_RET_VALUE_O} ${LANCELOT-REF-EXTRNL-RATNG-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-CURRENCY-T2E">Code:${LANCELOT-REF-CURRENCY-T2E.P_RET_VALUE_O} ${LANCELOT-REF-CURRENCY-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-COUNTRY-T2E">Code:${LANCELOT-REF-COUNTRY-T2E.P_RET_VALUE_O} ${LANCELOT-REF-COUNTRY-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-PRODUCT-MAP-T2E">Code:${LANCELOT-REF-PRODUCT-MAP-T2E.P_RET_VALUE_O} ${LANCELOT-REF-PRODUCT-MAP-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="LANCELOT-REF-INDUSTRIAL-CODES-T2E">Code:${LANCELOT-REF-INDUSTRIAL-CODES-T2E.P_RET_VALUE_O} ${LANCELOT-REF-INDUSTRIAL-CODES-T2E.P_RET_MESSAGE_O}</simpleProperty>
+							<simpleProperty name="subject">Exception in Records during Lancelot Extracts</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>emailSendStaus</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+		
+		<parallel name="DELIVER-FILES" id="DELIVER-FILES">
+		
+			<externalWorkflowReference name="LANCELOT-DELIVER" id="LANCELOT-DELIVER">
+				<externalWorkflowCode>CM-EXTRACT-TO-LANCELOT</externalWorkflowCode>
+				<inputProperties>
+					<property name="SOURCE-SYSTEM">${TARGET-SOURCE-SYSTEM}</property>
+					<property name="RUN-ID">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</property>
+					<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</property>
+					<property name="EOD-EOM-IND">${WF-EOD-EOM-INDICATOR}</property>
+				</inputProperties>
+			</externalWorkflowReference>
+		</parallel>
+		
+		<stage id="SEND-STALE-DATA-NOTIFICATION" name="SEND-STALE-DATA-NOTIFICATION">
+			<skipCondition>'${LANCELOT_NOTIFICATION_EMAIL}' == 'NONE'</skipCondition>
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.LancelotStaleDataCheckerExec</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="toEmail">${LANCELOT_NOTIFICATION_EMAIL}</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>numberOfLateSourceSystems</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+		
+		<stage name="RUN-COMPLETE" id="RUN-COMPLETE">
+			<description>Finalize the run and mark complete</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.RUN_COMPLETION_SP">
+					<in>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_EXPORT_BATCH_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">FINALIZE</param>
+						<param name="P_TASK_ID_I" type="STRING">RUN-COMPLETE</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+	</sequential>
+</workflow>
+	

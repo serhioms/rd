@@ -1,0 +1,17 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,CADLIBOR.DEC09.Mid,0.999956
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,CADLIBOR.JUN10.Mid,0.9999165
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,CADLIBOR.MAR10.Mid,0.9999525
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,CADLIBOR.SEP10.Mid,0.9999145
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,EURLIBOR.DEC09.Mid,0.999904928
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,EURLIBOR.JUN10.Mid,0.99990722
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,EURLIBOR.MAR10.Mid,0.999910261
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,EURLIBOR.SEP10.Mid,0.999889753
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,GBPLIBOR.DEC09.Mid,0.999922724
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,GBPLIBOR.JUN10.Mid,0.999907251
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,GBPLIBOR.MAR10.Mid,0.999916761
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,GBPLIBOR.SEP10.Mid,0.999891054
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,USDLIBOR.DEC09.Mid,0.99997425
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,USDLIBOR.JUN10.Mid,0.9999425
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,USDLIBOR.MAR10.Mid,0.99997375
+25-Jun-2010,28-Jun-2010,Insert,True,Closing,ED Future,Optex,USDLIBOR.SEP10.Mid,0.999946

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<Reports>
+  <Report name="RedEntity" enabled="True" />
+  <Report name="REDEntityMapped" enabled="True" />
+  <Report name="RedObligation" enabled="True" />
+  <Report name="REDObligationMapped" enabled="True" />
+  <Report name="CredIndexAnnex" family="CDX" enabled="True" />
+  <Report name="CredIndexAnnex" family="ITRAXX-EUROPE" enabled="True" />
+  <Report name="CredIndexAnnex" family="ITRAXX-ASIA" enabled="False" />
+  <Report name="CredIndexAnnex" family="ITRAXX-SDI" enabled="False" />
+  <Report name="LoansIndexAnnex" family="LCDX" enabled="False" />
+  <Report name="LoansIndexAnnex" family="iTraxx LevX" enabled="False" />
+  <Report name="COMPOSITES" type="cds" enabled="True" />
+  <Report name="COMPOSITES" type="bond" enabled="False" />
+  <Report name="COMPOSITES" type="lcds" enabled="False" />
+  <Report name="COMPOSITES" type="convert" enabled="False" />
+  <Report name="COMPOSITES_BY_CONVENTION" type="cds" enabled="True" />
+  <Report name="FIXED_COUPON" type="cds" enabled="True" />
+  <Report name="UPFRONTS" type="cds" enabled="True" />
+  <Report name="COMPOSITES" type="credindex" family="CDX" enabled="True" />
+  <Report name="COMPOSITES" type="credindex" family="ITRAXX-EUROPE" enabled="True" />
+  <Report name="COMPOSITES" type="credindex" family="ITRAXX-ASIA" enabled="False" />
+  <Report name="COMPOSITES" type="credindex" family="ITRAXX-SDI" enabled="False" />
+  <Report name="COMPOSITES" type="loancredindex" family="LCDX" enabled="False" />
+  <Report name="TRANCHE_COMPOSITES" type="credindex" family="CDX" enabled="True" />
+  <Report name="TRANCHE_COMPOSITES" type="credindex" family="ITRAXX-EUROPE" enabled="True" />
+  <Report name="TRANCHE_COMPOSITES" type="credindex" family="ITRAXX-ASIA" enabled="False" />
+  <Report name="TRANCHE_COMPOSITES" type="credindex" family="ITRAXX-SDI" enabled="False" />
+  <Report name="CONSTITUENTS_COMPOSITES" type="credindex" family="CDX" enabled="True" />
+  <Report name="CONSTITUENTS_COMPOSITES" type="credindex" family="ITRAXX-EUROPE" enabled="True" />
+  <Report name="CONSTITUENTS_COMPOSITES" type="credindex" family="ITRAXX-ASIA" enabled="False" />
+  <Report name="CONSTITUENTS_COMPOSITES" type="credindex" family="ITRAXX-SDI" enabled="False" />
+  <Report name="REDCorporateAction" enabled="True" />
+  <Report name="mappings" enabled="False" />
+  <Report name="sfxcomponents" type="abscredidx" family="ABX.HE" enabled="False" />
+  <Report name="sfxcomponents" type="abscredidx" family="CMBX" enabled="False" />
+  <Report name="xcomposites" type="abscredidx" family="ABX.HE" enabled="False" />
+  <Report name="xcomposites" type="abscredidx" family="CMBX" enabled="False" />
+  <Report name="Same_Day_CDS_New_York" type="cds" enabled="False" />
+  <Report name="Same_Day_CDS_London" type="cds" enabled="False" />
+  <Report name="Same_Day_CDS_Tokyo" type="cds" enabled="False" />
+  <Report name="IG_CONTRIBUTIONS" type="cds" enabled="True" />
+  <Report name="IG_CONTRIBUTIONS" type="bond" enabled="False" />
+  <Report name="IG_CONTRIBUTIONS" type="convert" enabled="False" />
+  <Report name="SUB_IG_CONTRIBUTIONS" type="cds" enabled="True" />
+  <Report name="SUB_IG_CONTRIBUTIONS" type="bond" enabled="False" />
+  <Report name="SUB_IG_CONTRIBUTIONS" type="convert" enabled="False" />
+  <Report name="THEORETICALS" type="cds" enabled="False" />
+  <Report name="THEORETICALS" type="bond" enabled="False" />
+</Reports>

@@ -1,0 +1,63 @@
+      TEST: SellBuyBack 10000 units of EUR/USD leverage 1000 (Account currency CAD)
+      TEST: open:  Borrow  10000€/Margine  9517.00$
+      TEST: close: Return  10000€/Withdraw 9505.00$
+      TEST: deposit: 10.00€/13.39CAD
+      TEST: profit: 12.00$/14.96CAD
+      TEST: 
+
+      TEST: BuySellBack 10000 units of USD/JPY leverage 1000 (Account currency $)
+      TEST: open:  Borrow  10000$/Margine  1150500.00¥
+      TEST: close: Return  10000$/Withdraw 1144500.00¥
+      TEST: deposit: 10.00$/10.00$
+      TEST: profit: -6000.00¥/-52.42$
+      TEST: 
+
+      TEST: BuySellBack 10000 units of USD/JPY leverage 1000 (Account currency CAD)
+      TEST: open:  Borrow  10000$/Margine  1150500.00¥
+      TEST: close: Return  10000$/Withdraw 1144500.00¥
+      TEST: deposit: 10.00$/12.46CAD
+      TEST: profit: -6000.00¥/-62.67CAD
+      TEST: 
+
+      TEST: BuySellBack 1000 units of GBP/CHF leverage 1000 (Account currency $)
+      TEST: open:  Borrow  1000£/Margine  2144.30?
+      TEST: close: Return  1000£/Withdraw 2145.20?
+      TEST: deposit: 1.00£/1.47$
+      TEST: profit: 0.90?/0.99$
+      TEST: 
+
+      TEST: BuySellBack 10000 units of EUR/USD leverage 1000 (Account currency CAD)
+      TEST: open:  Borrow  10000€/Margine  10982.90$
+      TEST: close: Return  10000€/Withdraw 10992.30$
+      TEST: deposit: 10.00€/13.39CAD
+      TEST: profit: 9.40$/11.72CAD
+      TEST: 
+
+      TEST: SellBuyBack 10000 units of EUR/USD leverage 1000 (Account currency CAD)
+      TEST: open:  Borrow  10000€/Margine  10982.90$
+      TEST: close: Return  10000€/Withdraw 10992.30$
+      TEST: deposit: 10.00€/13.39CAD
+      TEST: profit: -9.40$/-11.72CAD
+      TEST: 
+
+      TEST: BuySellBack 10000 units of EUR/USD leverage 1000 (Account currency $)
+      TEST: open:  Borrow  10000€/Margine  10982.90$
+      TEST: close: Return  10000€/Withdraw 10992.30$
+      TEST: deposit: 10.00€/10.98$
+      TEST: profit: 9.40$/9.40$
+      TEST: 
+
+      TEST: BuySellBack 10000 units of USD/CAD leverage   50 (Account currency CAD)
+      TEST: open:  Borrow  10000$/Margine  12514.60CAD
+      TEST: close: Return  10000$/Withdraw 12514.60CAD
+      TEST: deposit: 200.00$/250.29CAD
+      TEST: profit: 0.00CAD/0.00CAD
+      TEST: 
+
+      TEST: BuySellBack 10000 units of CAD/USD leverage   50 (Account currency CAD)
+      TEST: open:  Borrow  10000CAD/Margine  7990.70$
+      TEST: close: Return  10000CAD/Withdraw 7990.70$
+      TEST: deposit: 200.00CAD/200.00CAD
+      TEST: profit: 0.00$/0.00CAD
+      TEST: 
+

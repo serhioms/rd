@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-cm-eod-rdm-wf.xml 4168 2016-06-23 19:16:47Z gmusial $
+	 Maestro version: 1.19.1 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-cm-eod-rdm-wf</name> 
+  	<externalWorkflowCode>ctr-cm-eod-rdm-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-cm-eod-rdm-wf ($LastChangedRevision: 4168 $)</description>
+	
+	<properties>
+		<inputProperties>
+			<property name="WF-EOD-EOM-INDICATOR">D</property>
+			<property name="RUN-INSTANCE">1</property>
+			<property name="RDM-PROCESSING-TYPE">FULLorPOST</property>
+		</inputProperties>
+		
+		<generalProperties>
+			<property name="ROOT-WF-ID">ctr-cm-eod-rdm-wf</property>
+			<property name="HOLDING-DIR">${CTR_DATA_ROOT_PATH}/manual/rdm</property>
+			<property name="DATA-CATEGORY-TYPE">CM</property>
+			<property name="WORKFLOW_RUN_ID">0</property>
+			<property name="FTP-SOURCE-DIR">rdm/inbox</property>
+			<property name="SOURCE-SYSTEM">CTR</property>
+			<property name="SOURCE-SYSTEM-LC">ctr</property>
+			<property name="SQLLDR-PROCESSING-SOURCE-DIR">data_in/infiles</property>
+			<property name="SQLLDR-CONTROL-DIRECTORY">sqlldr</property>
+			<property name="SQLLDR-DISCARD-DIR">data_in/discard</property>
+			<property name="SQLLDR-REJECT-DIRECTORY">data_in/reject</property>
+			<property name="SQLLDR-LOG-DIRECTORY">data_in/ldrlog</property>	
+			<property name="REPLICATE-SRC-IF-MONTH-END">F</property>
+			<property name="RDM-CURR-DATA-SET-FILE-PATH">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/CTR_CM_RDMCurrencyDataSet_${WF-EOD-EOM-INDICATOR}_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}_01.csv</property>
+			<property name="RDM-CURR-DATA-VALUE-FILE-PATH">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/CTR_CM_RDMCurrencyDataValue_${WF-EOD-EOM-INDICATOR}_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}_01.csv</property>
+			<property name="RDM-CURR-MAP-FILE-PATH">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/CTR_CM_RDMCurrencyMap_${WF-EOD-EOM-INDICATOR}_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}_01.csv</property>
+			<property name="RDM-CURR-MAP-SET-FILE-PATH">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/CTR_CM_RDMCurrencyMapDataSet_${WF-EOD-EOM-INDICATOR}_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}_01.csv</property>
+		
+			<!-- Source file naming pattern -->
+			<property name="SRC-FILE-PRODUCTTYPE-PATTERN">[^_]*[_]?</property>
+			<property name="SRC-FILE-FILETYPE-PATTERN">[PT]?[_]?</property>
+			<property name="SRC-FILE-FREQUENCY-PATTERN">${WF-EOD-EOM-INDICATOR}_</property>
+			<property name="SRC-FILE-VERSION-PATTERN">(${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED})?_[0-9]{2,2}</property>
+			<property name="SRC-FILE-SUFFIX-PATTERN-1">${SRC-FILE-PRODUCTTYPE-PATTERN}${SRC-FILE-FILETYPE-PATTERN}${SRC-FILE-FREQUENCY-PATTERN}${SRC-FILE-VERSION-PATTERN}</property>
+			
+		</generalProperties>
+	</properties>	
+
+	<sequential name="CTR-REFERNECE-DATA" id="CTR-REFERNECE-DATA">
+		<externalWorkflowReference name="INITIALIZE-RUN" id="INITIALIZE-RUN">
+			<externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+				<property name="SOURCE-SYSTEM">CTR</property>
+				<property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+				<property name="TARGET-SYSTEM"></property>
+				<property name="RUN-TYPE" />
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+				<property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+			</inputProperties>
+			<outputPropertyMapping>
+				<mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+				<mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+				<mapping source="RUN-ID" target="P_RUN_ID_O"/>
+				<mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+			</outputPropertyMapping>
+		</externalWorkflowReference>
+		
+		<stage name="INIT-COMPLETE-CHECK" id="INIT-COMPLETE-CHECK">
+			<description>Verify if the common workflow steps completed</description>
+			<stageFailure>
+				<failureCondition><![CDATA[${INITIALIZE-RUN.P_RUN_ID_O} <= 0 || "${CTR_APP_ROOT_PATH}" == '' || "${CTR_ROOT_PATH}" == ''|| "${CTR_FTP_ROOT_PATH}" == ''|| "${CTR_DATA_ROOT_PATH}" == ''|| "${CTR_CONFIG_ROOT_PATH}" == '']]></failureCondition>
+				<failureMessage>Common workflow initialization failed</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<noOpExecDefinition>
+					<input>CHECK-IF-INIT-COMPLETE</input>
+					<numberOfTasks>1</numberOfTasks>
+					<numberOfInterimStatusResponses>1</numberOfInterimStatusResponses>
+				</noOpExecDefinition>
+			</execDefinition>
+		</stage>
+		
+		<!-- RDM-WORKFLOWS -->
+		
+		<stage id="RDM-CURRENCY-RECEIVER" name="RDM-CURRENCY-RECEIVER">
+               <description>Invokes the RDM Currency Loader</description>
+               <skipCondition> '${RDM-PROCESSING-TYPE}' != 'FULL'</skipCondition>
+               <execDefinition>
+                   <javaExtension>
+                       <javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.RdmCurrencyLoaderExec</javaExtensionExecutorClassName>
+                        <cdataProperties>
+                            <propertyString><![CDATA[
+                            <rdmServiceProperties>
+								<rdValueSetName>Standard Currency Codes</rdValueSetName>
+								<rdValueSetName>Finance Currency Code Deviation List</rdValueSetName>
+								<rdValueSetName>ISL Currency Code Deviation List</rdValueSetName>
+								<rdValueSetName>RO Currency Code Deviation List</rdValueSetName>
+								<rdValueSetName>K2 Currency Code Deviation List</rdValueSetName>
+								<rdValueSetName>Murex Currency Code Deviation List</rdValueSetName>
+								<rdValueSetName>Broadridge Currency Codes</rdValueSetName>
+								
+								<rdValueSetRelationshipName>Finance Currency Code Deviation to Standard</rdValueSetRelationshipName>
+								<rdValueSetRelationshipName>ISL Currency Code Deviation to Standard</rdValueSetRelationshipName>
+								<rdValueSetRelationshipName>RO Currency Code Deviation to Standard</rdValueSetRelationshipName>
+								<rdValueSetRelationshipName>K2 Currency Code Deviation</rdValueSetRelationshipName>
+								<rdValueSetRelationshipName>Murex Currency Code Deviation to Standard</rdValueSetRelationshipName>
+								<rdValueSetRelationshipName>Broadridge Currency Code Deviation</rdValueSetRelationshipName>
+								
+								<rdmCurrencyDataSetFilePath>${RDM-CURR-DATA-SET-FILE-PATH}</rdmCurrencyDataSetFilePath>
+								<rdmCurrencyDataValueFilePath>${RDM-CURR-DATA-VALUE-FILE-PATH}</rdmCurrencyDataValueFilePath>
+								<rdmCurrencyMapDataSetFilePath>${RDM-CURR-MAP-SET-FILE-PATH}</rdmCurrencyMapDataSetFilePath>
+								<rdmCurrencyMapFilePath>${RDM-CURR-MAP-FILE-PATH}</rdmCurrencyMapFilePath>
+								
+								<requestId>${INITIALIZE-RUN.P_RUN_ID_O}</requestId>
+								<businessDate>${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</businessDate>
+								<bypassFilter>true</bypassFilter>
+							</rdmServiceProperties>
+                            ]]></propertyString>
+                        </cdataProperties>
+                       <javaExtensionOutputPropertyNames>
+                           <propertyName>totalDataSet</propertyName>
+                           <propertyName>totalMappingDataSet</propertyName>
+                       </javaExtensionOutputPropertyNames>
+                   </javaExtension>
+               </execDefinition>
+           </stage>
+		
+		<externalWorkflowReference name="PREPARE-LOAD-WF" id="PREPARE-LOAD-WF">
+			<skipCondition> '${RDM-PROCESSING-TYPE}' != 'FULL'</skipCondition>
+			<externalWorkflowCode>PREPARE-CM-LOAD-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+				<property name="CTR-SOURCE-SYSTEM-CODE">CTR</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+				<property name="PROCESSING-DIR">${CTR_DATA_INBOUND_PATH}</property>
+				<property name="HOLDING-SOURCE-DIR">${HOLDING-DIR}</property>
+				<property name="REPLICATE-IF-MONTH-END">${REPLICATE-SRC-IF-MONTH-END}</property>
+				<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		
+		<parallel id="RDM-REF-DATA-LOAD" name="RDM-REF-DATA-LOAD">
+			<skipCondition> '${RDM-PROCESSING-TYPE}' != 'FULL'</skipCondition>
+			<externalWorkflowReference name="LOAD-RDM-CURRENCY-DATA-SET" id="LOAD-RDM-CURRENCY-DATA-SET">
+				<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+				<inputProperties>
+					<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+					<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+					<property name="SOURCE-FILE">${RDM-CURR-DATA-SET-FILE-PATH}</property>
+					<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+					<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+					<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+					<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+					<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+					<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+					<property name="DELIMITER">,</property>
+					
+				</inputProperties>
+			</externalWorkflowReference>
+			<externalWorkflowReference name="LOAD-RDM-CURRENCY-DATA-VALUE" id="LOAD-RDM-CURRENCY-DATA-VALUE">
+				<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+				<inputProperties>
+					<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+					<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+					<property name="SOURCE-FILE">${RDM-CURR-DATA-VALUE-FILE-PATH}</property>
+					<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+					<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+					<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+					<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+					<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+					<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+					<property name="DELIMITER">,</property>
+					
+				</inputProperties>
+			</externalWorkflowReference>
+			<externalWorkflowReference name="LOAD-RDM-CURRENCY-MAP" id="LOAD-RDM-CURRENCY-MAP">
+				<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+				<inputProperties>
+					<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+					<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+					<property name="SOURCE-FILE">${RDM-CURR-MAP-FILE-PATH}</property>
+					<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+					<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+					<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+					<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+					<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+					<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+					<property name="DELIMITER">,</property>
+					
+				</inputProperties>
+			</externalWorkflowReference>
+			<externalWorkflowReference name="LOAD-RDM-CURRENCY-MAP-SET" id="LOAD-RDM-CURRENCY-MAP-SET">
+				<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+				<inputProperties>
+					<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+					<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+					<property name="SOURCE-FILE">${RDM-CURR-MAP-SET-FILE-PATH}</property>
+					<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+					<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+					<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+					<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+					<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+					<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+					<property name="DELIMITER">,</property>
+				</inputProperties>
+			</externalWorkflowReference>
+		</parallel>
+<!-- 		<externalWorkflowReference name="RDM-ETL-WF" id="RDM-ETL-WF" enabled="false">
+			<externalWorkflowCode>RDM-ETL-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="SOURCE-SYSTEM-LC">${SOURCE-SYSTEM-LC}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+			</inputProperties>
+		</externalWorkflowReference> -->
+		<stage name="CM-ETL-RDM-WF" id="CM-ETL-RDM-WF">
+			<description>Loading RDM data from landing to target</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">rdm_currency_mapping_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+						<param name="P_TASK_ID_I" type="STRING">CM-RDM-L2T-${RDM-PROCESSING-TYPE}</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">CTR</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+				
+		<!-- FINALIZE PHASE -->
+		<externalWorkflowReference name="FINALIZE-RUN" id="COMPLETE-RUN">
+			<description>Finalize the run and mark complete</description>
+			<skipCondition> '${RDM-PROCESSING-TYPE}' != 'FULL'</skipCondition>
+			<externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="SRC-FILE-SUFFIX-PATTERN">${SRC-FILE-SUFFIX-PATTERN-1}</property>
+				<property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="FINALIZE-RUN-POST" id="COMPLETE-RUN-POST">
+			<description>Finalize the run and mark complete</description>
+			<skipCondition> '${RDM-PROCESSING-TYPE}' == 'FULL'</skipCondition>
+			<externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">${SOURCE-SYSTEM}</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="SRC-FILE-SUFFIX-PATTERN">${SRC-FILE-SUFFIX-PATTERN-1}</property>
+				<property name="FTP-SOURCE-DIR">NONE</property>
+			</inputProperties>
+		</externalWorkflowReference>
+	</sequential>
+</workflow>

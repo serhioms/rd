@@ -1,0 +1,184 @@
+<html>
+<head>
+<title>TestNG:  WkfSequentialParallel</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>WkfSequentialParallel</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>21/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Wed Mar 04 08:28:53 EST 2015</td>
+</tr>
+<tr><td>Total time:</td><td>2 seconds (2487 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailNoRetry.WorkflowParallelFailNoRetryMiddle()'><b>WorkflowParallelFailNoRetryMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailNoRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailNoRetry@4d560eeb</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailAndRetry.WorkflowParallelFailNoRetryMiddle()'><b>WorkflowParallelFailNoRetryMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailAndRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailAndRetry@4ced8df7</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkip.WorkflowParallelSkipMiddle()'><b>WorkflowParallelSkipMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkip</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkip@729405ca</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled.WorkflowParallelSkipMiddle()'><b>WorkflowParallelSkipMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled@6c977c1f</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailNoRetry.WorkflowSequentialFailNoRetryMiddle()'><b>WorkflowSequentialFailNoRetryMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailNoRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailNoRetry@4d560eeb</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailAndRetry.WorkflowSequentialFailNoRetryMiddle()'><b>WorkflowSequentialFailNoRetryMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailAndRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailAndRetry@4ced8df7</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailNoRetry.WorkflowSequentialFailNoRetryStart()'><b>WorkflowSequentialFailNoRetryStart</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailNoRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailNoRetry@4d560eeb</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailAndRetry.WorkflowSequentialFailNoRetryStart()'><b>WorkflowSequentialFailNoRetryStart</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailAndRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailAndRetry@4ced8df7</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailNoRetry.WorkflowSequentialFailNoRetrydEnd()'><b>WorkflowSequentialFailNoRetrydEnd</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailNoRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailNoRetry@4d560eeb</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowFailAndRetry.WorkflowSequentialFailNoRetrydEnd()'><b>WorkflowSequentialFailNoRetrydEnd</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowFailAndRetry</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowFailAndRetry@4ced8df7</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkip.WorkflowSequentialSkipMiddle()'><b>WorkflowSequentialSkipMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkip</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkip@729405ca</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled.WorkflowSequentialSkipMiddle()'><b>WorkflowSequentialSkipMiddle</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled@6c977c1f</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkip.WorkflowSequentialSkipStart()'><b>WorkflowSequentialSkipStart</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkip</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkip@729405ca</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled.WorkflowSequentialSkipStart()'><b>WorkflowSequentialSkipStart</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled@6c977c1f</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkip.WorkflowSequentialSkipdEnd()'><b>WorkflowSequentialSkipdEnd</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkip</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkip@729405ca</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled.WorkflowSequentialSkipdEnd()'><b>WorkflowSequentialSkipdEnd</b><br>Test class: ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlowSkipAndDisabled@6c977c1f</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlow.testExternal()'><b>testExternal</b><br>Test class: ca.mss.rd.flow.test.TestSpFlow</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlow@37a96</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlow.testMix()'><b>testMix</b><br>Test class: ca.mss.rd.flow.test.TestSpFlow</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlow@37a96</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlow.testParallel()'><b>testParallel</b><br>Test class: ca.mss.rd.flow.test.TestSpFlow</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlow@37a96</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlow.testSequential()'><b>testSequential</b><br>Test class: ca.mss.rd.flow.test.TestSpFlow</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlow@37a96</td></tr>
+<tr>
+<td title='ca.mss.rd.flow.test.TestSpFlow.testSuperMix()'><b>testSuperMix</b><br>Test class: ca.mss.rd.flow.test.TestSpFlow</td>
+<td></td>
+<td>0</td>
+<td>ca.mss.rd.flow.test.TestSpFlow@37a96</td></tr>
+</table><p>
+</body>
+</html>

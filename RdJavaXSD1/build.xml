@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<project name="CalypsoXSD" >
+
+	<property name="calypsohome" value="c:\calypso10"/>
+	<property name="jaxb.lib" value="${calypsohome}/download/jaxb-ri-20071219/lib"/>
+
+	<property name="jaxb.xsd" value="xsd"/>
+	<property name="jaxb.src" value="generate"/>
+	
+    <path id="jaxb.path">
+    	<pathelement path="${jaxb.lib}/activation.jar"/>
+    	<pathelement path="${jaxb.lib}/jaxb-api.jar"/>
+    	<pathelement path="${jaxb.lib}/jaxb-impl.jar"/>
+    	<pathelement path="${jaxb.lib}/jaxb-xjc.jar"/>
+    	<pathelement path="${jaxb.lib}/jaxb1-impl.jar"/>
+    	<pathelement path="${jaxb.lib}/jsr173_1.0_api.jar"/>
+    </path>
+
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+        <classpath refid="jaxb.path"/>
+	</taskdef>
+	
+	<target name="dodd-frank">
+		<mkdir dir="${jaxb.src}"/>
+		<xjc destdir="${jaxb.src}" package="calypsox.tk.util.apollo.generated.calypsoinmessage" binding="${jaxb.xsd}/doddfrank/bindings.xml">
+			<schema dir="${jaxb.xsd}/doddfrank" includes="*.xsd" />
+			<arg value="-no-header" />
+		</xjc>
+	</target>
+	
+	<target name="greenbutton">
+		<mkdir dir="${jaxb.src}"/>
+		<xjc destdir="${jaxb.src}" package="ca.rd.energyapp.greenbutton.generated.espi">
+			<schema dir="${jaxb.xsd}/greenbutton" includes="*.xsd" />
+			<arg value="-no-header" />
+		</xjc>
+	</target>
+	
+</project>

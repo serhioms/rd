@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<project name="RdDist" default="build.all">
+
+	<import file="..\RdStudio\build.xml"/>
+	
+	<property name="dist.modules" value="RdStudio,RdTest,RdStarter,RdUtil,RdHTTP,RdTools,RdSwing,RdTrade,RdTraderSource,RdChartGenerics,RdChart2D,RdTraderConsole"/>
+	
+	<target name="build.all">
+		<foreach list="${dist.modules}" param="module.name" parallel="false" target="build.module.jar" />
+		<foreach list="${dist.modules}" param="module.name" parallel="false" target="copy.module.dist" />
+		<foreach list="${dist.modules}" param="module.name" parallel="false" target="copy.module.lib" />
+		<foreach list="${dist.modules}" param="module.name" parallel="false" target="copy.module.prop" />
+	</target>
+	
+	<target name="build.module.jar">
+		<ant dir="..\${module.name}" antfile="build.xml" target="build.jar" inheritall="false"/>
+	</target>
+	
+	<target name="copy.module.lib">
+		<copy todir="lib" failonerror="false" overwrite="true" verbose="false">
+			<fileset dir="..\${module.name}\lib">
+				<include name="*.jar"/>
+				<include name="*.zip"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="copy.module.dist">
+		<copy todir="dist" failonerror="false" overwrite="true" verbose="false">
+			<fileset dir="..\${module.name}\dist">
+				<include name="*.jar"/>
+				<include name="*.zip"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="copy.module.prop">
+		<copy todir="prop" failonerror="false" overwrite="true" verbose="false">
+			<fileset dir="..\${module.name}\prop">
+				<include name="*.properties"/>
+				<exclude name=".cvs"/>
+				<exclude name=".svn"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="RD-zip" >
+		<zip destfile="D:/workspace/2012/rd-arch=2012-09-27.zip" compress="true" filesonly="false">
+			<fileset dir="D:/workspace/2012/rd" >
+				<include name="**/*.java"/>
+				<include name="**/.project"/>
+				<include name="**/.classpath"/>
+				<include name="**/pom.xml"/>
+				<include name="**/build.xml"/>
+				<include name="**/.svn/**/*.svn-base"/>
+				<include name="**/.svn/entries"/>
+				<include name="**/.svn/format"/>
+				<include name="**/.svn/wc.db"/>
+			</fileset>
+		</zip>
+	</target>
+
+</project>

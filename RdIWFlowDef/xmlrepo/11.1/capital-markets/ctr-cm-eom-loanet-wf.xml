@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-cm-eom-loanet-wf.xml 4168 2016-06-23 19:16:47Z gmusial $
+	 Maestro version: 1.19.5 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+    <name>ctr-cm-eom-loanet-wf</name>
+    <externalWorkflowCode>ctr-cm-eom-loanet-wf</externalWorkflowCode>
+    <finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError>
+    <description>ctr-cm-eom-loanet-wf ($LastChangedRevision: 4168 $)</description>
+    <properties>
+        <inputProperties>
+            <property name="WF-EOD-EOM-INDICATOR">M</property>
+			<property name="RUN-INSTANCE">1</property>
+        </inputProperties>
+        <generalProperties>
+        	<property name="WORKFLOW_RUN_ID">0</property>
+            <property name="DATA-CATEGORY-TYPE">CM</property>
+            <property name="FTP-SOURCE-DIR">loanet/inbox</property>
+			<property name="FUNDTRACKER-FTP-SRC-DIR">fundtracker/inbox</property>
+			<property name="DATA-NOTLOAD-DIR">${CTR_DATA_ROOT_PATH}/data_in/infiles/not_load</property>
+            <property name="HOLDING-DIR">${CTR_DATA_ROOT_PATH}/manual/loanet/</property>
+            <property name="HOLDING-MATCH-PATTERN">.+_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}.*</property>
+            <property name="REPLICATE-SRC-IF-MONTH-END">T</property>
+            <property name="ROOT-WF-ID">ctr-cm-eom-loanet-wf</property>
+            <property name="SQLLDR-CONTROL-DIRECTORY">sqlldr</property>
+            <property name="SQLLDR-DISCARD-DIR">data_in/discard</property>
+            <property name="SQLLDR-LOG-DIRECTORY">data_in/ldrlog</property>
+            <property name="SQLLDR-PROCESSING-SOURCE-DIR">data_in/infiles</property>
+            <property name="SQLLDR-REJECT-DIRECTORY">data_in/reject</property>
+            <property name="SRC-FILE-FILETYPE-PATTERN"/>
+            <property name="SRC-FILE-FREQUENCY-PATTERN">${WF-EOD-EOM-INDICATOR}_</property>
+            <property name="SRC-FILE-PRODUCTTYPE-PATTERN">[^_]*[_]?</property>
+            <property name="SRC-FILE-SUFFIX-PATTERN-1">${SRC-FILE-PRODUCTTYPE-PATTERN}${SRC-FILE-FILETYPE-PATTERN}${SRC-FILE-FREQUENCY-PATTERN}${SRC-FILE-VERSION-PATTERN}</property>
+            <property name="SRC-FILE-VERSION-PATTERN">(${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED})?_[0-9]{3,3}</property>
+        </generalProperties>
+    </properties>
+    <sequential id="CTR-CAPITAL-MARKETS" name="CTR-CAPITAL-MARKETS">
+        <externalWorkflowReference id="INITIALIZE-RUN" name="INITIALIZE-RUN">
+            <externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+            <inputProperties>
+                <property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+                <property name="SOURCE-SYSTEM">LOANET</property>
+                <property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+                <property name="TARGET-SYSTEM"/>
+                <property name="RUN-TYPE" />
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+                <property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+            </inputProperties>
+            <outputPropertyMapping>
+                <mapping source="RUN-ID" target="P_RUN_ID_O"/>
+                <mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+                <mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+                <mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+            </outputPropertyMapping>
+        </externalWorkflowReference>
+        <externalWorkflowReference id="PREPARE-SOURCE-FILES" name="PREPARE-SOURCE-FILES">
+            <externalWorkflowCode>PREPARE-SOURCE-FILES</externalWorkflowCode>
+            <inputProperties>
+                <property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}/</property>
+                <property name="HOLDING-SOURCE-DIR">${HOLDING-DIR}</property>
+                <property name="HOLDING-MATCH-PATTERN">${HOLDING-MATCH-PATTERN}</property>
+                <property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+                <property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+            </inputProperties>
+        </externalWorkflowReference>
+        <stage enabled="true" id="ALDOP-FILEWATCH-WF" name="ALDOP-FILEWATCH-WF">
+            <autoRetryConfiguration>
+                <delayBetweenAttemptsInMs>60000</delayBetweenAttemptsInMs>
+                <maximumNumberOfRetryAttempts>720</maximumNumberOfRetryAttempts>
+                <maximumRetryDurationInMs>43200000</maximumRetryDurationInMs>
+            </autoRetryConfiguration>
+            <execDefinition> 
+                <pollingFileWatcher>
+                	<watchedFiles>
+                        <resource>
+							<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+							<searchPattern>LOANET_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+							<matchedUriOutputProperty>LOANET-FILE</matchedUriOutputProperty>
+						</resource>
+                    </watchedFiles>
+                    <matchedCountProperty>matchedCount</matchedCountProperty>
+                    <allowFileNotFound>false</allowFileNotFound>
+                </pollingFileWatcher>
+            </execDefinition>
+        </stage>
+       <externalWorkflowReference enabled="true"
+            id="PREPARE-LOAD-WF" name="PREPARE-LOAD-WF">
+            <skipCondition>${ALDOP-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+            <externalWorkflowCode>PREPARE-CM-LOAD-WF</externalWorkflowCode>
+            <inputProperties>
+                <property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+                <property name="SOURCE-SYSTEM-LC">loanet</property>
+                <property name="CTR-SOURCE-SYSTEM-CODE">LOANET</property>
+                <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                <property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+                <property name="PROCESSING-DIR">${CTR_DATA_INBOUND_PATH}</property>
+                <property name="HOLDING-SOURCE-DIR">${HOLDING-DIR}</property>
+                <property name="REPLICATE-IF-MONTH-END">${REPLICATE-SRC-IF-MONTH-END}</property>
+                <property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+                <property name="SOURCE-SYSTEM">LOANET</property>
+            </inputProperties>
+        </externalWorkflowReference>
+
+	<parallel id="LOAD-SOURCE-FILES" name="LOAD-SOURCE-FILES">
+		<externalWorkflowReference enabled="true"
+			id="LOAD-ALDOP-PRE-LANDING" name="LOAD-ALDOP-PRE-LANDING">
+			<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+				<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+				<property name="DELIMITER">,</property>
+				<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+				<property name="SOURCE-FILE">${ALDOP-FILEWATCH-WF.LOANET-FILE}</property>
+				<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+				<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+				<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+			</inputProperties>
+		</externalWorkflowReference>
+	</parallel>
+	<stage enabled="true" id="PRELAND-TO-LAND-ALDOP-EXPOSURE" name="PRELAND-TO-LAND-ALDOP-EXPOSURE">
+		<description>Loads loanet data to sbl exposure landing</description>
+		<execDefinition>
+			<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+				<in>
+					<param name="P_TYPE_NAME_I" type="STRING">aldop_exposure_tp</param>
+					<param name="P_METHOD_NAME_I" type="STRING">pub_move_pre_landing</param>
+					<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+					<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+					<param name="P_TASK_ID_I" type="STRING">PA-LOANET-B4L-EXPSOURE</param>
+					<param name="P_LOG_ID_I" type="STRING">1</param>
+					<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+					<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">LOANET</param>
+				</in>
+				<out>
+					<param name="P_RET_VALUE_O" type="NUMBER" />
+					<param name="P_RET_MESSAGE_O" type="STRING" />
+				</out>
+				<outputPropertyMapping>
+					<mapping source="P_RET_VALUE_O" target="P_RET_VALUE_O" />
+					<mapping source="P_RET_MESSAGE_O" target="P_RET_MESSAGE_O" />
+				</outputPropertyMapping>
+			</dbProcedure>
+		</execDefinition>
+	</stage>
+     <stage enabled="true"
+         id="PRELAND-TO-LAND-ALDOP-SBLCOLLATERAL" name="PRELAND-TO-LAND-ALDOP-SBLCOLLATERAL">
+         <description>Loads loanet data to sbl collateral, basket landing</description>
+         <execDefinition>
+             <dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+                 <in>
+                     <param name="P_TYPE_NAME_I" type="STRING">aldop_sblcollateral_tp</param>
+                     <param name="P_METHOD_NAME_I" type="STRING">pub_move_pre_landing</param>
+                     <param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+                     <param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+                     <param name="P_TASK_ID_I" type="STRING">PA-LOANET-B4L-SBLCOLLATERAL</param>
+                     <param name="P_LOG_ID_I" type="STRING">1</param>
+                     <param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+                     <param name="P_SOURCE_SYSTEM_CD_I" type="STRING">LOANET</param>
+                 </in>
+                 <out>
+                     <param name="P_RET_VALUE_O" type="NUMBER"/>
+                     <param name="P_RET_MESSAGE_O" type="STRING"/>
+                 </out>
+                 <outputPropertyMapping>
+                     <mapping source="P_RET_VALUE_O" target="P_RET_VALUE_O"/>
+                     <mapping source="P_RET_MESSAGE_O" target="P_RET_MESSAGE_O"/>
+                 </outputPropertyMapping>
+             </dbProcedure>
+         </execDefinition>
+     </stage>
+	<stage enabled="true" id="PRELAND-TO-LAND-ALDOP-FUNDTRACKER" name="PRELAND-TO-LAND-ALDOP-FUNDTRACKER">
+            <description>Loads fundtracker data to legal entity landing</description>
+            <execDefinition>
+                <dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+                    <in>
+                        <param name="P_TYPE_NAME_I" type="STRING">aldop_legalentity_tp</param>
+                        <param name="P_METHOD_NAME_I" type="STRING">pub_move_pre_landing</param>
+                        <param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+                        <param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+                        <param name="P_TASK_ID_I" type="STRING">PA-LOANET-B4L-FUNDTRACKER</param>
+                        <param name="P_LOG_ID_I" type="STRING">1</param>
+                        <param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+                        <param name="P_SOURCE_SYSTEM_CD_I" type="STRING">LOANET</param>
+                    </in>
+                    <out>
+                        <param name="P_RET_VALUE_O" type="NUMBER"/>
+                        <param name="P_RET_MESSAGE_O" type="STRING"/>
+                    </out>
+                    <outputPropertyMapping>
+                        <mapping source="P_RET_VALUE_O" target="P_RET_VALUE_O"/>
+                        <mapping source="P_RET_MESSAGE_O" target="P_RET_MESSAGE_O"/>
+                    </outputPropertyMapping>
+                </dbProcedure>
+            </execDefinition>
+        </stage>
+        <externalWorkflowReference enabled="true"
+            id="CM-ETL-WF" name="CM-ETL-WF">
+            <skipCondition>${ALDOP-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+            <externalWorkflowCode>CM-ETL-WF</externalWorkflowCode>
+            <inputProperties>
+                <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+                <property name="EOD-EOM-IND">${WF-EOD-EOM-INDICATOR}</property>
+                <property name="SOURCE-SYSTEM">LOANET</property>
+                <property name="SOURCE-SYSTEM-LC">loanet</property>
+            </inputProperties>
+        </externalWorkflowReference>
+		<externalWorkflowReference name="CM-CSM-ENRICHMENT-WF" id="CM-CSM-ENRICHMENT-WF">
+			<skipCondition>${ALDOP-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+			<externalWorkflowCode>CM-CSM-ENRICHMENT-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">LOANET</property>
+	            <property name="SOURCE-SYSTEM-LC">loanet</property>
+				<property name="WF-EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+				<property name="RUN-ID" >${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="BUSINESS-DATE-FORMATTED">${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</property>
+				<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		
+        <stage name="CLEAN-UP-FTP-DIR" id="CLEAN-UP-FTP-DIR">
+			<description>Clean up files in FTP directory</description>
+			<skipCondition>'${ALDOP-FILEWATCH-WF.matchedCount}' == '0' </skipCondition>
+			<execDefinition>
+				<deleteResource failOnError="false">
+						<resource>
+							<uri>${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</uri>
+							<searchPattern>LOANET_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+						</resource>
+					<deleteCountProperty>matchedDelRemCount</deleteCountProperty>
+				</deleteResource>
+			</execDefinition>
+		</stage>
+		<externalWorkflowReference id="COMPLETE-RUN" name="FINALIZE-RUN">
+            <description>Finalize the run and mark complete</description>
+            <externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+            <inputProperties>
+                <property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+                <property name="SRC-FILE-SUFFIX-PATTERN">${SRC-FILE-SUFFIX-PATTERN-1}</property>
+                <property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${FTP-SOURCE-DIR}</property>
+                <property name="SOURCE-SYSTEM">LOANET</property>
+                <property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+            </inputProperties>
+        </externalWorkflowReference>
+    </sequential>
+</workflow>

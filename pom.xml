@@ -1,0 +1,207 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ca.mss.rd</groupId>
+	<artifactId>RdApp</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<modules>
+		<module>RdStarter</module>
+
+		<module>RdMath</module>
+		<module>RdUtil</module>
+		<module>RdJob</module>
+		
+		<module>RdFlowEngine</module>
+		
+		<module>HomeUtils</module>
+		
+		<module>RdWorkflow</module>
+		<module>RdChessICTK</module>
+		
+		<module>RdHttp</module>
+		<module>RdTools</module>
+		<module>RdExcel</module>
+		<module>RdTrade</module>
+
+		<module>RdSwing</module>
+		<module>RdChartGenerics</module>
+
+		<module>RdTraderSource</module>
+
+		<module>RdChart2d</module>
+
+		<module>RdTraderServer</module>
+		<module>RdTraderConsole</module>
+
+		<module>RdFinance</module>
+		<module>RdFinance2</module>
+		<module>RdFinancebd</module>
+		
+		
+		<module>zictk-0.2.0</module>
+		<module>RdChess</module>
+		
+		<module>RdLoto</module>
+		<!-- module>rdlingvo</module-->
+		
+		<!--module>RdTest</module-->
+	</modules>
+	
+	<dependencies>
+
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ant-contrib</groupId>
+			<artifactId>ant-contrib</artifactId>
+			<version>1.0b3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tigris.antelope</groupId>
+			<artifactId>antelopetasks</artifactId>
+			<version>3.2.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.beanshell</groupId>
+			<artifactId>bsh</artifactId>
+			<version>2.0b4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-cache</artifactId>
+			<version>4.1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jidesoft</groupId>
+			<artifactId>jide-oss</artifactId>
+			<version>2.9.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>xmlgraphics-commons</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.jchart2d</groupId>
+			<artifactId>jchart2d</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ictk</groupId>
+			<artifactId>ictk</artifactId>
+			<version>2.4.2</version>
+			<scope>system</scope>
+			<systemPath>D:/workspace/2012/rd/lib/ictk-2.4.2.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>gnu.jel</groupId>
+			<artifactId>gnu.jel</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>D:/workspace/2012/rd/lib/jel.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>free.freechess.timeseal</groupId>
+			<artifactId>free.freechess.timeseal</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>D:/workspace/2012/rd/lib/timesealing.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>free.chessclub.timestamp</groupId>
+			<artifactId>free.chessclub.timestamp</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>D:/workspace/2012/rd/lib/timestamping.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jfx</groupId>
+			<artifactId>com.jfx</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>D:/workspace/2012/rd/lib/jfx-2.4.1-P5.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>SevenZip</groupId>
+			<artifactId>SevenZip</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>D:/workspace/2012/rd/lib/7z.jar</systemPath>
+		</dependency>
+
+	</dependencies>
+	
+</project>

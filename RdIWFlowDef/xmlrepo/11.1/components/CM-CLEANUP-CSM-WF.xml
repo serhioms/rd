@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: CM-CLEANUP-CSM-WF.xml 4168 2016-06-23 19:16:47Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>CM-CLEANUP-CSM-WF</name> 
+  	<externalWorkflowCode>CM-CLEANUP-CSM-WF</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>CM-CLEANUP-CSM-WF ($LastChangedRevision: 4168 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="CTR-SOURCE-SYSTEM-CODE">CSM</property>
+			<property name="RUN-INSTANCE">1</property>
+		</inputProperties>
+		<generalProperties>
+			<property name="ROOT-WF-ID">CM-CLEANUP-CSM-WF</property>
+			<property name="WORKFLOW_RUN_ID">0</property>
+		</generalProperties>
+	</properties>
+	
+	<sequential name="CLEAN-UP-CSM-WF" id="CLEAN-UP-CSM-WF">
+		<externalWorkflowReference name="INITIALIZE-RUN" id="INITIALIZE-RUN">
+			<externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="EOD-EOM-INDICATOR">D</property>
+				<property name="SOURCE-SYSTEM">CSM</property>
+				<property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+				<property name="TARGET-SYSTEM"></property>
+				<property name="RUN-TYPE" />
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+				<property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+			</inputProperties>
+			<outputPropertyMapping>
+				<mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+				<mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+				<mapping source="RUN-ID" target="P_RUN_ID_O"/>
+				<mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+			</outputPropertyMapping>
+		</externalWorkflowReference>
+		
+		<stage name="GET-SOURCE-SYSTEM-PROC-CONFIG" id="GET-SOURCE-SYSTEM-PROC-CONFIG">
+			<description>Get the procedure skip list for current source system</description>
+			<stageFailure>
+				<failureCondition><![CDATA['${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}' == '']]></failureCondition>
+				<failureMessage>No ETL configuration is found in table: etl_system_proc_config_o for source system : CSM</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.RUN_PKG.get_source_system_proc_sp">
+					<in>
+						<param name="p_source_system_cd_i" type="STRING">CSM</param>
+					</in>
+					<out>
+						<param name="p_proc_list1_o" type="STRING"></param>
+						<param name="p_proc_list2_o" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+		<parallel id="CM-TRUNCATE-LANDING-PARTITIONS" name="TRUNCATE-LANDING">
+			
+			<stage name="TRUNCATE-BAD-TABLE" id="TRUNCATE-BAD-TABLE">
+				<description>Truncate bad_l type landing tables</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">bad_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">TRUNCATE-BAD-TABLE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<stage name="TRUNCATE-LEGAL-ENTITY" id="PA-TRUNCATE-LEGAL-ENTITY">
+				<description>Truncate legal entity type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('legal_entity_tp.pub_trunc_pre_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('legal_entity_tp.pub_trunc_pre_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">legal_entity_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_pre_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">PA-TRUNCATE-LEGAL-ENTITY</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<stage name="TRUNCATE-PARTY" id="PA-TRUNCATE-PARTY">
+				<description>Truncate legal entity type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('legal_entity_tp.pub_trunc_pre_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('legal_entity_tp.pub_trunc_pre_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">PA-TRUNCATE-PARTY</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<stage name="TRUNCATE-FXRATE" id="IN-TRUNCATE-FXRATE">
+				<description>Truncate fxforward type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('fxrate_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('fxrate_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">fxrate_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-FXRATE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-BOND-FUTURE-OPTION" id="IN-TRUNCATE-BOND-FUTURE-OPTION">
+				<description>Truncate Bond Future option type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('bond_future_option_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('bond_future_option_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">bond_future_option_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-BOND-FUTURE-OPTION</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-BOND-FUTURE" id="IN-TRUNCATE-BOND-FUTURE">
+				<description>Truncate Bond Future type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('bond_future_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('bond_future_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">bond_future_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-BOND-FUTURE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-BOND" id="IN-TRUNCATE-BOND">
+				<description>Truncate bond type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('bond_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('bond_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">bond_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-BOND</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-COMMODITY-FUTURE" id="IN-TRUNCATE-COMMODITY-FUTURE">
+				<description>Truncate Commodity future landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('commodity_future_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('commodity_future_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">commodity_future_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-COMMODITY-FUTURE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-COMMODITY-OPTION" id="IN-TRUNCATE-COMMODITY-OPTION">
+				<description>Truncate Commodity option landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('commodity_option_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('commodity_option_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">commodity_option_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-COMMODITY-OPTION</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-CONVERTIBLE-BOND" id="IN-TRUNCATE-CONVERTIBLE-BOND">
+				<description>Truncate Convertible Bond type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('convertible_bond_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('convertible_bond_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">convertible_bond_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-CONVERTIBLE-BOND</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-EQUITYFUTURE" id="IN-TRUNCATE-EQUITYFUTURE">
+				<description>Truncate Equity Future type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('equity_future_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('equity_future_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">equity_future_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-EQUITYFUTURE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-EQUITY-OPTION-ETD" id="IN-TRUNCATE-EQUITY-OPTION-ETD">
+				<description>Truncate equity option ETD landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('equity_option_etd_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('equity_option_etd_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">equity_option_etd_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-EQUITY-OPTION-ETD</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-EQUITY" id="IN-TRUNCATE-EQUITY">
+				<description>Truncate equity type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('equity_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('equity_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">equity_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-EQUITY</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-FRN" id="IN-TRUNCATE-FRN">
+				<description>Truncate FRN type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('frn_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('frn_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">frn_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-FRN</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-FX-FUTURE" id="IN-TRUNCATE-FX-FUTURE">
+				<description>Truncate FX Future type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('fx_future_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('fx_future_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">fx_future_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-FX-FUTURE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-FX-OPTION-ETD" id="IN-TRUNCATE-FX-OPTION-ETD">
+				<description>Truncate FX option ETD type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('fx_option_etd_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('fx_option_etd_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">fx_option_etd_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-FX-OPTION-ETD</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-IR-FUTURE-OPTION" id="IN-TRUNCATE-IR-FUTURE-OPTION">
+				<description>Truncate IR Future Option type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('ir_future_option_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('ir_future_option_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">ir_future_option_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-IR-FUTURE-OPTION</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-IR-FUTURE" id="IN-TRUNCATE-IR-FUTURE">
+				<description>Truncate IR Future type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('ir_future_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('ir_future_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">ir_future_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-IR-FUTURE</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-TBILL" id="IN-TRUNCATE-TBILL">
+				<description>Truncate T Bill type landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('t_bill_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('t_bill_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">t_bill_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-TBILL</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-WARRANT" id="IN-TRUNCATE-WARRANT">
+				<description>Truncate Warrant landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('warrant_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('warrant_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">warrant_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-WARRANT</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			<stage name="TRUNCATE-TRADABLE-LOAN" id="IN-TRUNCATE-TRADABLE-LOAN">
+				<description>Truncate tradable loan landing tables</description>
+				<skipCondition> not ('${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list1_o}'.contains('tradable_loan_tp.pub_trunc_land_partition') or '${GET-SOURCE-SYSTEM-PROC-CONFIG.p_proc_list2_o}'.contains('tradable_loan_tp.pub_trunc_land_partition'))</skipCondition>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">tradable_loan_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-WARRANT</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+			
+			<stage name="TRUNCATE-CSM-STATUS" id="IN-TRUNCATE-CSM-STATUS">
+				<description>Truncate CSM status landing tables</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">csm_response_tp</param>
+							<param name="P_METHOD_NAME_I" type="STRING">pub_trunc_land_partition</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+							<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+							<param name="P_TASK_ID_I" type="STRING">IN-TRUNCATE-CSM-STATUS</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${CTR-SOURCE-SYSTEM-CODE}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+			</stage>
+		</parallel>
+		<stage name="TRUNCATE-STAGING" id="TRUNCATE-STAGING">
+			<description>Truncate staging tables for a source system</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">party_organization_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_truncate_staging</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${INITIALIZE-RUN.P_RUN_ID_O}</param>
+						<param name="P_STAGE_ID_I" type="STRING">STAGING</param>
+						<param name="P_TASK_ID_I" type="STRING">CSM-TRUNCATE-STAGING</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${INITIALIZE-RUN.BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">CSM</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		<!-- FINALIZE PHASE -->
+		<externalWorkflowReference name="FINALIZE-RUN" id="COMPLETE-RUN">
+			<description>Finalize the run and mark complete</description>
+			<externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">NONE</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="SRC-FILE-SUFFIX-PATTERN">NONE</property>
+				<property name="FTP-SOURCE-DIR">NONE</property>
+			</inputProperties>
+		</externalWorkflowReference>
+	</sequential>
+</workflow>
+	

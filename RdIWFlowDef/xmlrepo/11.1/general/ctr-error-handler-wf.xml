@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-error-handler-wf.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.19.1 -->
+	
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-error-handler-wf</name> 
+  	<externalWorkflowCode>ctr-error-handler-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-error-handler-wf ($LastChangedRevision: 3690 $)</description>
+	
+	<properties>
+	     <inputProperties>
+			<property name="RUNID"/>
+			<property name="RUNSTATUS"/>
+			<property name="RUNDESC"/>
+		 </inputProperties>
+	</properties>	
+
+	<sequential name="CTR-ERROR-HANDLER" id="CTR-ERROR-HANDLER">		
+		<stage name="ERROR-HANDLER" id="ERROR-HANDLER">
+			<description>ERROR-HANDLER</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.RUN_PKG.UPDATE_RUN_STATUS_SP">
+					<in>
+						<param name="P_MAESTRO_RUN_ID_I"  type="STRING">${RUNID}</param>
+						<param name="P_RUN_STATUS_I"      type="STRING">${RUNSTATUS}</param>
+						<param name="P_RUN_STATUS_DESC_I" type="STRING">${RUNDESC}</param>
+					</in>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+	</sequential>
+</workflow>

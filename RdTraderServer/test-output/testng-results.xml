@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="44447" started-at="2015-10-01T21:14:11Z" finished-at="2015-10-01T21:14:55Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="44447" started-at="2015-10-01T21:14:11Z" finished-at="2015-10-01T21:14:55Z">
+      <class name="ng.ca.mss.rd.trader.TestQuoteTrend">
+        <test-method status="PASS" signature="beforeTest()[pri:0, instance:ng.ca.mss.rd.trader.TestQuoteTrend@2ac1fdc4]" name="beforeTest" is-config="true" duration-ms="422" started-at="2015-10-01T17:14:11Z" finished-at="2015-10-01T17:14:11Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeTest -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:ng.ca.mss.rd.trader.TestQuoteTrend@2ac1fdc4]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2015-10-01T17:14:11Z" finished-at="2015-10-01T17:14:11Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="TradeEURUSD()[pri:0, instance:ng.ca.mss.rd.trader.TestQuoteTrend@2ac1fdc4]" name="TradeEURUSD" duration-ms="43963" started-at="2015-10-01T17:14:11Z" finished-at="2015-10-01T17:14:55Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- TradeEURUSD -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:ng.ca.mss.rd.trader.TestQuoteTrend@2ac1fdc4]" name="afterMethod" is-config="true" duration-ms="0" started-at="2015-10-01T17:14:55Z" finished-at="2015-10-01T17:14:55Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="afterTest()[pri:0, instance:ng.ca.mss.rd.trader.TestQuoteTrend@2ac1fdc4]" name="afterTest" is-config="true" duration-ms="15" started-at="2015-10-01T17:14:55Z" finished-at="2015-10-01T17:14:55Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterTest -->
+      </class> <!-- ng.ca.mss.rd.trader.TestQuoteTrend -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

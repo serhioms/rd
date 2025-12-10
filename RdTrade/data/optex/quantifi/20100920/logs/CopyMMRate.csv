@@ -1,0 +1,45 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Markit,EURLIBOR.1 Days.Mid,0.00505
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,EURLIBOR.1 Days.Mid,0.00505
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Markit,EURLIBOR.1 Weeks.Mid,0.00505
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,EURLIBOR.1 Weeks.Mid,0.00505
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.15-Sep-2010.Mid,0.011258
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.16-Dec-2009.Mid,0.0069641
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.16-Jun-2010.Mid,0.0071633
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.17-Mar-2010.Mid,0.008881
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.2 Days.Mid,0.0108883
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.STUB.Mid,0.011258
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.15-Sep-2010.Mid,0.0095972
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.16-Dec-2009.Mid,0.0062666
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.16-Jun-2010.Mid,0.0079315
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.17-Mar-2010.Mid,0.007652
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.2 Days.Mid,0.0096965
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.STUB.Mid,0.0095972
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.1 Weeks.Mid,0.01401
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.13-Sep-2010.Mid,0.01006
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.14-Dec-2009.Mid,0.00365
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.14-Jun-2010.Mid,0.00287
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.15-Mar-2010.Mid,0.00398
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.2 Days.Mid,0.01127
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Markit,CADLIBOR.2 Months.Mid,0.007486
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,CADLIBOR.2 Months.Mid,0.0091
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.2 Months.Mid,0.0091
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.STUB.Mid,0.01006
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,JPYLIBOR.1 Days.Mid,0.001581
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,JPYLIBOR.1 Months.Mid,0.001581
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,JPYLIBOR.1 Weeks.Mid,0.001581
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,JPYLIBOR.14-May-2010.Mid,0.0043209
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,JPYLIBOR.2 Days.Mid,0.001581
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,JPYLIBOR.2 Months.Mid,0.001956
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,JPYLIBOR.3 Months.Mid,0.002444
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,JPYLIBOR.6 Months.Mid,0.00445
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,JPYLIBOR.STUB.Mid,0.0043317
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.1 Weeks.Mid,0.002182
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.15-Sep-2010.Mid,0.001697
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.16-Dec-2009.Mid,0.000776
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.16-Jun-2010.Mid,0.001812
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.17-Mar-2010.Mid,0.001768
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.2 Days.Mid,0.000394
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Model,USDLIBOR.2 Months.Mid,0.004306
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.2 Months.Mid,0.005195
+17-Sep-2010,20-Sep-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.STUB.Mid,0.001697

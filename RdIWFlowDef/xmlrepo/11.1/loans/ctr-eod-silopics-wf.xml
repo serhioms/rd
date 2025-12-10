@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: ctr-eod-silopics-wf.xml 4168 2016-06-23 19:16:47Z gmusial $
+	 Maestro version: 1.19.1 -->
+	
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>ctr-eod-silopics-wf</name> 
+  	<externalWorkflowCode>ctr-eod-silopics-wf</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>ctr-eod-silopics-wf ($LastChangedRevision: 4168 $)</description>
+	
+	<properties>
+		<inputProperties>
+			<property name="WF-EOD-EOM-INDICATOR">D</property>
+			<property name="RUN-INSTANCE">1</property>
+		</inputProperties>
+		<generalProperties>
+			<property name="ROOT-WF-ID">ctr-eod-silopics-wf</property>
+			<property name="WORKFLOW_RUN_ID">0</property>
+			<!-- Source Directories -->
+			<property name="SILOPICS-FTP-SOURCE-DIR">silopics/inbox</property>
+			<property name="SILOPICS-HOLDING-DIR">${CTR_DATA_ROOT_PATH}/manual/silopics</property>
+			<property name="SILOPICS-HOLDING-MATCH-PATTERN">.+_${WF-EOD-EOM-INDICATOR}_${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}_.+</property>
+			<property name="SQLLDR-PROCESSING-SOURCE-DIR">data_in/infiles</property>
+			<property name="SQLLDR-CONTROL-DIRECTORY">sqlldr</property>
+			<property name="SQLLDR-DISCARD-DIR">data_in/discard</property>
+			<property name="SQLLDR-REJECT-DIRECTORY">data_in/reject</property>
+			<property name="SQLLDR-LOG-DIRECTORY">data_in/ldrlog</property>
+			
+			<property name="REPLICATE-SRC-IF-MONTH-END">T</property>
+			<property name="DATA-CATEGORY-TYPE">LOANS</property>
+			
+			<!-- Source file naming pattern -->
+			<property name="SRC-FILE-PRODUCTTYPE-PATTERN">[^_]*[_]?</property>
+			<property name="SRC-FILE-FILETYPE-PATTERN">[PT]?[_]?</property>
+			<property name="SRC-FILE-FREQUENCY-PATTERN">${WF-EOD-EOM-INDICATOR}_</property>
+			<property name="SRC-FILE-VERSION-PATTERN">(${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED})?_[0-9]{2,2}</property>
+			<property name="SRC-FILE-SUFFIX-PATTERN-1">${SRC-FILE-PRODUCTTYPE-PATTERN}${SRC-FILE-FILETYPE-PATTERN}${SRC-FILE-FREQUENCY-PATTERN}${SRC-FILE-VERSION-PATTERN}</property>
+		</generalProperties>
+	</properties>	
+
+	<sequential name="CTR-LOANS" id="CTR-LOANS">
+	
+		<externalWorkflowReference name="INITIALIZE-RUN" id="INITIALIZE-RUN">
+			<externalWorkflowCode>INITIALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+				<property name="SOURCE-SYSTEM">SILOPICS</property>
+				<property name="ROOT-WF-ID">${ROOT-WF-ID}</property>
+				<property name="TARGET-SYSTEM"></property>
+				<property name="RUN-TYPE" />
+				<property name="RUN-INSTANCE">${RUN-INSTANCE}</property>
+				<property name="WORKFLOW-RUN-ID">${WORKFLOW_RUN_ID}</property>
+			</inputProperties>
+			<outputPropertyMapping>
+				<mapping source="BUSINESS-DATE" target="BUSINESS-DATE"/>
+				<mapping source="BUSINESS-DATE-FORMATTED" target="BUSINESS-DATE-FORMATTED"/>
+				<mapping source="RUN-ID" target="P_RUN_ID_O"/>
+				<mapping source="IS-MONTH-END" target="IS-MONTH-END"/>
+			</outputPropertyMapping>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="PREPARE-SOURCE-FILES" id="PREPARE-SOURCE-FILES">
+			<externalWorkflowCode>PREPARE-SOURCE-FILES</externalWorkflowCode>
+			<inputProperties>
+				<property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</property>
+				<property name="HOLDING-SOURCE-DIR">${SILOPICS-HOLDING-DIR}</property>
+				<property name="HOLDING-MATCH-PATTERN">${SILOPICS-HOLDING-MATCH-PATTERN}</property>
+				<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+				<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<stage name="INIT-COMPLETE-CHECK" id="INIT-COMPLETE-CHECK">
+			<description>Verify if the common workflow steps completed</description>
+			<stageFailure>
+				<failureCondition><![CDATA[${INITIALIZE-RUN.P_RUN_ID_O} <= 0 || "${CTR_APP_ROOT_PATH}" == '' || "${CTR_ROOT_PATH}" == ''|| "${CTR_FTP_ROOT_PATH}" == ''|| "${CTR_DATA_ROOT_PATH}" == ''|| "${CTR_CONFIG_ROOT_PATH}" == '']]></failureCondition>
+				<failureMessage>Common workflow initialization failed</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<noOpExecDefinition>
+					<input>CHECK-IF-INIT-COMPLETE</input>
+					<numberOfTasks>1</numberOfTasks>
+					<numberOfInterimStatusResponses>1</numberOfInterimStatusResponses>
+				</noOpExecDefinition>
+			</execDefinition>
+		</stage>
+		
+		<!-- LOANS-WORKFLOWS -->
+		
+		<parallel id="LOANS-WORKFLOWS" name="LOANS-WORKFLOWS">
+			
+			<sequential id="SILOPICS" name="SILOPICS">	
+				<stage name="SILOPICS-FILEWATCH-WF" id="SILOPICS-FILEWATCH-WF">
+					<autoRetryConfiguration>
+						<delayBetweenAttemptsInMs>60000</delayBetweenAttemptsInMs>
+                        <maximumNumberOfRetryAttempts>720</maximumNumberOfRetryAttempts>
+                        <maximumRetryDurationInMs>43200000</maximumRetryDurationInMs>
+					</autoRetryConfiguration>
+					<execDefinition>
+						<pollingFileWatcher>
+							<watchedFiles>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_PA_(?!LegalEntity)${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>PA-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_PA_(?!LegalEntity)${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>PA-FILE-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_FA_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>FA-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_FA_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>FA-FILE-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_LO_DL_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>LODL-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_LO_DL_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>LODL-FILE-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_LO_Callnot_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>LOCallnot-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_LO_Callnot_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>LOCallnot-FILE-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_PS_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>PS-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_PS_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>PS-FILE-MRK</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_XR_${SRC-FILE-SUFFIX-PATTERN-1}.csv</searchPattern>
+									<matchedUriOutputProperty>XR-FILE</matchedUriOutputProperty>
+								</resource>
+								<resource>
+									<uri>${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</uri>
+									<searchPattern>SILOPICS_XR_${SRC-FILE-SUFFIX-PATTERN-1}.mrk</searchPattern>
+									<matchedUriOutputProperty>XR-FILE-MRK</matchedUriOutputProperty>
+								</resource>
+							</watchedFiles>
+							<matchedCountProperty>matchedCount</matchedCountProperty>
+						</pollingFileWatcher>
+					</execDefinition>
+				</stage>
+				<parallel id="LOANS-CHECKSUM" name="CHECKSUM">
+					<stage name="CHECKSUM-FILE-1" id="LOANS-CHK-1">
+						<description>Validate checksum for file 1</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${SILOPICS-FILEWATCH-WF.PA-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${SILOPICS-FILEWATCH-WF.PA-FILE-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-FILE-2" id="LOANS-CHK-2">
+						<description>Validate checksum for file 2</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${SILOPICS-FILEWATCH-WF.FA-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${SILOPICS-FILEWATCH-WF.FA-FILE-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-FILE-3" id="LOANS-CHK-3">
+						<description>Validate checksum for file 3</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${SILOPICS-FILEWATCH-WF.LODL-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${SILOPICS-FILEWATCH-WF.LODL-FILE-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-FILE-4" id="LOANS-CHK-4">
+						<description>Validate checksum for file 4</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${SILOPICS-FILEWATCH-WF.LOCallnot-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${SILOPICS-FILEWATCH-WF.LOCallnot-FILE-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-FILE-5" id="LOANS-CHK-5">
+						<description>Validate checksum for file 5</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${SILOPICS-FILEWATCH-WF.PS-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${SILOPICS-FILEWATCH-WF.PS-FILE-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+					<stage name="CHECKSUM-FILE-6" id="LOANS-CHK-6">
+						<description>Validate checksum for file 6</description>
+						<execDefinition>
+							<checksumValidation>
+								<sourceResource>
+									<uri>${SILOPICS-FILEWATCH-WF.XR-FILE}</uri>
+								</sourceResource>
+								<markerResource>
+									<uri>${SILOPICS-FILEWATCH-WF.XR-FILE-MRK}</uri>
+								</markerResource>
+								<checksumAlgorithm>SHA256</checksumAlgorithm>
+							</checksumValidation>
+						</execDefinition>
+					</stage>
+				</parallel>
+				<externalWorkflowReference name="SILOPICS-PREPARE-LOAD-WF" id="SILOPICS-PREPARE-LOAD-WF">
+					<skipCondition>${SILOPICS-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+					<externalWorkflowCode>PREPARE-LOANS-LOAD-WF</externalWorkflowCode>
+					<inputProperties>
+						<property name="SOURCE-SYSTEM">SILOPICS</property>
+						<property name="SOURCE-SYSTEM-LC">silopics</property>
+						<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+						<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+						<property name="FTP-SOURCE-DIR">${CTR_FTP_ROOT_PATH}/${SILOPICS-FTP-SOURCE-DIR}</property>
+						<property name="PROCESSING-DIR">${CTR_DATA_INBOUND_PATH}</property>
+						<property name="HOLDING-SOURCE-DIR">${SILOPICS-HOLDING-DIR}</property>
+						<property name="REPLICATE-IF-MONTH-END">${REPLICATE-SRC-IF-MONTH-END}</property>
+						<property name="IS-MONTH-END">${INITIALIZE-RUN.IS-MONTH-END}</property>
+						<property name="EOD-EOM-INDICATOR">${WF-EOD-EOM-INDICATOR}</property>
+					</inputProperties>
+				</externalWorkflowReference>
+				<parallel id="SILOPICS-LOAD" name="SILOPICS-LOAD-SOURCE-FILES">
+					<skipCondition>${SILOPICS-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+					<externalWorkflowReference name="SILOPICS-LOAD-PARTY" id="SILOPICS-LOAD-PARTY">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${SILOPICS-FILEWATCH-WF.PA-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+							
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="SILOPICS-LOAD-FACILITY" id="SILOPICS-LOAD-FACILITY">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${SILOPICS-FILEWATCH-WF.FA-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+							
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="SILOPICS-LOAD-LOAN-CALLNOT" id="SILOPICS-LOAD-LOAN-CALLNOT">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${SILOPICS-FILEWATCH-WF.LOCallnot-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+							
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="SILOPICS-LOAD-LOAN-DL" id="SILOPICS-LOAD-LOAN-DL">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${SILOPICS-FILEWATCH-WF.LODL-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+							
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="SILOPICS-LOAD-PAY-SCHEDULE" id="SILOPICS-LOAD-PAY-SCHEDULE">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${SILOPICS-FILEWATCH-WF.PS-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+							
+						</inputProperties>
+					</externalWorkflowReference>
+					<externalWorkflowReference name="SILOPICS-LOAD-CROSS-REF" id="SILOPICS-LOAD-CROSS-REF">
+						<externalWorkflowCode>LOAD-FILE-WF</externalWorkflowCode>
+						<inputProperties>
+							<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+							<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+							<property name="SOURCE-FILE">${SILOPICS-FILEWATCH-WF.XR-FILE}</property>
+							<property name="PROCESSING-SOURCE-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-PROCESSING-SOURCE-DIR}</property>
+							<property name="CONTROL-PATH">${CTR_CONFIG_ROOT_PATH}/${SQLLDR-CONTROL-DIRECTORY}</property>
+							<property name="DISCARD-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-DISCARD-DIR}</property>
+							<property name="REJECT-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-REJECT-DIRECTORY}</property>
+							<property name="LOG-PATH">${CTR_DATA_ROOT_PATH}/${SQLLDR-LOG-DIRECTORY}</property>
+							<property name="DATA-CATEGORY">${DATA-CATEGORY-TYPE}</property>
+							<property name="DELIMITER">,</property>
+							
+						</inputProperties>
+					</externalWorkflowReference>
+				</parallel>
+				<externalWorkflowReference name="SILOPICS-ETL-WF" id="SILOPICS-ETL-WF">
+					<skipCondition>${SILOPICS-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+					<externalWorkflowCode>LOANS-ETL-WF</externalWorkflowCode>
+					<inputProperties>
+						<property name="SOURCE-SYSTEM">SILOPICS</property>
+						<property name="SOURCE-SYSTEM-LC">silopics</property>
+						<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+						<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+					</inputProperties>
+				</externalWorkflowReference>
+				<externalWorkflowReference name="SILOPICS-DELIVER-WF" id="SILOPICS-DELIVER-WF">
+					<skipCondition>${SILOPICS-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+					<externalWorkflowCode>LOANS-EXTRACT-TO-ISL</externalWorkflowCode>
+					<inputProperties>
+						<property name="SOURCE-SYSTEM">SILOPICS</property>
+						<property name="SOURCE-SYSTEM-LC">silopics</property>
+						<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+						<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE-FORMATTED}</property>
+						<property name="EOD-EOM-IND">${WF-EOD-EOM-INDICATOR}</property>
+					</inputProperties>
+				</externalWorkflowReference>
+			</sequential>
+		</parallel>
+		
+		<!-- FINALIZE PHASE -->
+		
+		<stage name="CLEAN-UP-FTP-DIR" id="CLEAN-UP-FTP-DIR">
+			<description>Clean up files in FTP directory</description>
+			<skipCondition>${SILOPICS-FILEWATCH-WF.matchedCount} == 0</skipCondition>
+			<execDefinition>
+				<deleteResource failOnError="false">
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.PA-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.PA-FILE-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.FA-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.FA-FILE-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.LODL-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.LODL-FILE-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.LOCallnot-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.LOCallnot-FILE-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.PS-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.PS-FILE-MRK}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.XR-FILE}</uri>
+					</resource>
+					<resource>
+						<uri>${SILOPICS-FILEWATCH-WF.XR-FILE-MRK}</uri>
+					</resource>
+					<deleteCountProperty>matchedCount</deleteCountProperty>
+				</deleteResource>
+			</execDefinition>
+		</stage>
+		
+		<externalWorkflowReference name="FINALIZE-RUN" id="COMPLETE-RUN">
+			<description>Finalize the run and mark complete</description>
+			<externalWorkflowCode>FINALIZE-RUN</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">SILOPICS</property>
+				<property name="RUN-ID">${INITIALIZE-RUN.P_RUN_ID_O}</property>
+				<property name="BUSINESS-DATE">${INITIALIZE-RUN.BUSINESS-DATE}</property>
+				<property name="SRC-FILE-SUFFIX-PATTERN">NONE</property>
+				<property name="FTP-SOURCE-DIR">NONE</property>
+			</inputProperties>
+		</externalWorkflowReference>
+	</sequential>
+</workflow>

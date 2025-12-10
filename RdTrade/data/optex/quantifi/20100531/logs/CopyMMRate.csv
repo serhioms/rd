@@ -1,0 +1,28 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.1 Weeks.Mid,0.00314
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.14-Dec-2009.Mid,0.00365
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.15-Mar-2010.Mid,0.00398
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.2 Days.Mid,0.00474
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,CADLIBOR.STUB.Mid,0.00287
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.1 Months.Mid,0.0047389
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.16-Dec-2009.Mid,0.0069641
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.17-Mar-2010.Mid,0.008881
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.2 Days.Mid,0.0092777
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.2 Months.Mid,0.0083832
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,EURLIBOR.STUB.Mid,0.0071633
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.1 Months.Mid,0.0043725
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.16-Dec-2009.Mid,0.0062666
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.17-Mar-2010.Mid,0.007652
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.2 Days.Mid,0.0082905
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.2 Months.Mid,0.0082402
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,GBPLIBOR.STUB.Mid,0.0079315
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,JPYLIBOR.13-May-2010.Mid,0.0042938
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,JPYLIBOR.14-May-2010.Mid,0.0043209
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,JPYLIBOR.STUB.Mid,0.0043317
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.1 Weeks.Mid,0.00127
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.16-Dec-2009.Mid,0.000776
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.16-Jun-2010.Mid,0.001812
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.17-Mar-2010.Mid,0.001768
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.2 Days.Mid,0.002623
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.2 Months.Mid,0.0112
+28-May-2010,31-May-2010,Insert,True,Closing,MM Rate,Optex,USDLIBOR.STUB.Mid,0.001812

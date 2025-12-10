@@ -1,0 +1,14 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 10Y.0-0.03,0.68375
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 5Y.0-0.03,0.459375
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 7Y.0-0.03,0.55125
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.03-0.07,500
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.07-0.1,500
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.1-0.15,100
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.15-0.3,100
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0.3-1,100
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Optex,Dow Jones CDX.NA.IG.7-V5 10Y.0-0.03,500
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 10Y.0-0.03,0.52
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 3Y.0-0.03,0.02375
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 5Y.0-0.03,0.24875
+11-Nov-2010,12-Nov-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 7Y.0-0.03,0.40875

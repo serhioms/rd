@@ -1,0 +1,1419 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"><!--### Embedded XSD Content ###--><!-- Application Generated Schema --><!--############################--><xs:element name="autoRetryConfiguration" type="autoRetryConfiguration"/>
+   <xs:element name="callActiviti" type="callActiviti"/>
+   <xs:element name="callExternalProcess" type="callExternalProcess"/>
+   <xs:element name="cdataProperties" type="cdataProperties"/>
+   <xs:element name="checksumGeneration" type="checksumGeneration"/>
+   <xs:element name="checksumValidation" type="checksumValidation"/>
+   <xs:element name="componentReference" type="componentReference"/>
+   <xs:element name="dbFunction" type="dbFunction"/>
+   <xs:element name="dbProcedure" type="dbProcedure"/>
+   <xs:element name="deleteResource" type="deleteResource"/>
+   <xs:element name="execDefinition" type="execDefinition"/>
+   <xs:element name="externalWorkflowReference" type="externalWorkflowReference"/>
+   <xs:element name="fileTransfer" type="fileTransfer"/>
+   <xs:element name="javaExtension" type="javaExtension"/>
+   <xs:element name="mapping" type="mapping"/>
+   <xs:element name="noOpExecDefinition" type="noOpExecDefinition"/>
+   <xs:element name="parallel" type="parallel"/>
+   <xs:element name="param" type="param"/>
+   <xs:element name="pollingFileWatcher" type="pollingFileWatcher"/>
+   <xs:element name="processDefinitionId" type="processDefinitionId"/>
+   <xs:element name="processDescriptor" type="processDescriptor"/>
+   <xs:element name="properties" type="workflowProperties"/>
+   <xs:element name="property" nillable="true" type="xs:anyType"/>
+   <xs:element name="propertyMapping" type="propertyMapping"/>
+   <xs:element name="resource" type="resource"/>
+   <xs:element name="sequential" type="sequential"/>
+   <xs:element name="simpleProperties" type="simpleProperties"/>
+   <xs:element name="simpleProperty" type="simpleProperty"/>
+   <xs:element name="sqlLoader" type="sqlLoader"/>
+   <xs:element name="stage" type="stage"/>
+   <xs:element name="stageFailure" type="stageFalure"/>
+   <xs:element name="transfer" type="transfer"/>
+   <xs:element name="variable" type="variable"/>
+   <xs:element name="workflow" type="workflowDefinition"/>
+   <xs:element name="workflowComponent" type="workflowComponent"/>
+   <xs:complexType name="workflowDefinition">
+      <xs:annotation>
+         <xs:documentation>A workflow definition.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="name">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="50"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="externalWorkflowCode">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="128"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="finishOrchestrationASAPOnError" type="xs:boolean"/>
+         <xs:element name="description" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Description for the workflow definition.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element ref="properties" minOccurs="0"/>
+         <xs:element name="workflowComponents" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of Workflow Component definitions.  A Workflow Component is a re-usable set of Workflow Stages which can be referenced multiple times throughout a total Maestro Workflow.  Workflow Components are referenced by their id.  Workflow Components can be parameterized by using the Workflow Component Input Properties. Output parameters can be passed to the calling Workflow context using the Workflow Component Output Parameters.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="workflowComponent"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>A Workflow Component is a re-usable set of Workflow Stages which can be referenced multiple times throughout a total Maestro Workflow.  Workflow Components are referenced by their id.  Workflow Components can be parameterized by using the Workflow Component Input Properties. Output parameters can be passed to the calling Workflow context using the Workflow Component Output Parameters.</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:choice>
+            <xs:element ref="stage"/>
+            <xs:element ref="componentReference"/>
+            <xs:element ref="externalWorkflowReference"/>
+            <xs:element ref="sequential"/>
+            <xs:element ref="parallel"/>
+         </xs:choice>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="workflowProperties">
+      <xs:sequence>
+         <xs:element name="inputProperties" minOccurs="0">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="property"
+                              minOccurs="0"
+                              maxOccurs="99"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="generalProperties" minOccurs="0">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="property"
+                              minOccurs="0"
+                              maxOccurs="99"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="outputProperties" minOccurs="0">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="property"
+                              minOccurs="0"
+                              maxOccurs="99"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="workflowProperty">
+      <xs:annotation>
+         <xs:documentation>Globally accessible property in this Workflow Definition.  Anywhere in this Workflow Definition where a Maestro Workflow expression can be used, these properties can be used to pass in global values.  Useful for handling file paths, etc.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleContent>
+         <xs:extension base="workflowProperty.restrictedLength">
+            <xs:attribute name="name" use="required">
+               <xs:annotation>
+                  <xs:documentation>Name for this Workflow Property.  Used to reference this Workflow Property in Maestro Workflow expressions.</xs:documentation>
+               </xs:annotation>
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="255"/>
+                     <xs:minLength value="1"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:attribute>
+         </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>
+   <xs:simpleType name="workflowProperty.restrictedLength">
+      <xs:restriction base="xs:string">
+         <xs:maxLength value="1024"/>
+         <xs:minLength value="0"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:complexType name="workflowComponent">
+      <xs:annotation>
+         <xs:documentation>A Workflow Component is a re-usable set of Workflow Stages which can be referenced multiple times throughout a total Maestro Workflow.  Workflow Components are referenced by their id.  Workflow Components can be parameterized by using the Workflow Component Input Properties. Output parameters can be passed to the calling Workflow context using the Workflow Component Output Parameters.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element ref="properties" minOccurs="0"/>
+         <xs:choice minOccurs="1"
+                    maxOccurs="99">
+            <xs:annotation>
+               <xs:documentation>Parallel branch of execution.  All first level sub-elements of this Parallel will be executed in parallel with each other.</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="parallel"/>
+            <xs:element ref="sequential"/>
+            <xs:element ref="stage"/>
+            <xs:element ref="externalWorkflowReference"/>
+            <xs:element ref="componentReference"/>
+         </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="id" use="required">
+         <xs:annotation>
+            <xs:documentation>Identifier of this Workflow Component.  This Id will be used to reference this Workflow Component in Workflow Component Reference elements.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="name" use="required">
+         <xs:annotation>
+            <xs:documentation>Name for this Workflow Component.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="parallel">
+      <xs:annotation>
+         <xs:documentation>A parallel stage group in the workflow definition.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="skipCondition" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Skips this branch of Workflow execution if this condition evaluates to 'true'.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element ref="stageFailure" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Failure Condition.  This branch of Workflow execution will fail if this condition evaluates to 'true'.  Is evaluated after the branch finishes executing.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:choice minOccurs="1"
+                    maxOccurs="99">
+            <xs:annotation>
+               <xs:documentation>A Workflow Stage.  Requires an Execution Definition, which will be processed by a Batch Stage Processor.</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="stage"/>
+            <xs:element ref="componentReference"/>
+            <xs:element ref="externalWorkflowReference"/>
+            <xs:element ref="sequential"/>
+         </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="enabled" type="xs:boolean">
+         <xs:annotation>
+            <xs:documentation>Set to 'false' to disable this branch of Workflow execution.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="id" use="required">
+         <xs:annotation>
+            <xs:documentation>The stageXmlId of the stage group in the workflow definition.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:ID">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="name" use="required">
+         <xs:annotation>
+            <xs:documentation>The name of the stage group.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="0"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="stageFalure">
+      <xs:annotation>
+         <xs:documentation>Failure Condition.  This branch of Workflow execution will fail if this condition evaluates to 'true'.  Is evaluated after the branch finishes executing.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="failureCondition">
+            <xs:annotation>
+               <xs:documentation>The condition for this Stage failure.  Stage will fail if this evaluates to true.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="failureMessage">
+            <xs:annotation>
+               <xs:documentation>Message for this Stage failure.  This message will be displayed on the Maestro Dashboard if this Stage fails.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="stage">
+      <xs:annotation>
+         <xs:documentation>A stage in the workflow definition.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="description" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>A description for the stage.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="skipCondition" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Skips this branch of Workflow execution if this condition evaluates to 'true'.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element ref="stageFailure" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Failure Condition.  This branch of Workflow execution will fail if this condition evaluates to 'true'.  Is evaluated after the branch finishes executing.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element ref="autoRetryConfiguration" minOccurs="0"/>
+         <xs:element ref="execDefinition">
+            <xs:annotation>
+               <xs:documentation>Execution Definition describing the work to be performed in this Stage.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="enabled" type="xs:boolean">
+         <xs:annotation>
+            <xs:documentation>Set to 'false' to disable this branch of Workflow execution.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="id" use="required">
+         <xs:annotation>
+            <xs:documentation>The stageXmlId of the stage in the workflow definition.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:ID">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="name" use="required">
+         <xs:annotation>
+            <xs:documentation>The name of the stage.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="autoRetryConfiguration">
+      <xs:sequence>
+         <xs:element name="delayBetweenAttemptsInMs" type="xs:long"/>
+         <xs:element name="maximumNumberOfRetryAttempts" type="xs:int"/>
+         <xs:element name="maximumRetryDurationInMs" type="xs:long"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="execDefinition">
+      <xs:annotation>
+         <xs:documentation>Execution Definition.  Defines the work to be performed by the Batch Stage Processor for this Stage of the Workflow.</xs:documentation>
+      </xs:annotation>
+      <xs:choice>
+         <xs:element ref="noOpExecDefinition"/>
+         <xs:element ref="dbFunction"/>
+         <xs:element ref="dbProcedure"/>
+         <xs:element ref="pollingFileWatcher"/>
+         <xs:element ref="fileTransfer"/>
+         <xs:element ref="deleteResource"/>
+         <xs:element ref="checksumValidation"/>
+         <xs:element ref="checksumGeneration"/>
+         <xs:element ref="callExternalProcess"/>
+         <xs:element ref="sqlLoader"/>
+         <xs:element ref="javaExtension"/>
+         <xs:element ref="callActiviti"/>
+      </xs:choice>
+   </xs:complexType>
+   <xs:complexType name="noOpExecDefinition">
+      <xs:annotation>
+         <xs:documentation>Execution Definition for a null operation (no-op).  The Batch Stage Processor will produce dummy tasks for this stage, as specified by the 'numberOfTasks' element. The Batch Stage Processor will also produce progress events for each task as specified by the 'durationBetweenEventsInMs' and 'numberOfInterimStatusResponses' elements.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="description" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Description of this No-Op Execution Definition.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="input" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Dummy input field for this No-Op.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="numberOfTasks" type="xs:int" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Number of dummy tasks for this No-Op.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="numberOfInterimStatusResponses" type="xs:int" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Number of status messages to send for each dummy task.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="durationBetweenEventsInMs" type="xs:long" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Duration of time (in milliseconds) between each status update message.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="outputPropertyName" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="dbFunction">
+      <xs:annotation>
+         <xs:documentation>Execution Definition which executes a database function.  Database connection information should be configured in bsp.properties.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="in" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of input parameters which will be passed to the database function.  Parameters require name, value, and type.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="param"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>Input parameter which will be passed to the database function.  Requires name, value, and type.</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="result" type="param">
+            <xs:annotation>
+               <xs:documentation>Name of the Maestro Workflow variable which will store the result of executing the database function.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="name" use="required">
+         <xs:annotation>
+            <xs:documentation>Name for this Execution Definition.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="255"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="param">
+      <xs:annotation>
+         <xs:documentation>Parameter which will be passed to a database operation.  Requires a name, type, and value.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleContent>
+         <xs:extension base="param.restrictedLength">
+            <xs:attribute name="name" use="required">
+               <xs:annotation>
+                  <xs:documentation>Name of this parameter.</xs:documentation>
+               </xs:annotation>
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="255"/>
+                     <xs:minLength value="1"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="type" type="workflowParamTypeEnum" use="required">
+               <xs:annotation>
+                  <xs:documentation>Datatype of this parameter.  Can be one of STRING, NUMBER, DATE, or TIMESTAMP.</xs:documentation>
+               </xs:annotation>
+            </xs:attribute>
+         </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>
+   <xs:simpleType name="param.restrictedLength">
+      <xs:restriction base="xs:string">
+         <xs:maxLength value="1024"/>
+         <xs:minLength value="0"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:complexType name="dbProcedure">
+      <xs:annotation>
+         <xs:documentation>Execution Definition which executes a Database Stored Procedure.  Database connection information should be configured in bsp.properties.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="in" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of input parameters which will be passed to the database procedure.  Parameters require name, value, and type.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="param"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>Database Procedure Parameter.  Requires name and type.  Input parameters require a value.</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="out" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of output parameters which will be produced by the database procedure.  Parameters require name and type.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="param"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>Database Procedure Parameter.  Requires name and type.  Input parameters require a value.</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="outputPropertyMapping" type="propertyMapping" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required">
+         <xs:annotation>
+            <xs:documentation>Name for this Execution Definition.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="255"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="propertyMapping">
+      <xs:sequence>
+         <xs:element ref="mapping"
+                     minOccurs="1"
+                     maxOccurs="99"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="mapping">
+      <xs:sequence/>
+      <xs:attribute name="source" use="required">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="255"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="target" use="required">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="255"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="pollingFileWatcher">
+      <xs:annotation>
+         <xs:documentation>Execution Definition for a Polling File Watcher.  This will monitor the filesystem for the specified files, and succeed if the files are found or fail if they are missing.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="watchedFiles">
+            <xs:annotation>
+               <xs:documentation>List of resources to watch.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="resource"
+                              minOccurs="1"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>File Resource to watch.  Can be a local or remote file, or regular expression pattern for matching a local or remote file.</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="matchedCountProperty">
+            <xs:annotation>
+               <xs:documentation>Maestro Workflow variable which will hold the number of files found by this File Watcher.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="allowFileNotFound" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="resource">
+      <xs:annotation>
+         <xs:documentation>A filesystem resource.  Can be a local or remote file URI, or a root directory URI and search pattern.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="uri">
+            <xs:annotation>
+               <xs:documentation>URI to a local or remote file or directory.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="searchPattern" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Regular expression pattern for locating files.  Will match any files in the directory specified by URI with names matching this regular expression.  In this case, URI must be a directory. </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="matchedUriOutputProperty" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="512"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="fileTransfer">
+      <xs:annotation>
+         <xs:documentation>Execution Definition to transfer files from one location to another.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element ref="transfer"
+                     minOccurs="1"
+                     maxOccurs="99">
+            <xs:annotation>
+               <xs:documentation>A file transfer.  Requires a source and target resource.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="transferCountProperty">
+            <xs:annotation>
+               <xs:documentation>Name of the Maestro Workflow property which will hold the number of files transfered.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="transfer">
+      <xs:annotation>
+         <xs:documentation>Execution Definition for a File Transfer.  Transfers one or more files between local or remote locations.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="sourceResource" type="resource">
+            <xs:annotation>
+               <xs:documentation>Source file resource.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="targetResource" type="resource">
+            <xs:annotation>
+               <xs:documentation>Target file resource.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="deleteResource">
+      <xs:annotation>
+         <xs:documentation>Execution Definition that deletes a filesystem resource.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element ref="resource"
+                     minOccurs="1"
+                     maxOccurs="99">
+            <xs:annotation>
+               <xs:documentation>Resource to delete.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="deleteCountProperty">
+            <xs:annotation>
+               <xs:documentation>Name of the Maestro Workflow property that will store the number of files/resources deleted.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="failOnError" type="xs:boolean" use="required">
+         <xs:annotation>
+            <xs:documentation>Set to 'true' to fail this stage if a resource can not be deleted.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="checksumValidation">
+      <xs:annotation>
+         <xs:documentation>Execution Definition which validates a checksum (in a marker file) against a source file.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="sourceResource" type="resource">
+            <xs:annotation>
+               <xs:documentation>Resource for the source file.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="markerResource" type="resource">
+            <xs:annotation>
+               <xs:documentation>Resource containing the marker file.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="checksumAlgorithm" type="checksumAlgorithmTypeEnum">
+            <xs:annotation>
+               <xs:documentation>Checksum algorithm to use.  One of 'MD5', 'SHA1', or 'SHA256'.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="checksumGeneration">
+      <xs:annotation>
+         <xs:documentation>Execution Definition which generates checksums for one or multiple files.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="sourceResource" type="resource">
+            <xs:annotation>
+               <xs:documentation>Resource for the file for with the checksum will be generated.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="markerResource" type="resource">
+            <xs:annotation>
+               <xs:documentation>Resource to which the marker file will be written.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="checksumAlgorithm" type="checksumAlgorithmTypeEnum">
+            <xs:annotation>
+               <xs:documentation>Checksum algorithm to use.  One of 'MD5', 'SHA1', or 'SHA256'.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="callExternalProcess">
+      <xs:annotation>
+         <xs:documentation>Execution Definition which invokes a system process.  This can be another program, script, or executable. </xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="commandLine">
+            <xs:annotation>
+               <xs:documentation>The command line string which will be passed to the system for execution.  On Unix systems, this is simply what you would type into the terminal.  On Windows systems, this may need to be prefixed with "cmd".</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="workingDirectory">
+            <xs:annotation>
+               <xs:documentation>Filesystem directory from which the command line will be executed.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="exitCodeProperty">
+            <xs:annotation>
+               <xs:documentation>The name of the Maestro Workflow property which will store the exit flag from running this system process.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="sqlLoader">
+      <xs:annotation>
+         <xs:documentation>Execution Definition which loads bulk data using Oracle SQL*Loader.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="controlFileUri">
+            <xs:annotation>
+               <xs:documentation>URI for the SQL*Loader control file.  See the SQL*Loader documentation for more information on control files.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="dataFileUri" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>URI for the data file which will be loaded by SQL*Loader.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="discardFileUri">
+            <xs:annotation>
+               <xs:documentation>URI for the SQL*Loader discard file.  SQL*Loader will write discarded records to this file.  For more information on discard files, see the SQL*Loader documentation.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="rejectFileUri">
+            <xs:annotation>
+               <xs:documentation>URI for the SQL*Loader reject file.  SQL*Loader will write rejected records to this file.  See the SQL*Loader documentation for more information on reject files.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="logFileUri">
+            <xs:annotation>
+               <xs:documentation>URI for the SQL*Loader log file.  The SQL*Loader log will be written to this file.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="exitCodeProperty">
+            <xs:annotation>
+               <xs:documentation>Maestro Workflow property which will contain the exit code from the SQL*Loader process.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="numberOfRejectedRowsProperty">
+            <xs:annotation>
+               <xs:documentation>Name of the Maestro Workflow context variable which will hold the number of rejected rows from the SQL*Loader process.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="numberOfDiscardedRowsProperty">
+            <xs:annotation>
+               <xs:documentation>Name of the Maestro Workflow context variable which will hold the number of discarded rows from the SQL*Loader process.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="javaExtension">
+      <xs:annotation>
+         <xs:documentation>Execution Definition which executes a custom Java extension.  The Java extension must be available on the Batch Stage Processor's classpath, and implement IMaestroJavaExtensionExecutor.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="javaExtensionExecutorClassName">
+            <xs:annotation>
+               <xs:documentation>Fully-qualified class name of the Java class which implements IMaestroJavaExtensionExecutor for this extension.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:choice>
+            <xs:annotation>
+               <xs:documentation>Input properties for this Java extension specified as simple key/value pairs.</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="simpleProperties"/>
+            <xs:element ref="cdataProperties"/>
+         </xs:choice>
+         <xs:element name="javaExtensionOutputPropertyNames" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of output properties from the implementation of IMaestroJavaExtensionExecutor for this extension.  These properties will be available as variables in the Maestro Workflow context.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element name="propertyName"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>Property name for this output property.</xs:documentation>
+                     </xs:annotation>
+                     <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                           <xs:maxLength value="255"/>
+                           <xs:minLength value="1"/>
+                        </xs:restriction>
+                     </xs:simpleType>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="outputPropertyMapping" type="propertyMapping" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="simpleProperties">
+      <xs:annotation>
+         <xs:documentation>List of simple key/value pairs to pass to the Java extension.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="properties" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of simple key/value pairs to pass to the Java extension class.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="simpleProperty"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>Simple key/value property to pass to the Java extension class.</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="simpleProperty">
+      <xs:annotation>
+         <xs:documentation>Simple key/value property to pass to the Java extension class.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleContent>
+         <xs:extension base="simpleProperty.restrictedLength">
+            <xs:attribute name="name" use="required">
+               <xs:annotation>
+                  <xs:documentation>Name of this property.</xs:documentation>
+               </xs:annotation>
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="255"/>
+                     <xs:minLength value="1"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:attribute>
+         </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>
+   <xs:simpleType name="simpleProperty.restrictedLength">
+      <xs:restriction base="xs:string">
+         <xs:maxLength value="1024"/>
+         <xs:minLength value="0"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:complexType name="cdataProperties">
+      <xs:annotation>
+         <xs:documentation>List of properties to be passed to the Java Extension, represented in CDATA blocks in the Workflow XML.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="propertyString">
+            <xs:annotation>
+               <xs:documentation>CDATA block for this property</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="2048"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="callActiviti">
+      <xs:annotation>
+         <xs:documentation>Invoke an Activiti Process via the Activiti REST Interface.  Identify the Activiti Process by processDefinitionId or processDescriptor.  The Connection details for the Activiti REST service should be configured in bsp.properties.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:choice minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Process Definition Id of the Activiti Process to run.</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="processDefinitionId"/>
+            <xs:element ref="processDescriptor"/>
+         </xs:choice>
+         <xs:element name="businessKey" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>DEPRECATED?</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="tenantId" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>DEPRECATED?</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="variables" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of variables which will be passed in to the Activiti Process.  Can be Maestro expressions.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="variable"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>Variable which will be passed to the Activiti Process.  Required elements: name, value, scope, and type.  See Activiti Documentation for more details on Variables. </xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="outputProperties" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>List of output properties which will be exported from the Activiti Process to the Maestro Workflow context.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="property"
+                              minOccurs="0"
+                              maxOccurs="99">
+                     <xs:annotation>
+                        <xs:documentation>Output property which will be exported from the Activiti Process to the Maestro Workflow context.  Attribute name is required.</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="outputPropertyMapping" type="propertyMapping" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name="processDefinitionId">
+      <xs:restriction base="xs:string"/>
+   </xs:simpleType>
+   <xs:complexType name="processDescriptor">
+      <xs:annotation>
+         <xs:documentation>Activiti Process Descriptor.  Used to identify the Activiti Process which will be run by the Batch Stage Processor.  See the Activiti documentation for further details on Process Descriptors.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="name" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Name of the Activiti Process.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="version" type="xs:int" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Version of the Activiti Process.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="processDefinitonKey" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Activiti Process Definition Key for the Activiti Process which will be run by the Batch Stage Processor.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="variable">
+      <xs:annotation>
+         <xs:documentation>Activiti Variable which will be provided to the Activiti Process.  Requires a name, value, scope, and type.  For more information on Activiti Process Variables, see the Activiti documentation.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="name">
+            <xs:annotation>
+               <xs:documentation>Name of the Activiti variable.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="value">
+            <xs:annotation>
+               <xs:documentation>Value of the Activiti variable.  Can be a Maestro Workflow expression.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="scope" type="activitiVariableScopeEnum" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Scope of the Activiti variable.  Can be 'LOCAL' or 'GLOBAL'.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="type" type="activitiVariableTypeEnum" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Datatype of the Activiti variable.  Can be one of 'STRING', 'INTEGER', 'SHORT', 'LONG', 'DOUBLE',	'BOOLEAN', 'DATE', 'BINARY',or 'SERIALIZABLE'.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="property">
+      <xs:annotation>
+         <xs:documentation>Activiti Process Output Property.  Requires a name and type.  These properties will be made available to the Maestro Workflow context.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence/>
+      <xs:attribute name="name" use="required">
+         <xs:annotation>
+            <xs:documentation>Name of the Activiti Process output property.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="255"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="type" type="propertyValueTypeEnum">
+         <xs:annotation>
+            <xs:documentation>Datatype of the Activiti Process output property.  See the Activiti documentation for a complete list of supported datatypes.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="componentReference">
+      <xs:sequence>
+         <xs:element name="description" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="skipCondition" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element ref="stageFailure" minOccurs="0"/>
+         <xs:element name="workflowComponentId">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="40"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="inputProperties" minOccurs="0">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="property"
+                              minOccurs="0"
+                              maxOccurs="99"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="outputPropertyMapping" type="propertyMapping" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="enabled" type="xs:boolean"/>
+      <xs:attribute name="id" use="required">
+         <xs:simpleType>
+            <xs:restriction base="xs:ID">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="name" use="required">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="WorkflowRefInputProperties">
+      <xs:annotation/>
+      <xs:simpleContent>
+         <xs:extension base="WorkflowRefInputProperties.restrictedLength">
+            <xs:attribute name="name" use="required">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="255"/>
+                     <xs:minLength value="1"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:attribute>
+         </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>
+   <xs:simpleType name="WorkflowRefInputProperties.restrictedLength">
+      <xs:restriction base="xs:string">
+         <xs:maxLength value="1024"/>
+         <xs:minLength value="0"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:complexType name="externalWorkflowReference">
+      <xs:sequence>
+         <xs:element name="description" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="skipCondition" minOccurs="0">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1024"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element ref="stageFailure" minOccurs="0"/>
+         <xs:element name="externalWorkflowCode">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="128"/>
+                  <xs:minLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="inputProperties" minOccurs="0">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="property"
+                              minOccurs="0"
+                              maxOccurs="99"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="outputPropertyMapping" type="propertyMapping" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="enabled" type="xs:boolean"/>
+      <xs:attribute name="id" use="required">
+         <xs:simpleType>
+            <xs:restriction base="xs:ID">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="name" use="required">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="1"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:complexType name="sequential">
+      <xs:annotation>
+         <xs:documentation>A sequential stage group in the workflow definition.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="skipCondition" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Skips this branch of Workflow execution if this condition evaluates to 'true'.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                  <xs:minLength value="0"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element ref="stageFailure" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>Failure Condition.  This branch of Workflow execution will fail if this condition evaluates to 'true'.  Is evaluated after the branch finishes executing.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:choice minOccurs="1"
+                    maxOccurs="99">
+            <xs:annotation>
+               <xs:documentation>A Workflow Stage.  Requires an Execution Definition, which will be processed by a Batch Stage Processor.</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="stage"/>
+            <xs:element ref="componentReference"/>
+            <xs:element ref="externalWorkflowReference"/>
+            <xs:element ref="parallel"/>
+         </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="enabled" type="xs:boolean">
+         <xs:annotation>
+            <xs:documentation>Set to 'false' to disable this branch of Workflow execution.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="id" use="required">
+         <xs:annotation>
+            <xs:documentation>The stageXmlId of the stage in the workflow definition.</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:ID">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="0"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="name" use="required">
+         <xs:annotation>
+            <xs:documentation>The name of the stage</xs:documentation>
+         </xs:annotation>
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:maxLength value="40"/>
+               <xs:minLength value="0"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:simpleType name="workflowParamTypeEnum">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="STRING"/>
+         <xs:enumeration value="NUMBER"/>
+         <xs:enumeration value="DATE"/>
+         <xs:enumeration value="TIMESTAMP"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="checksumAlgorithmTypeEnum">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="MD5"/>
+         <xs:enumeration value="SHA1"/>
+         <xs:enumeration value="SHA256"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="activitiVariableScopeEnum">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="LOCAL"/>
+         <xs:enumeration value="GLOBAL"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="activitiVariableTypeEnum">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="STRING"/>
+         <xs:enumeration value="INTEGER"/>
+         <xs:enumeration value="SHORT"/>
+         <xs:enumeration value="LONG"/>
+         <xs:enumeration value="DOUBLE"/>
+         <xs:enumeration value="BOOLEAN"/>
+         <xs:enumeration value="DATE"/>
+         <xs:enumeration value="BINARY"/>
+         <xs:enumeration value="SERIALIZABLE"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="propertyValueTypeEnum">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="STRING"/>
+         <xs:enumeration value="DATE"/>
+         <xs:enumeration value="LONG"/>
+         <xs:enumeration value="BIG_DECIMAL"/>
+         <xs:enumeration value="INTEGER"/>
+         <xs:enumeration value="SHORT"/>
+         <xs:enumeration value="BOOLEAN"/>
+         <xs:enumeration value="ASSET_ID"/>
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>

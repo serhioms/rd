@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: CM-EXTRACT-TO-RISKWATCH.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>CM-EXTRACT-TO-RISKWATCH</name> 
+  	<externalWorkflowCode>CM-EXTRACT-TO-RISKWATCH</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>CM-EXTRACT-TO-RISKWATCH ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="SOURCE-SYSTEM" />
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="EOD-EOM-IND" />
+		</inputProperties>
+	</properties>
+
+	<!-- DELIVERY PHASE -->
+
+	<sequential name="EXTRACT-TO-RISKWATCH" id="EXTRACT-TO-RISKWATCH">
+	
+		<!-- RISKWATCH TRADE EXPORT  -->
+
+		<stage name="GENERATE-RISKWATCH-TRADE-FILE" id="GEN-RISKWATCH-TRADE">
+			<description>Generate Riskwatch Trade file</description>
+			<stageFailure>
+				<failureCondition><![CDATA[${GEN-RISKWATCH-TRADE.exitCode} != 0]]></failureCondition>
+				<!-- <failureMessage>FSM-(${GEN-RISKWATCH-TRADE.exitCode}) : Error while generating Party file. See FSM log for details.</failureMessage>-->
+				<failureMessage>CTR Issue, please check with support team.</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<callExternalProcess>
+					<commandLine>${CTR_APP_ROOT_PATH}/script/extractRiskWatchTbl.${SHELL_SCRIPT_EXTENSION} ${CTR_DB_SCHEMA} ${SHELL_COMMA_DELIM_PARAM} ${RUN-ID} ${SOURCE-SYSTEM} </commandLine>
+					<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+					<exitCodeProperty>exitCode</exitCodeProperty>
+				</callExternalProcess>
+			</execDefinition>
+		</stage>
+		
+		<stage name="GET-RISKWATCH-EXTRACT-VERSION" id="GET-RISKWATCH-EXTRACT-VERSION">
+			<execDefinition>
+				 <dbFunction name="CTRMSO.RUN_PKG.GET_VERSION_SP">
+                    <in>
+                        <param name="P_BATCH_ID_I" type="STRING">${RUN-ID}</param>
+                    </in>
+                    <result name="version" type="NUMBER"/>
+                </dbFunction>
+			</execDefinition>
+		</stage>
+
+		<stage name="SET-RISKWATCH-SFTP-TIMESTAMP" id="SET-RISKWATCH-SFTP-TIMESTAMP">
+			<execDefinition>
+				 <dbProcedure name="CTRMSO.RISKWATCH_HELPER_PKG.SET_SFTPTSTMP_SP">
+                    <in>
+                        <param name="P_BATCH_ID_I" type="NUMBER">${RUN-ID}</param>
+                    </in>
+                </dbProcedure>
+			</execDefinition>
+		</stage>			
+
+		<stage name="SEND-TO-RISKWATCH" id="SEND-TO-RISKWATCH">
+			<skipCondition>'${RISKWATCH_DESTINATION_URI}' == 'NONE' || '${SOURCE-SYSTEM}' == 'SILOPICSCM'</skipCondition>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${CTR_OUTBOUND_PATH}/riskwatch</uri>
+							<searchPattern>${SOURCE-SYSTEM}_.*_${BUSINESS-DATE}_.*</searchPattern>
+							<matchedUriOutputProperty>RISKWATCH-FILES</matchedUriOutputProperty>
+						</sourceResource>
+						<targetResource>
+							<uri>${RISKWATCH_DESTINATION_URI}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>transferCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+		
+		<stage name="SEND-SILOPICSCM-TO-RISKWATCH" id="SEND-SILOPICSCM-TO-RISKWATCH">
+			<skipCondition>'${RISKWATCH_DESTINATION_URI}' == 'NONE' || '${SOURCE-SYSTEM}' != 'SILOPICSCM'</skipCondition>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${CTR_OUTBOUND_PATH}/riskwatch</uri>
+							<searchPattern>SILOPICS_.*_${BUSINESS-DATE}_.*</searchPattern>
+							<matchedUriOutputProperty>RISKWATCH-FILES</matchedUriOutputProperty>
+						</sourceResource>
+						<targetResource>
+							<uri>${RISKWATCH_DESTINATION_URI}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>transferCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+		
+		<!-- BEGIN : TRANSFER SOURCE FILES TO DS -->
+		<externalWorkflowReference name="TRANSFER-DATA-FILES-TO-EDL" id="TRANSFER-DATA-FILES-TO-EDL">
+			<skipCondition>'${EDL_COPY_URI}' == 'NONE' </skipCondition>
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">RISKWATCH</property>
+				<property name="SOURCE-SYSTEM-LC">riskwatch</property>
+				<property name="DEST_URI">${EDL_COPY_URI}/riskwatch</property>
+				<property name="SRC_URI">${CTR_OUTBOUND_PATH}/riskwatch/</property>
+				<property name="SRCH_PATTERN">.*_${BUSINESS-DATE}.*</property>
+				<property name="DEST_SYSTEM">EDL</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="TRANSFER-MRK-FILES-TO-EDL" id="TRANSFER-MRK-FILES-TO-EDL">
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">RISKWATCH</property>
+				<property name="SOURCE-SYSTEM-LC">riskwatch</property>
+				<property name="DEST_URI">${EDL_DESTINATION_URI}</property>
+				<property name="SRC_URI">${CTR_OUTBOUND_PATH}/riskwatch/</property>
+				<property name="SRCH_PATTERN">.*_${BUSINESS-DATE}_.*.mrk</property>
+				<property name="DEST_SYSTEM">EDL</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<externalWorkflowReference name="TRANSFER-DATA-FILES-TO-VOLCKER" id="TRANSFER-DATA-FILES-TO-VOLCKER">
+			<externalWorkflowCode>EXPORT-SRC-FILES-WF</externalWorkflowCode>
+			<inputProperties>
+				<property name="SOURCE-SYSTEM">RISKWATCH</property>
+				<property name="SOURCE-SYSTEM-LC">riskwatch</property>
+				<property name="DEST_URI">${VOLCKER_DESTINATION_URI}</property>
+				<property name="SRC_URI">${CTR_OUTBOUND_PATH}/riskwatch/</property>
+				<property name="SRCH_PATTERN">.*_${BUSINESS-DATE}.*</property>
+				<property name="DEST_SYSTEM">VOLCKER</property>
+			</inputProperties>
+		</externalWorkflowReference>
+		<!-- END : TRANSFER SOURCE FILES TO DS -->
+	</sequential>
+
+</workflow>
+	

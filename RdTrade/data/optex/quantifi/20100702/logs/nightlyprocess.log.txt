@@ -1,0 +1,83 @@
+
+******************** RISK RUN START (11/21/2010 8:00:09 PM - ) ********************
+
+11/21/2010 8:00:09 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 02-Jul-2010 Official --index="CDX.NA.IG.9-V4" -e
+11/21/2010 8:00:19 PM - 	
+11/21/2010 8:00:19 PM - 	Calibrating Curve Scaling for index [CDX.NA.IG.9-V4]...
+11/21/2010 8:00:23 PM - 	Added 0 quotes and updated 0 quotes
+11/21/2010 8:00:24 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 02-Jul-2010 Official --index="iTraxx Europe Series 9 Version 1" -e
+11/21/2010 8:00:32 PM - 	
+11/21/2010 8:00:32 PM - 	Calibrating Curve Scaling for index [iTraxx Europe Series 9 Version 1]...
+11/21/2010 8:00:37 PM - 	Added 0 quotes and updated 0 quotes
+11/21/2010 8:00:39 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCurveScaling.py 02-Jul-2010 Official --index="Dow Jones CDX.NA.IG.7-V5" -e
+11/21/2010 8:00:46 PM - 	
+11/21/2010 8:00:46 PM - 	Calibrating Curve Scaling for index [Dow Jones CDX.NA.IG.7-V5]...
+11/21/2010 8:00:51 PM - 	Added 0 quotes and updated 1 quotes
+11/21/2010 8:00:53 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 02-Jul-2010 Official --surface="CDX.NA.IG.9-V4" -e
+11/21/2010 8:01:01 PM - 	
+11/21/2010 8:01:01 PM - 	Calibrating Correlation Surface [CDX.NA.IG.9-V4]...
+11/21/2010 8:01:32 PM - 	Added 0 quotes and updated 27 quotes
+11/21/2010 8:01:34 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 02-Jul-2010 Official --surface="iTraxx Europe Series 9 Version 1" -e
+11/21/2010 8:01:41 PM - 	
+11/21/2010 8:01:41 PM - 	Calibrating Correlation Surface [iTraxx Europe Series 9 Version 1]...
+11/21/2010 8:02:18 PM - 	Added 0 quotes and updated 16 quotes
+11/21/2010 8:02:20 PM - Script call: C:/Quantifi/9.4.1/bin/CalibrateCorrelationSurface.py 02-Jul-2010 Official --surface="Dow Jones CDX.NA.IG.7-V5" -e
+11/21/2010 8:02:28 PM - 	
+11/21/2010 8:02:28 PM - 	Calibrating Correlation Surface [Dow Jones CDX.NA.IG.7-V5]...
+11/21/2010 8:02:45 PM - 	Added 0 quotes and updated 10 quotes
+11/21/2010 8:02:47 PM - Script call: C:/Quantifi/9.4.1/bin/BatchRisk.py 02-Jul-2010 -n Official -f --riskConfig=historical --calcEnv=Official  -s quantifi --official --excludePending --desc="Nightly batch run - historical"
+11/21/2010 8:02:50 PM - 	Warning: Using workstation GC. Server GC is recommended.
+11/21/2010 8:03:03 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000653 20-Jun-2016 114.75/CDOPricer
+11/21/2010 8:03:07 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Up_UniformBaseCorr
+11/21/2010 8:03:08 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000653 20-Jun-2016 114.75/1%Down_UniformBaseCorr
+11/21/2010 8:03:09 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000654 20-Jun-2013 51.25/1%Up_UniformBaseCorr
+11/21/2010 8:03:10 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000654 20-Jun-2013 51.25/1%Down_UniformBaseCorr
+11/21/2010 8:03:11 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000655 20-Jun-2016 118/1%Up_UniformBaseCorr
+11/21/2010 8:03:12 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000655 20-Jun-2016 118/1%Down_UniformBaseCorr
+11/21/2010 8:03:14 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000656 20-Jun-2013 50/1%Down_UniformBaseCorr
+11/21/2010 8:03:15 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000673 20-Dec-2016 6660/1%Up_UniformBaseCorr
+11/21/2010 8:03:16 PM - 	CBBCE-Z3-CLO03.1080.Worker1 CDO0000672 20-Dec-2016 6660
+11/21/2010 8:03:17 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000672 20-Dec-2016 6660/1%Down_UniformBaseCorr
+11/21/2010 8:03:18 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000671 20-Dec-2016 6660/1%Up_UniformBaseCorr
+11/21/2010 8:03:19 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000671 20-Dec-2016 6660/1%Down_UniformBaseCorr
+11/21/2010 8:03:20 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000674 20-Dec-2016 6660/1%Down_UniformBaseCorr
+11/21/2010 8:03:21 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000646 20-Mar-2013 13/CDOPricer
+11/21/2010 8:03:22 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000646 20-Mar-2013 13/1%Up_UniformBaseCorr
+11/21/2010 8:03:23 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000646 20-Mar-2013 13/1%Down_UniformBaseCorr
+11/21/2010 8:03:24 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000649 20-Sep-2013 11/1%Up_UniformBaseCorr
+11/21/2010 8:03:25 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000649 20-Sep-2013 11/1%Down_UniformBaseCorr
+11/21/2010 8:03:26 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000651 20-Dec-2013 11/CDOPricer
+11/21/2010 8:03:27 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000651 20-Dec-2013 11/1%Down_UniformBaseCorr
+11/21/2010 8:03:29 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000652 20-Dec-2013 15/CDOPricer
+11/21/2010 8:03:30 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000652 20-Dec-2013 15/1%Up_UniformBaseCorr
+11/21/2010 8:03:31 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000652 20-Dec-2013 15/1%Down_UniformBaseCorr
+11/21/2010 8:03:32 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000659 20-Mar-2013 7.5/1%Up_UniformBaseCorr
+11/21/2010 8:03:33 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000659 20-Mar-2013 7.5/1%Down_UniformBaseCorr
+11/21/2010 8:03:34 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000661 20-Mar-2013 10.3/CDOPricer
+11/21/2010 8:03:35 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000661 20-Mar-2013 10.3/1%Up_UniformBaseCorr
+11/21/2010 8:03:36 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000661 20-Mar-2013 10.3/1%Down_UniformBaseCorr
+11/21/2010 8:03:37 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000657 20-Dec-2016 3.03/1%Up_UniformBaseCorr
+11/21/2010 8:03:39 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000657 20-Dec-2016 3.03/1%Down_UniformBaseCorr
+11/21/2010 8:03:41 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000658 20-Dec-2016 5/1%Up_UniformBaseCorr
+11/21/2010 8:03:43 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000658 20-Dec-2016 5/1%Down_UniformBaseCorr
+11/21/2010 8:03:45 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000662 20-Mar-2013 8.3/1%Up_UniformBaseCorr
+11/21/2010 8:03:46 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000662 20-Mar-2013 8.3/1%Down_UniformBaseCorr
+11/21/2010 8:03:47 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000660 20-Mar-2013 6.5/1%Up_UniformBaseCorr
+11/21/2010 8:03:48 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDO0000660 20-Mar-2013 6.5/1%Down_UniformBaseCorr
+11/21/2010 8:03:49 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Product/CDX-NAIGS5V5-5Y (CIBC)/CDXPricer
+11/21/2010 8:03:50 PM - 	CBBCE-Z3-CLO03.1080.Worker1 Completed
+11/21/2010 8:03:53 PM - Script call: C:/Quantifi/9.4.1/bin/qpsExportCorrExposure.py 07/02/10 07/02/10 -o "C:/Quantifi/NightlyBatch/20100702/logs/CorrExposureOutput.csv" -l "C:/Quantifi/NightlyBatch/20100702/logs/CorrExposureOutputErrLog.csv" 
+11/21/2010 8:04:05 PM - 	8546 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 6 Years
+11/21/2010 8:04:05 PM - 	8562 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
+11/21/2010 8:04:05 PM - 	8562 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 10 Years
+11/21/2010 8:04:07 PM - 	11125 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 6 Years
+11/21/2010 8:04:07 PM - 	11125 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
+11/21/2010 8:04:07 PM - 	11125 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 10 Years
+11/21/2010 8:04:09 PM - 	13312 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 6 Years
+11/21/2010 8:04:09 PM - 	13312 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
+11/21/2010 8:04:09 PM - 	13312 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 10 Years
+11/21/2010 8:04:12 PM - 	15687 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 6 Years
+11/21/2010 8:04:12 PM - 	15687 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
+11/21/2010 8:04:12 PM - 	15703 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 10 Years
+11/21/2010 8:04:44 PM - 	Finished.
+******************** RISK RUN END (11/21/2010 8:04:44 PM - ) ********************

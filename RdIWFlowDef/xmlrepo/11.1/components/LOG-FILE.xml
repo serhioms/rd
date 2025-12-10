@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: LOG-FILE.xml 3690 2016-06-01 20:44:07Z gmusial $ Maestro version: 
+	1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>LOG-FILE</name>
+	<externalWorkflowCode>LOG-FILE</externalWorkflowCode>
+	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError>
+	<description>LOG-FILE ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="SOURCE-SYSTEM"/>
+			<property name="SOURCE-FILE" />
+			<property name="PROCESSING-SOURCE-PATH" />
+			<property name="FTP-SOURCE-DIR" />
+			<property name="PROCESSING-DIR" />
+			<property name="DELIMITER">,</property>
+		</inputProperties>
+	</properties>
+		
+	<sequential id="LOAD-FILE" name="LOAD-FILE">
+	
+		<stage name="FORMAT-BUSINESS-DATE" id="FORMAT-BUSINESS-DATE">
+			<description>Format the business date</description>
+			<stageFailure>
+				<failureCondition><![CDATA['${FORMAT-BUSINESS-DATE.result}' == '']]></failureCondition>
+				<failureMessage>FORMAT-BUSINESS-DATE returned empty date</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<dbFunction name="CTRMSO.FORMAT_DATE_FN">
+					<in>
+						<param name="DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="FORMAT_I" type="STRING">yyyymmdd</param>
+					</in>
+					<result name="result" type="STRING"></result>
+				</dbFunction>
+			</execDefinition>
+		</stage>
+	
+		<stage id="GET-ROW-COUNT" name="GET-ROW-COUNT">
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.RetrieveRowNumbers</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="filePath">${PROCESSING-SOURCE-PATH}</simpleProperty>
+							<simpleProperty name="fileName">${SOURCE-FILE}</simpleProperty>
+							<simpleProperty name="xmlControlFile">N/A</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>totalNoOfRows</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+				
+		<stage id="GET-FILE-METADATA" name="GET-FILE-METADATA">
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.FileMetaDataRetriever</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="filePath">${FTP-SOURCE-DIR}</simpleProperty>
+							<simpleProperty name="busDate">${FORMAT-BUSINESS-DATE.result}</simpleProperty>
+							<simpleProperty name="runId">${RUN-ID}</simpleProperty>
+							<simpleProperty name="procDirPath">${PROCESSING-DIR}</simpleProperty>
+							<simpleProperty name="sourceSystem">${SOURCE-SYSTEM}_unprocessed</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>fileMetaDataMap</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+		
+		<stage id="GET-FILE-CREATE-TIME" name="GET-FILE-CREATE-TIME">
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.FileTimeStampMapReader</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="fileMetaDataMap">${PROCESSING-DIR}/${SOURCE-SYSTEM}_unprocessed_METADATA_${FORMAT-BUSINESS-DATE.result}.txt</simpleProperty>
+							<simpleProperty name="srcFileName">${SOURCE-FILE}</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>fileCreateTime</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>
+				
+		<stage name="GET-EMPTY-FILE-ID" id="GET-EMPTY-FILE-ID">
+			<description>Retrieves the file ID for the preprocessor</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.FILE_PKG.CREATE_FILE_SP">
+					<in>
+						<param name="P_FILENAME_I" type="STRING">${SOURCE-FILE}</param>
+						<param name="P_ROWCOUNT_I" type="NUMBER">${GET-ROW-COUNT.totalNoOfRows}</param>
+						<param name="P_HEADER_VERSION_I" type="STRING">0</param>
+						<param name="P_ORIGINAL_HEADER_VERSION_I" type="STRING">0</param>
+						<param name="P_SUBJECT_AREA_CD_I" type="STRING">N/A</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+						<param name="P_STAGE_ID_I" type="STRING">LANDING</param>
+						<param name="P_TASK_ID_I" type="STRING">N/A</param>
+						<param name="P_LOG_ID_I" type="STRING">1</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						<param name="P_LANDING_TABLE_LIST_I" type="STRING">UNPROCESSED_FILE_NOT_LOADED</param>
+						<param name="P_FILE_CREATE_TIME_I" type="STRING">${GET-FILE-CREATE-TIME.fileCreateTime}</param>
+					</in>
+					<out>
+						<param name="P_DW_FILE_ID_O" type="NUMBER"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+		<stage name="UPDATE-EMPTY-FILE-ID-RECORD" id="UPDATE-EMPTY-FILE">
+			<description>Updates the file ID record for the empty file</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.FILE_PKG.UPDATE_FILE_SP">
+					<in>
+						<param name="P_DW_FILE_ID_I" type="NUMBER">${GET-EMPTY-FILE-ID.P_DW_FILE_ID_O}</param>
+						<param name="P_BAD_CNT_I" type="NUMBER">0</param>
+						<param name="P_DISCARD_CNT_I" type="NUMBER">0</param>
+					</in>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+	</sequential>
+</workflow>

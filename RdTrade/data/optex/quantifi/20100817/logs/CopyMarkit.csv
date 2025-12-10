@@ -1,0 +1,85 @@
+Source,Type,Name,Value
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.1.corr,0.277622109141626
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.1.strike,0.537916971665015
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.2.corr,0.311798268988967
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.2.strike,1.2551396005517
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.3.corr,0.35233002603616
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.3.strike,1.79305657221672
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.4.corr,0.443378946191541
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.4.strike,2.68958485832508
+Model,Base Correlation,CDX.NA.IG.9-V4.20141220.5.corr,0.65996382370302
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20141220.5.strike,5.37916971665015
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.1.corr,0.279619804394873
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.1.strike,0.31219575928394
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.2.corr,0.34080878892805
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.2.strike,0.728456771662526
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.3.corr,0.358315432458569
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.3.strike,1.04065253094646
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.4.corr,0.434940780785785
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.4.strike,1.5609787964197
+Model,Base Correlation,CDX.NA.IG.9-V4.20171220.5.corr,0.649596334122824
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20171220.5.strike,3.1219575928394
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.0.corr,0.285839314948283
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.0.strike,1.11227596740407
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.1.corr,0.311468573751926
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.1.strike,2.59531059060951
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.2.corr,0.331885723995667
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.2.strike,3.70758655801358
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.3.corr,0.410753354300275
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.3.strike,5.56137983702037
+Model,Base Correlation,CDX.NA.IG.9-V4.20121220.4.corr,0.598528004031384
+Model,Base Correlation Strike,CDX.NA.IG.9-V4.20121220.4.strike,11.1227596740407
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.1.corr,0.291710927555919
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.1.strike,6.42151768933873
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.2.corr,0.297454305518514
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.2.strike,12.8430353786775
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.3.corr,0.227548533315172
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.3.strike,19.2645530680162
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.4.corr,-999
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.4.strike,-999
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20110620.5.corr,-999
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20110620.5.strike,-999
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.1.corr,0.301855752192555
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.1.strike,1.00929077232999
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.2.corr,0.341897355823007
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.2.strike,2.01858154465998
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.3.corr,0.382134133136087
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.3.strike,3.02787231698996
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.4.corr,0.427516025486868
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.4.strike,4.03716308931995
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20130620.5.corr,0.555090144547573
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20130620.5.strike,7.40146566375324
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.1.corr,0.318703889451781
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.1.strike,0.51523232665003
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.2.corr,0.348325100186577
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.2.strike,1.03046465330006
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.3.corr,0.385707848658519
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.3.strike,1.54569697995009
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.4.corr,0.435184144378021
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.4.strike,2.06092930660012
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20150620.5.corr,0.57071487538534
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20150620.5.strike,3.77837039543356
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.1.corr,0.312680051167919
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.1.strike,0.314145087066349
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.2.corr,0.346217973398799
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.2.strike,0.628290174132699
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.3.corr,0.378145481958939
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.3.strike,0.942435261199048
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.4.corr,0.423901634611296
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.4.strike,1.2565803482654
+Model,Base Correlation,iTraxx Europe Series 9 Version 1.20180620.5.corr,0.58133730571123
+Model,Base Correlation Strike,iTraxx Europe Series 9 Version 1.20180620.5.strike,2.30373063848656
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.1.corr,0.214415702973634
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.1.strike,0.351800542828965
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.2.corr,0.275438484640812
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.2.strike,0.820867933267584
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.3.corr,0.294139898336855
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.3.strike,1.17266847609655
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.4.corr,0.373160053967306
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.4.strike,1.75900271414482
+Model,Base Correlation,Dow Jones CDX.NA.IG.7-V5.20161220.5.corr,0.566573124685024
+Model,Base Correlation Strike,Dow Jones CDX.NA.IG.7-V5.20161220.5.strike,3.51800542828965
+Model,FX Rate,JPY.Mid,0.010909
+Model,FX Rate,CAD.Mid,1.02
+Model,FX Rate,GBP.Mid,1.57
+Model,FX Rate,EUR.Mid,1.31

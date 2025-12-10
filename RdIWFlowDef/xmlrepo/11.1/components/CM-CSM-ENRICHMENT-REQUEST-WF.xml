@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: CM-CSM-ENRICHMENT-REQUEST-WF.xml 3974 2016-06-20 18:21:20Z sroman1 $
+	 Maestro version: 1.19.1 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>CM-CSM-ENRICHMENT-REQUEST-WF</name> 
+  	<externalWorkflowCode>CM-CSM-ENRICHMENT-REQUEST-WF</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>CM-CSM-ENRICHMENT-REQUEST-WF ($LastChangedRevision: 3974 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="BUSINESS-DATE-FMT" />
+			<property name="EOD-EOM-IND" />
+			<property name="TIMESTAMP" />
+			<property name="SOURCE-SYSTEM" />
+		</inputProperties>
+		<generalProperties>
+			<property name="CSM-REQUEST-FILE-NAME">CSM_IN_${EOD-EOM-IND}_${BUSINESS-DATE-FMT}_${RUN-ID}${SOURCE-SYSTEM}${TIMESTAMP}</property>
+			<property name="RUN-ENV">${MAESTRO_RUN_ENV}</property>
+		</generalProperties>
+		<outputProperties>
+			<property name="RECORD-COUNT">${GENERATE-CSM-REQUEST-FILE.recordCount}</property>
+		</outputProperties>
+	</properties>
+
+	<sequential id="CM-ENRICHMENT" name="CM-ENRICHMENT">
+	
+		<stage name="PREPARE-CSM-REQUEST" id="CSM-REQUEST-T2E">
+			<description>Prepares the CSM request table</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+					<in>
+						<param name="P_TYPE_NAME_I" type="STRING">csm_request_tp</param>
+						<param name="P_METHOD_NAME_I" type="STRING">pub_export_data</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+						<param name="P_STAGE_ID_I" type="STRING">ENRICHMENT</param>
+						<param name="P_TASK_ID_I" type="STRING">CSM-REQUEST-T2E</param>
+						<param name="P_LOG_ID_I" type="STRING">${RUN-ID}-CSM-REQUEST-T2E</param>
+						<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+						<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">CSM</param>
+					</in>
+					<out>
+						<param name="P_RET_VALUE_O" type="NUMBER"></param>
+						<param name="P_RET_MESSAGE_O" type="STRING"></param>
+					</out>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+		<stage id="GENERATE-CSM-REQUEST-FILE" name="GENERATE-CSM-REQUEST-FILE">
+			<description>Generate CSM request file</description>
+            <execDefinition>
+                <javaExtension>
+                    <javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.DatabaseProcedureCSVExporterExec</javaExtensionExecutorClassName>
+                    <simpleProperties>
+                        <properties>
+                            <simpleProperty name="filePath">${CTR_OUTBOUND_PATH}/csm/${CSM-REQUEST-FILE-NAME}.csv</simpleProperty>
+                            <simpleProperty name="procedureName">${CTR_DB_SCHEMA}.EXPORT_CURSOR_PKG.csm_request_sp</simpleProperty>
+                            <simpleProperty name="parameters">STRING::${RUN-ID}</simpleProperty>
+                            <simpleProperty name="delimiter">,</simpleProperty>
+                            <simpleProperty name="includeHeaders">true</simpleProperty>
+                            <simpleProperty name="useQuotesInValues">false</simpleProperty>
+                        </properties>
+                    </simpleProperties>
+                    <javaExtensionOutputPropertyNames>
+                        <propertyName>recordCount</propertyName>
+                    </javaExtensionOutputPropertyNames>
+                </javaExtension>
+            </execDefinition>
+        </stage>
+		<stage id="GENERATE-CSM-FILES-VM" name="GENERATE-CSM-FILES-VM">
+		<skipCondition>'${GENERATE-CSM-REQUEST-FILE.recordCount}' == '0' </skipCondition>
+			<execDefinition>
+				<javaExtension>
+					<javaExtensionExecutorClassName>com.bns.ctr.maestro.javaexec.GenerateVMCSMResponse</javaExtensionExecutorClassName>
+					<simpleProperties>
+						<properties>
+							<simpleProperty name="filePath">${CSM_RESPONSE_URI}</simpleProperty>
+							<simpleProperty name="runid">${RUN-ID}${SOURCE-SYSTEM}${TIMESTAMP}</simpleProperty>
+							<simpleProperty name="businessdate">${BUSINESS-DATE-FMT}</simpleProperty>
+							<simpleProperty name="runEnv">${RUN-ENV}</simpleProperty>
+							<simpleProperty name="eodeomIndicator">${EOD-EOM-IND}</simpleProperty>
+						</properties>
+					</simpleProperties>
+					<javaExtensionOutputPropertyNames>
+						<propertyName>nooffilesCopied</propertyName>
+					</javaExtensionOutputPropertyNames>
+				</javaExtension>
+			</execDefinition>
+		</stage>	
+		<stage name="STORE-CSM-REQUEST-FILE" id="STORE-CSM-REQUEST-FILE">
+			<description>Creates a FILE_O record and linkes it back to CSM_REQUEST_O.DW_FILE_ID</description>
+			<execDefinition>
+				<dbProcedure name="CTRMSO.FILE_PKG.UPDATE_CSM_REQUEST_FILE_SP">
+					<in>
+						<param name="P_FILENAME_I" type="STRING">${CTR_OUTBOUND_PATH}/csm/${CSM-REQUEST-FILE-NAME}.csv</param>
+						<param name="P_ROWCOUNT_I" type="NUMBER">${GENERATE-CSM-REQUEST-FILE.recordCount}</param>
+						<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+					</in>
+				</dbProcedure>
+			</execDefinition>
+		</stage>
+		
+		<stage name="GENERATE-CSM-MARKER-FILE" id="GENERATE-CSM-MARKER-FILE">
+			<description>Creates a FILE_O record and linkes it back to CSM_REQUEST_O.DW_FILE_ID</description>
+			<execDefinition>
+				<checksumGeneration>
+					<sourceResource>
+						<uri>${CTR_OUTBOUND_PATH}/csm/${CSM-REQUEST-FILE-NAME}.csv</uri>
+					</sourceResource>
+					<markerResource>
+						<uri>${CTR_OUTBOUND_PATH}/csm/${CSM-REQUEST-FILE-NAME}.csv.mrk</uri>
+					</markerResource>
+					<checksumAlgorithm>SHA256</checksumAlgorithm>
+				</checksumGeneration>
+			</execDefinition>
+		</stage>
+		
+		<stage name="SEND-REQUEST-FILE-TO-CSM" id="SEND-REQUEST-FILE-TO-CSM">	
+		   <skipCondition><![CDATA['${CSM_REQUEST_URI}' == 'NONE' || ${GENERATE-CSM-REQUEST-FILE.recordCount} <= 0]]></skipCondition>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${CTR_OUTBOUND_PATH}/csm</uri>
+							<searchPattern>${CSM-REQUEST-FILE-NAME}.csv</searchPattern>
+						</sourceResource>
+						<targetResource>
+							<uri>${CSM_REQUEST_URI}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>transferCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+		<stage name="SEND-REQUEST-MARKER-TO-CSM" id="SEND-REQUEST-MARKER-TO-CSM">	
+		   <skipCondition><![CDATA['${CSM_REQUEST_URI}' == 'NONE' || ${GENERATE-CSM-REQUEST-FILE.recordCount} <= 0]]></skipCondition>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${CTR_OUTBOUND_PATH}/csm</uri>
+							<searchPattern>${CSM-REQUEST-FILE-NAME}.csv.mrk</searchPattern>
+						</sourceResource>
+						<targetResource>
+							<uri>${CSM_REQUEST_URI}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>transferCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+		
+	</sequential>
+
+</workflow>
+	

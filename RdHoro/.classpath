@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JScience-4.3"/>
+	<classpathentry kind="src" path="props"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jscience-4.3-bin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GeoAPI-2_0_0"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_27"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/RdStudio"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

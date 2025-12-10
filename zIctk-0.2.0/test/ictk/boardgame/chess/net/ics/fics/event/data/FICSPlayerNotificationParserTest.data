@@ -1,0 +1,10 @@
+##$Id: FICSPlayerNotificationParserTest.data,v 1.2 2003/08/29 04:43:02 jvarsoke Exp $
+Notification: mrbishop has arrived.
+##
+Notification: mrbishop has departed.
+##
+:Notification: mrbishop has departed.
+##
+Notification: drakorg has arrived and isn't on your notify list.
+##
+Notification: drakorg has departed and isn't on your notify list.

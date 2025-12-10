@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: CM-EXPORT-LINK-INSTRUMENT-WF.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>CM-EXPORT-LINK-INSTRUMENT-WF</name> 
+  	<externalWorkflowCode>CM-EXPORT-LINK-INSTRUMENT-WF</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>CM-EXPORT-LINK-INSTRUMENT-WF ($LastChangedRevision: 3690 $)</description>
+
+	
+	<properties>
+		<inputProperties>
+			<property name="WF-EOD-EOM-INDICATOR"/>
+			<property name="SOURCE-SYSTEM" />
+			<property name="RUN-ID" /> <!-- INITIALIZE-RUN.P_RUN_ID_O -->
+			<property name="BUSINESS-DATE" />
+			<!-- CSM -->
+			<property name="BUSINESS-DATE-FORMATTED"/><!-- INITIALIZE-RUN.BUSINESS-DATE-FORMATTED -->
+			<property name="IS-MONTH-END"/>
+			<!-- CSM -->
+		</inputProperties>
+		<generalProperties>
+			<property name="ROOT-WF-ID">CM-EXPORT-LINK-INSTRUMENT-WF</property>
+		</generalProperties>
+	</properties>
+	
+	
+	<sequential name="EXPORT-CSM-LINK-INSTRUMENT-WF" id="EXPORT-CSM-LINK-INSTRUMENT-WF">
+		<stage name="EXPORT-CSM-LINK-INSTRUMENT" id="EXPORT-CSM-LINK-INSTRUMENT">
+			<description>Export CSM Link</description>
+				<execDefinition>
+					<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+						<in>
+							<param name="P_TYPE_NAME_I" type="STRING">LINK_INSTRUMENT_TP</param>
+							<param name="P_METHOD_NAME_I" type="STRING">PUB_EXPORT_DATA</param>
+							<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+							<param name="P_STAGE_ID_I" type="STRING">EXPORT</param>
+							<param name="P_TASK_ID_I" type="STRING">LINK_INSTRUMENT_TP</param>
+							<param name="P_LOG_ID_I" type="STRING">1</param>
+							<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+							<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+						</in>
+						<out>
+							<param name="P_RET_VALUE_O" type="NUMBER"></param>
+							<param name="P_RET_MESSAGE_O" type="STRING"></param>
+						</out>
+					</dbProcedure>
+				</execDefinition>
+		</stage>
+	</sequential>
+</workflow>
+	

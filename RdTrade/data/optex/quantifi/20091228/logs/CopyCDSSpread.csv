@@ -1,0 +1,9 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNSFDS.USD.SeniorUnsecured.Modified.1y.Mid,0.02064
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNSFDS.USD.SeniorUnsecured.Modified.2y.Mid,0.02579
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNSFDS.USD.SeniorUnsecured.Modified.3y.Mid,0.02919
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNSFDS.USD.SeniorUnsecured.Modified.4y.Mid,0.03472
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNSFDS.USD.SeniorUnsecured.Modified.5y.Mid,0.03815
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNSFDS.USD.SeniorUnsecured.Modified.7y.Mid,0.03844
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNSFDS.USD.SeniorUnsecured.Modified.10y.Mid,0.03961
+25-Dec-2009,28-Dec-2009,Insert,True,Closing,CDS Spread,Next,DNHOLD.USD.SeniorUnsecured.Modified.1y.Mid,0.0262290528125719

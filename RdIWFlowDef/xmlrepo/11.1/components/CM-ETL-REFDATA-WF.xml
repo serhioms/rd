@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: CM-ETL-REFDATA-WF.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>CM-ETL-REFDATA-WF</name> 
+  	<externalWorkflowCode>CM-ETL-REFDATA-WF</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>CM-ETL-REFDATA-WF ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="SOURCE-SYSTEM" />
+			<property name="SOURCE-SYSTEM-LC" />
+			<property name="RUN-ID" />
+			<property name="BUSINESS-DATE" />
+			<property name="EOD-EOM-IND" />
+		</inputProperties>
+	</properties>
+
+	<sequential id="CM-ETL" name="CM-ETL">
+		
+		<parallel name="CM-ETL-PAR" id="CM-ETL-PAR">
+			<sequential name="CM-ETL-SEQ" id="CM-ETL-SEQ">
+
+				<stage name="LAND-TO-TARGET-EGL-PRODUCT" id="CM-EGL-PRODUCT-L2T">
+					<description>Loading EGL product type data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">egl_product_type_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-EGL-PRODUCT-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-EGL-DEPARTMENT" id="CM-EGL-DEPARTMENT-L2T">
+					<description>Loading EGL Department data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">egl_department_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-EGL-DEPARTMENT-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-EGL-LOCATION" id="CM-EGL-LOCATION-L2T">
+					<description>Loading EGL location data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">egl_location_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-EGL-LOCATION-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-EGL-BUSINESS-UNIT" id="CM-EGL-BUSINESS-UNIT-L2T">
+					<description>Loading Business Unit data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">business_unit_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-EGL-BUSINESS-UNIT-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-CARDS-EXTRACT" id="CM-CARDS-EXTRACT-L2T">
+					<description>Loading SAG eCards data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">sag_ecards_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-CARDS-EXTRACT-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-CARDS-FACIL-EXTRACT" id="CM-CARDS-FACIL-EXTRACT-L2T">
+					<description>Loading SAG Facility data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">sag_ecards_facility_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-CARDS-FACIL-EXTRACT-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>        
+				<stage name="LAND-TO-TARGET-ACCOUNT-MAPPING" id="CM-ACCOUNT-MAPPING-L2T">
+					<description>Loading Account mapping data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">account_mapping_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-ACCOUNT-MAPPING-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-TRANSIT-MAPPING" id="CM-TRANSIT-MAPPING-L2T">
+					<description>Loading Transit mapping data</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">transit_mapping_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">CM-TRANSIT-MAPPING-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+				<stage name="LAND-TO-TARGET-BNSGL-METRAGRID" id="BNSGL-METRAGRID-L2T">
+					<description>Loading Metagrid local GL mapping</description>
+					<skipCondition>'${SOURCE-SYSTEM}' != 'CTR'</skipCondition>
+					<execDefinition>
+						<dbProcedure name="CTRMSO.ETL_INVOKER_SP">
+							<in>
+								<param name="P_TYPE_NAME_I" type="STRING">local_gl_map_tp</param>
+								<param name="P_METHOD_NAME_I" type="STRING">pub_move_land_2_target</param>
+								<param name="P_RUN_ID_I" type="NUMBER">${RUN-ID}</param>
+								<param name="P_STAGE_ID_I" type="STRING">TARGET</param>
+								<param name="P_TASK_ID_I" type="STRING">BNSGL-METRAGRID-L2T</param>
+								<param name="P_LOG_ID_I" type="STRING">1</param>
+								<param name="P_BUSINESS_DATE_I" type="STRING">${BUSINESS-DATE}</param>
+								<param name="P_SOURCE_SYSTEM_CD_I" type="STRING">${SOURCE-SYSTEM}</param>
+							</in>
+							<out>
+								<param name="P_RET_VALUE_O" type="NUMBER"></param>
+								<param name="P_RET_MESSAGE_O" type="STRING"></param>
+							</out>
+						</dbProcedure>
+					</execDefinition>
+				</stage>
+			</sequential>
+		</parallel>
+		
+	</sequential>
+
+</workflow>
+	

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-4">
+<title>JS Interview Questions</title>
+</head>
+
+<body>
+
+<a href="http://www.thatjsdude.com/interview/js2.html">12. log prefix</a>
+
+
+<script type="text/javascript">
+
+	function log(){
+//		  console.log(arguments);
+//		  console.log(Array.prototype.slice.call(arguments));
+		  
+	  var args = Array.prototype.slice.call(arguments);
+	  args.unshift('(app)');
+	  console.log.apply(console, args);
+	}
+
+	log('my message'); //(app) my message
+	log('my message', 'your message'); //(app) my message your message 
+
+</script>
+        
+    
+</body>
+
+</html>

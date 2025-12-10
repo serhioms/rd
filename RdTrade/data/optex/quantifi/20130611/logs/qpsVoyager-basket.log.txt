@@ -1,0 +1,79 @@
+
+******************** qpsVoyager basket START (6/11/2013 11:07:30 AM - ) ********************
+
+6/11/2013 11:12:06 AM - No Official risk run found for 10-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000653 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000653 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000653.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000653.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000653.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000653.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000653.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000654 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000654 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000654.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000654.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000654.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000654.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000654.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000655 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000655 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000655.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000655.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000655.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000655.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000655.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000656 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000656 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000656.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000656.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000656.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000656.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000656.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000657 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000657 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Error: Couldn't find FX Rate Quote for currency CAD as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - NPV linked fields and sensitivities will be set to '0'.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000657.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000657.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000657.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000657.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000657.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000658 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000658 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Error: Couldn't find FX Rate Quote for currency CAD as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - NPV linked fields and sensitivities will be set to '0'.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000658.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000658.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000658.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000658.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000658.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000671 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000671 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000671.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000671.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000671.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000671.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000671.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000672 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000672 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000672.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000672.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000672.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000672.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000672.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000673 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000673 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000673.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000673.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000673.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000673.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000673.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000674 as of 11-Jun-2013.
+6/11/2013 11:12:06 AM - No NPV found for Trade CDO0000674 as of 10-Jun-2013 either.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure CurrentNotional for Trade CDO0000674.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Theta for Trade CDO0000674.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure Pv for Trade CDO0000674.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure APCorrelation for Trade CDO0000674.
+6/11/2013 11:12:06 AM - Couldn't find RiskMeasure DPCorrelation for Trade CDO0000674.
+******************** qpsVoyager basket END (6/11/2013 11:12:53 AM - ) ********************

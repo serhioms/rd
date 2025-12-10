@@ -1,0 +1,13 @@
+
+******************** RISK RUN START (3/11/2011 5:33:06 PM - ) ********************
+
+3/11/2011 6:49:15 PM - Script call: C:/Quantifi/9.4.1/bin/qpsSettlementDiary.exe  --date=03/02/11 -o C:/Quantifi/NightlyBatch/20110302/reports
+	Failed: IronPython.Runtime.Exceptions.SystemExitException: Python Exception: SystemExit
+   at Microsoft.Scripting.Actions.Calls.MethodCandidate.Caller.Call(Object[] args, Boolean& shouldOptimize)
+   at IronPython.Runtime.Types.BuiltinFunction.BuiltinFunctionCaller`2.Call1(CallSite site, CodeContext context, TFuncType func, T0 arg0)
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute3[T0,T1,T2,TRet](CallSite site, T0 arg0, T1 arg1, T2 arg2)
+   at Microsoft.Scripting.Utils.InvokeHelper`6.Invoke(Object arg0, Object arg1, Object arg2, Object arg3, Object arg4)
+   at Microsoft.Scripting.Utils.ReflectedCaller.Invoke(Object[] args)
+   at Microsoft.Scripting.Interpreter.CallInstruction.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.Interpreter.Run(InterpretedFrame frame)
+******************** RISK RUN END (3/11/2011 6:53:10 PM - ) ********************

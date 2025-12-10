@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<project name="RdChartGenerics" default="build.jar">
+
+	<property name="jar.name" value="rdchartgen"/>
+
+	<import file="../RdStudio/build.xml"/>
+
+</project>

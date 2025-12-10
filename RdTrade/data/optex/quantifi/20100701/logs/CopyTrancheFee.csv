@@ -1,0 +1,19 @@
+FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 10Y.0-0.03,0.7175
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 3Y.0-0.03,0.3
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 5Y.0-0.03,0.4825
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V3 7Y.0-0.03,0.65125
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 10Y.0-0.03,0.74625
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 3Y.0-0.03,0.3
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 5Y.0-0.03,0.50875
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,CDX.NA.IG.9-V4 7Y.0-0.03,0.68
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.03-0.07,0.3726
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.07-0.1,0.1027
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.1-0.15,0.0976
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.15-0.3,-0.0035
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0.3-1,-0.0375
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,Dow Jones CDX.NA.IG.7-V5 10Y.0-0.03,0.7804
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 10Y.0-0.03,0.6113
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 3Y.0-0.03,0.14255
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 5Y.0-0.03,0.4175
+30-Jun-2010,01-Jul-2010,Insert,True,Closing,Tranche Fee,Next,iTraxx Europe Series 9 Version 1 7Y.0-0.03,0.5313

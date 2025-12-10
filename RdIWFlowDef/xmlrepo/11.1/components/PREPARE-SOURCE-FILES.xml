@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- $Id: PREPARE-SOURCE-FILES.xml 3690 2016-06-01 20:44:07Z gmusial $
+	 Maestro version: 1.16.0 -->
+	 
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="workflowDefinition.xsd">
+	<name>PREPARE-SOURCE-FILES</name> 
+  	<externalWorkflowCode>PREPARE-SOURCE-FILES</externalWorkflowCode> 
+  	<finishOrchestrationASAPOnError>false</finishOrchestrationASAPOnError> 
+	<description>PREPARE-SOURCE-FILES ($LastChangedRevision: 3690 $)</description>
+
+	<properties>
+		<inputProperties>
+			<property name="FTP-SOURCE-DIR" />
+			<property name="HOLDING-SOURCE-DIR" />
+			<property name="HOLDING-MATCH-PATTERN" />
+			<property name="IS-MONTH-END" />
+			<property name="EOD-EOM-INDICATOR" />
+		</inputProperties>
+	</properties>
+
+	<sequential name="PREPARE-FTP-SOURCE" id="PREPARE-FTP-SOURCE">
+
+		<stage name="MOVE-FILES-FROM-HOLDING" id="MOVE-FILES-FROM-HOLDING">
+			<description>Move files from holding to ftp inbound directory</description>
+			<skipCondition>'${FTP-SOURCE-DIR}' == 'NONE' || '${HOLDING-SOURCE-DIR}' == 'NONE'</skipCondition>
+			<execDefinition>
+				<fileTransfer>
+					<transfer>
+						<sourceResource>
+							<uri>${HOLDING-SOURCE-DIR}</uri>
+							<searchPattern>${HOLDING-MATCH-PATTERN}</searchPattern>
+							<matchedUriOutputProperty>matchedFiles</matchedUriOutputProperty>
+						</sourceResource>
+						<targetResource>
+							<uri>${FTP-SOURCE-DIR}</uri>
+						</targetResource>
+					</transfer>
+					<transferCountProperty>matchedCount</transferCountProperty>
+				</fileTransfer>
+			</execDefinition>
+		</stage>
+		<stage name="CLEAN-UP-HOLDING" id="CLEAN-UP-HOLDING">
+			<description>Clean up files in holding directory</description>
+			<skipCondition>'${FTP-SOURCE-DIR}' == 'NONE' || '${HOLDING-SOURCE-DIR}' == 'NONE' || ${MOVE-FILES-FROM-HOLDING.matchedCount} == 0</skipCondition>
+			<stageFailure>
+				<failureCondition><![CDATA[${CLEAN-UP-HOLDING.matchedCount} == 0 && ${MOVE-FILES-FROM-HOLDING.matchedCount} > 0]]></failureCondition>
+				<failureMessage>Error while removing holding files from '${HOLDING-SOURCE-DIR}'. Holding files are not cleaned up.</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<deleteResource failOnError="false">
+					<resource>
+						<uri>${HOLDING-SOURCE-DIR}</uri>
+						<searchPattern>${HOLDING-MATCH-PATTERN}</searchPattern>
+						<matchedUriOutputProperty>matchedFiles</matchedUriOutputProperty>
+					</resource>
+					<deleteCountProperty>matchedCount</deleteCountProperty>
+				</deleteResource>
+			</execDefinition>
+		</stage>
+
+		<stage name="PREPARE-SRC-FILES" id="PREPARE-SRC-FILES">
+			<description>Cleanup bad/duplicate source files and move to not-loaded directory</description>
+			<!-- fundtracker, mmitor, mminy does not contain a version in the file, skip cleanup for these -->
+			<skipCondition>'${FTP-SOURCE-DIR}' == 'NONE' || '${FTP-SOURCE-DIR}'.matches('.*(/fundtracker/|/mmitor/|/mminy/|/ecards/).*')</skipCondition>
+			<stageFailure>
+				<failureCondition><![CDATA[${PREPARE-SRC-FILES.exitCode} != 0]]></failureCondition>
+				<failureMessage>FSM-(${PREPARE-SRC-FILES.exitCode}) : Error while cleaning source files for '${FTP-SOURCE-DIR}'. See FSM log for details.</failureMessage>
+			</stageFailure>
+			<execDefinition>
+				<callExternalProcess>
+					<commandLine>${CTR_APP_ROOT_PATH}/script/ctrmvinfiles.${SHELL_SCRIPT_EXTENSION} ${FTP-SOURCE-DIR} csv mrk</commandLine>
+					<workingDirectory>${CTR_APP_ROOT_PATH}/script/</workingDirectory>
+					<exitCodeProperty>exitCode</exitCodeProperty>
+				</callExternalProcess>
+			</execDefinition>
+		</stage>
+	</sequential>
+
+</workflow>
+	

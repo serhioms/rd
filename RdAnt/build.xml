@@ -1,0 +1,34 @@
+<project name="RdAnt">
+
+	<import file="..\RdStudio\build.xml"/>
+	
+	<target name="ant.install">
+		<mkdir dir="${ant.lib}" />
+		<copy todir="${ant.lib}" overwrite="false" failonerror="false">
+			<fileset dir="lib">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="ant.rdstart.bat">
+		<exec dir="..\RdDist"
+			executable="cmd.exe" >
+			<arg value="/c"/>
+			<arg value="TestStandaloneStarter.bat"/>
+		</exec>
+	</target>
+
+	<target name="ant.rdstarter.jar">
+		<exec dir="..\RdDist"
+			executable="java.exe" >
+			<arg value="-DDEBUG"/>
+			<arg value="-Dprop=prop"/>
+			<arg value="-Dlib=dist;lib"/>
+			<arg value="-Dmain=ca.mss.rd.test.http.TestBidCactus"/>
+			<arg value="-jar"/>
+			<arg value="dist/rdstarter.jar"/>
+		</exec>
+	</target>
+
+</project>

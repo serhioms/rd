@@ -1,0 +1,3 @@
+TradeId,ProductDescription,TradeTag_ECD Id,Currency,Today_CurrentNotional,Today_MTM,LastBusinessDate_MTM,LTDPLChange,ResidualPL,EstimatedPL,CorrEffect,Today_Total_CSGammaEffect,Total_CSDeltaEffect,Today_Total_IRDelta,LastBusinessDate_CashflowEffect,Today_CashflowEffect,CashflowEffect,Today_1%bumping_BaseCorrSurface,LastBusinessDate_1%bumping_BaseCorrSurface,Today_RiskReserve,LastBusinessDate_RiskReserve,Today_Total_CSDeltaEffect 1,LastBusinessDate_Total_CSDeltaEffect 2
+CDO0000639,ACA 3,1823,USD,,,,113581.076527778,113581.076527778,,,,,,,,,,,,,,
+CDO0000640,ACA 3 BA,1882,USD,,,,-137464.804722223,-137464.804722223,,,,,,,,,,,,,,
