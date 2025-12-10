@@ -1,0 +1,49 @@
+/**
+ * 
+ */
+package ca.mss.rd.trade.calypso.refdata.trade;
+
+
+
+/**
+ * @author moskovsk
+ *
+ */
+public enum TradeStatus {
+
+	ACKED,
+	AMENDED,
+	AMT_AUTHORIZE,
+	APPR_EXERCISE,
+	APPR_TERM,
+	APPROVED,
+	CANCELED,
+	CREATED,
+	DEFAULTED,
+	DUMMY_TERM,
+	EXERCISED,
+	EXPIRED,
+	FAILED,
+	HELD,
+	INVALID,
+	MATCHED,
+	MATURED,
+	MISMATCHED,
+	NACKED,
+	NONE,
+	PEND_EXERCISE,
+	PEND_TERM,
+	PENDING,
+	PRICING,
+	PROCESSED,
+	SENT,
+	SETTLED,
+	SPLIT,
+	TERMINATED,
+	TO_SEND,
+	UNMATCHED,
+	VERIFIED;
+	
+}
+
+

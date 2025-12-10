@@ -22,7 +22,7 @@
 				<version>2.0.2</version>
 				<configuration>
 					<includes>
-						<include>src/**</include>
+						<include>src/main/java/**</include>
 					</includes>
 				</configuration>
 			</plugin>

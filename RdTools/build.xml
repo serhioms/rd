@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<project name="RdTools" default="build.jar">
-
-	<property name="jar.name" value="rdtools"/>
-
-	<import file="../RdStudio/build.xml"/>
-
-</project>

@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<project name="RdTraderConsole" default="build.jar">
-
-	<property name="jar.name" value="rdtraderconsole"/>
-
-	<import file="../RdStudio/build.xml"/>
-
-</project>

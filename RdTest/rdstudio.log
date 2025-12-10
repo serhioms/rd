@@ -1,5 +1,0 @@
-06/13/2014@17:31:42 DEBUG Start...
-06/13/2014@17:31:43 DEBUG Get connection for route HttpRoute[{s}->https://greenbutton.affsys.com:443]
-06/13/2014@17:31:43 DEBUG Connection closed
-06/13/2014@17:31:43 DEBUG Connection shut down
-06/13/2014@17:31:43 DEBUG Releasing connection org.apache.http.impl.conn.SingleClientConnManager$ConnAdapter@42e6bc11

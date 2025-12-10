@@ -1,7 +1,0 @@
-FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
-14-Dec-2012,17-Dec-2012,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS15V1-3Y.Mid,0.0044
-14-Dec-2012,17-Dec-2012,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS15V1-5Y.Mid,0.0077
-14-Dec-2012,17-Dec-2012,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS5V5-5Y (CIBC).Mid,1E-05
-14-Dec-2012,17-Dec-2012,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS15V1-7Y.Mid,0.0101
-14-Dec-2012,17-Dec-2012,Insert,True,Closing,CDX Spread,Next,ITRAXX-EUROPES9V1-3Y.Mid,0.002
-14-Dec-2012,17-Dec-2012,Insert,True,Closing,CDX Spread,Next,Dow Jones CDX.NA.IG.7-V5,0.013

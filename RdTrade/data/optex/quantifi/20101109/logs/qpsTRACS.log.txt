@@ -1,8 +1,0 @@
-
-******************** qpsTRACS START (11/10/2010 4:45:06 PM - ) ********************
-
-11/10/2010 6:03:15 PM - 5875 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:03:16 PM - 6921 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:03:17 PM - 7671 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:03:18 PM - 8484 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-******************** qpsTRACS END (11/10/2010 6:06:27 PM - ) ********************

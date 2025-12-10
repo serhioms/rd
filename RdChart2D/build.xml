@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<project name="RdChart" default="build.jar">
-
-	<property name="jar.name" value="rdchart"/>
-
-	<import file="../RdStudio/build.xml"/>
-
-</project>

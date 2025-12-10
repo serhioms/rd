@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<project name="RdHTTP" default="build.jar">
-
-	<property name="jar.name" value="rdhttp"/>
-
-	<import file="../RdStudio/build.xml"/>
-
-</project>

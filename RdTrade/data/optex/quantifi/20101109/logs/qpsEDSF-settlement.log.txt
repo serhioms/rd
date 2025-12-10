@@ -1,8 +1,0 @@
-
-******************** qpsEDSF-settlement START (11/10/2010 4:45:06 PM - ) ********************
-
-11/10/2010 6:02:51 PM - 5875 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:02:53 PM - 6937 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:02:53 PM - 7671 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:02:54 PM - 8421 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-******************** qpsEDSF-settlement END (11/10/2010 6:06:27 PM - ) ********************

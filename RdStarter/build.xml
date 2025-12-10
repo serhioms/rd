@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<project name="RdStarter" default="build.jar">
-
-	<property name="jar.name" value="rdstarter"/>
-	<property name="Main-Class" value="ca.mss.rd.starter.AppStandalone"/>
-	
-	<import file="../RdStudio/build.xml"/>
-
-</project>

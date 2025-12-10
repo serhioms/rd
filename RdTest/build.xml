@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<project name="RdTest" default="build.jar">
-
-	<property name="jar.name" value="rdtest"/>
-
-	<import file="../RdStudio/build.xml"/>
-
-</project>

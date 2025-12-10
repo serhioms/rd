@@ -9,24 +9,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>25</maven.compiler.source>
+		<maven.compiler.target>25</maven.compiler.target>
 	</properties>
-
-	<build>
-		<!-- <sourceDirectory>.</sourceDirectory> -->
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<includes>
-						<include>src/**</include>
-					</includes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 	<dependencies>
 
@@ -47,13 +32,25 @@
 			<artifactId>RdChart2D</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>ca.mss.rd</groupId>
-			<artifactId>RdTraderServer</artifactId>
-			<version>1.0</version>
-		</dependency>
-		
-	</dependencies>
+        <dependency>
+            <groupId>ca.mss.rd</groupId>
+            <artifactId>RdSwing</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ca.mss.rd</groupId>
+            <artifactId>RdChartGenerics</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ca.mss.rd</groupId>
+            <artifactId>RdTraderSource</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>

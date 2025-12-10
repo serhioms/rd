@@ -1,4 +1,0 @@
-FromDate,ToDate,Status,Saved,MarketSet,QuoteType,Source,Name,Value
-01-Nov-2010,02-Nov-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS7V5-10Y.Mid,0.014672
-01-Nov-2010,02-Nov-2010,Insert,True,Closing,CDX Spread,Next,CDX-NAIGS9V4-5Y.Mid,0.0116
-01-Nov-2010,02-Nov-2010,Insert,True,Closing,CDX Spread,Next,Dow Jones CDX.NA.IG.7-V5,0.014672

@@ -1,8 +1,0 @@
-
-******************** qpsVoyager trading START (11/10/2010 4:45:06 PM - ) ********************
-
-11/10/2010 6:04:13 PM - 7609 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:04:15 PM - 9281 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:04:16 PM - 10625 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-11/10/2010 6:04:18 PM - 11953 [1] WARN  Quantifi.Curves.SurvivalFitCalibrator (null) - Forced survival curve EFHC.USD.SeniorUnsecured.Modified to fit by copying previous quote to tenor 7 Years
-******************** qpsVoyager trading END (11/10/2010 6:06:27 PM - ) ********************

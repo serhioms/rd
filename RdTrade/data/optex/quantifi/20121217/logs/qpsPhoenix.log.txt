@@ -1,6 +1,0 @@
-
-******************** qpsPhoenix START (12/17/2012 7:00:20 PM - ) ********************
-
-12/17/2012 7:04:20 PM - Updating: 18958 PORTSMOUTH Portsmouth Genco, LLC EXTERNAL Party
-12/17/2012 7:04:20 PM - Updating 1 legal entities and inserting 0 legal entities.
-******************** qpsPhoenix END (12/17/2012 7:19:28 PM - ) ********************
