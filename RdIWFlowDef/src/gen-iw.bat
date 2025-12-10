@@ -1,1 +1,0 @@
-xjc -p ca.mss.rd.wkfdef.iw ..\xsd\workflowDefinition.xsd
