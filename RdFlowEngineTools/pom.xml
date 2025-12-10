@@ -107,6 +107,12 @@
 	    <version>2.6</version>
 	</dependency>
 
+<!--    <dependency>-->
+<!--        <groupId>gnu.jel</groupId>-->
+<!--        <artifactId>gnu.jel</artifactId>-->
+<!--        <version>2.1.1</version>-->
+<!--    </dependency>-->
+
 	</dependencies>
 
 </project>

@@ -73,7 +73,7 @@ public class RandomForexParser <Row extends ParserRow> extends AbstractParser<Ro
 	 * Generate and test 
 	 */
 	public static void main(String[] args) {
-		new RandomForexParser<RandomForexParserRow>("D:/workspace/2012/rd/RdTraderConsole/data/20131024=162528=0=ForexSourceRandom.txt")
+		new RandomForexParser<RandomForexParserRow>("/Users/smoskovskiy/workspace/rd/RdTraderConsole/data/20131024=162528=0=ForexSourceRandom.txt")
 			//.generateCode();
 			.test();
 	}

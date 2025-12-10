@@ -13,7 +13,7 @@ public class FXSourceOandaFile implements FXSourceIterator {
 	final static public String module = FXSourceOandaFile.class.getName();
 	final static public long serialVersionUID = module.hashCode();
 
-	static public String OANDA_FILE = "D:/workspace/2012/rd/RdTraderConsole/data/20131023=180413=1250=ForexSourceOanda.txt";
+	static public String OANDA_FILE = "/Users/smoskovskiy/workspace/rd/RdTraderConsole/data/20131023=180413=1250=ForexSourceOanda.txt";
 
 	static { 
 		UtilProperty.readConstants(FXSourceOandaFile.class); 

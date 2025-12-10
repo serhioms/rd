@@ -20,7 +20,7 @@
 		<module>RdUtil</module>
 		<module>RdJob</module>
 		
-		<module>RdFlowEngine</module>
+<!--		<module>RdFlowEngine</module>-->
 		
 		<module>HomeUtils</module>
 		
@@ -159,7 +159,7 @@
 			<artifactId>ictk</artifactId>
 			<version>2.4.2</version>
 			<scope>system</scope>
-			<systemPath>D:/workspace/2012/rd/lib/ictk-2.4.2.jar</systemPath>
+			<systemPath>/Users/smoskovskiy/workspace/rdrd/lib/ictk-2.4.2.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -167,7 +167,7 @@
 			<artifactId>gnu.jel</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>D:/workspace/2012/rd/lib/jel.jar</systemPath>
+			<systemPath>/Users/smoskovskiy/workspace/rdrd/lib/jel.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -175,7 +175,7 @@
 			<artifactId>free.freechess.timeseal</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>D:/workspace/2012/rd/lib/timesealing.jar</systemPath>
+			<systemPath>/Users/smoskovskiy/workspace/rdrd/lib/timesealing.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -183,7 +183,7 @@
 			<artifactId>free.chessclub.timestamp</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>D:/workspace/2012/rd/lib/timestamping.jar</systemPath>
+			<systemPath>/Users/smoskovskiy/workspace/rdrd/lib/timestamping.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -191,7 +191,7 @@
 			<artifactId>com.jfx</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>D:/workspace/2012/rd/lib/jfx-2.4.1-P5.jar</systemPath>
+			<systemPath>/Users/smoskovskiy/workspace/rdrd/lib/jfx-2.4.1-P5.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -199,7 +199,7 @@
 			<artifactId>SevenZip</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>D:/workspace/2012/rd/lib/7z.jar</systemPath>
+			<systemPath>/Users/smoskovskiy/workspace/rdrd/lib/7z.jar</systemPath>
 		</dependency>
 
 	</dependencies>

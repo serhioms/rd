@@ -69,7 +69,7 @@ public class OandaParserNew <Row extends ParserRow> extends AbstractParser<Row> 
 	 * Generate and test 
 	 */
 	public static void main(String[] args) {
-		new OandaParserNew<OandaParserNewRow>("D:/workspace/2012/rd/RdTraderConsole/data/Oanda-Online/2014/05-May/20/20140513-165815-937=Oanda-Online=1-sec.txt")
+		new OandaParserNew<OandaParserNewRow>("/Users/smoskovskiy/workspace/rd/RdTraderConsole/data/Oanda-Online/2014/05-May/20/20140513-165815-937=Oanda-Online=1-sec.txt")
 			//.generateCode();
 			.test();
 	}

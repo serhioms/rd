@@ -41,7 +41,7 @@
 			<artifactId>free.freechess.timeseal</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>D:/workspace/2012/rd/lib/timesealing.jar</systemPath>
+			<systemPath>/Users/smoskovskiy/workspace/rd/lib/timesealing.jar</systemPath>
 		</dependency>
 
 	</dependencies>

@@ -14,7 +14,7 @@ public class ForexSourceRandomFile extends FXBridge2BD implements FXIterator {
 	final static public String module = ForexSourceRandomFile.class.getName();
 	final static public long serialVersionUID = module.hashCode();
 
-	static public String EXTERNAL_FILE = "D:/workspace/2012/rd/RdTraderConsole/data/20131024=162528=0=ForexSourceRandom.txt";
+	static public String EXTERNAL_FILE = "/Users/smoskovskiy/workspace/rd/RdTraderConsole/data/20131024=162528=0=ForexSourceRandom.txt";
 
 	static { 
 		UtilProperty.readConstants(ForexSourceRandomFile.class); 

@@ -45,8 +45,8 @@
 	</target>
 	
 	<target name="RD-zip" >
-		<zip destfile="D:/workspace/2012/rd-arch=2012-09-27.zip" compress="true" filesonly="false">
-			<fileset dir="D:/workspace/2012/rd" >
+		<zip destfile="/Users/smoskovskiy/workspace/rd-arch=2012-09-27.zip" compress="true" filesonly="false">
+			<fileset dir="/Users/smoskovskiy/workspace/rd" >
 				<include name="**/*.java"/>
 				<include name="**/.project"/>
 				<include name="**/.classpath"/>
