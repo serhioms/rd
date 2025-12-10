@@ -1,3 +1,0 @@
-Match	WinTickets	Prize
-Straight	17	$751.80
-BOX	207	$125.30

@@ -37,8 +37,8 @@
 
 		<module>RdChart2d</module>
 
-		<module>RdTraderServer</module>
-		<module>RdTraderConsole</module>
+<!--		<module>RdTraderServer</module>-->
+<!--		<module>RdTraderConsole</module>-->
 
 		<module>RdFinance</module>
 		<module>RdFinance2</module>
@@ -47,8 +47,7 @@
 		
 		<module>zictk-0.2.0</module>
 		<module>RdChess</module>
-		
-		<module>RdLoto</module>
+
 		<!-- module>rdlingvo</module-->
 		
 		<!--module>RdTest</module-->
