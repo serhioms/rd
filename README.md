@@ -18,7 +18,7 @@
 
 ### PS
 
-App is quite old and not finished.  You can compile it and run main window. 
+App is quite old and not finished.  You can compile it and run in IDE. 
 
 In main window try:
 • tabs/Trader Lab/Back Testing 
